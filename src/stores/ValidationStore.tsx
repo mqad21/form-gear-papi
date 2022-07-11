@@ -7,7 +7,7 @@ type TestFunction = {
     componentValidation?: string[]
 }
 
-type Detail = {
+type ValidationDetail = {
     description: string;
     dataKey: string;
     version: string;
@@ -16,7 +16,7 @@ type Detail = {
   
 export interface Validation{
     status: number,
-    details: Detail
+    details: ValidationDetail
 }
 
 export const [validation, setValidation] = createStore<Validation>({

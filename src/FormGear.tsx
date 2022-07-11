@@ -23,7 +23,7 @@ import { createSignal } from "solid-js";
 import semverCompare from "semver-compare";
 import { toastInfo } from "./FormInput";
 
-import { initReferenceMap } from "./GlobalFunction";
+import { initReferenceMap, transformToPapi } from "./GlobalFunction";
 
 export const gearVersion = '1.0.2';
 export let templateVersion = '0.0.0';
@@ -46,11 +46,15 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
   })
   
   try{
-    setTemplate({details: templateFetch});
-    setPreset({details: presetFetch});
-    setResponse({details: responseFetch});
-    setValidation({details: validationFetch});
-    setRemark({details: remarkFetch});
+    if (config.clientMode = ClientMode.PAPI) {
+      [templateFetch, validationFetch] = transformToPapi(templateFetch, validationFetch)
+    }
+
+    setTemplate({ details: templateFetch });
+    setPreset({ details: presetFetch });
+    setResponse({ details: responseFetch });
+    setValidation({ details: validationFetch });
+    setRemark({ details: remarkFetch });
 
     const tmpVarComp = [];
     const tmpEnableComp = [];

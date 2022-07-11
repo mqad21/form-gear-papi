@@ -1,15 +1,15 @@
 // import handler  from "./src/FormGear"
 import { FormGear } from "./src/index"
 
-//variable config
+//variable z
 let config = {
-  clientMode: 1, // 1 => CAWI ; 2 => CAPI ;
+  clientMode: 3, // 1 => CAWI ; 2 => CAPI ;
   //both token and baseUrl are used for data lookup from the api (for selectInput, multiselect Input, and listSelectInput)
   token: ``, //for authentication such as bearer token 
-  baseUrl : ``,
-  lookupKey: `keys`, //optional
-  lookupValue: `values`, //optional
-  lookupMode : 1, // 1 => ONLINE ; 2 => OFFLINE
+  baseUrl: `https://jsonplaceholder.typicode.com/users/`, // endpoint to fetch
+  lookupKey: `key%5B%5D`, //optional 
+  lookupValue: `value%5B%5D`, //optional
+  lookupMode: 1, // 1 => ONLINE ; 2 => OFFLINE
   username: 'AdityaSetyadi', //
   formMode: 1, // 1 => OPEN ; 2 => REVIEW ; 3 => CLOSE ;
   initialMode: 2 // 1=> INITIAL ; 2 => ASSIGN
@@ -24,12 +24,12 @@ var principalGear = null;
 var referenceGear = null;
 
 //JSON Object defined template
-let reference = await fetch("../src/data/reference.json").then((res) => res.json()).catch((error : Error) => {return {}}) || []
-let template = await fetch("../src/data/template.json").then((res) => res.json()).catch((error : Error) => {return {}}) || []
-let preset = await fetch("../src/data/preset.json").then((res) => res.json()).catch((error : Error) => {return {}}) || []
-let response = await fetch("../src/data/response.json").then((res) => res.json()).catch((error : Error) => {return {}}) || []
-let validation = await fetch("../src/data/validation.json").then((res) => res.json()).catch((error : Error) => {return {}}) || []
-let remark = await fetch("../src/data/remark.json").then((res) => res.json()).catch((error : Error) => {return {}}) || []
+let reference = await fetch("../src/data/splf/reference.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
+let template = await fetch("../src/data/splf/template.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
+let preset = await fetch("../src/data/splf/preset.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
+let response = await fetch("../src/data/response.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
+let validation = await fetch("../src/data/splf/validation.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
+let remark = await fetch("../src/data/remark.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
 
 //function to open camera on mobile  CAPI
 function openCamera() {
@@ -100,7 +100,7 @@ let uploadHandler = function (setter) {
 }
 
 let offlineSearch = function (id, version, dataJson, setter) {
-  
+
   let condition = JSON.stringify(dataJson)
 
   //here we use jquery to retrieve data from the local device
@@ -110,15 +110,15 @@ let offlineSearch = function (id, version, dataJson, setter) {
     crossDomain: true,
     dataType: "json",
     data: null,
-    success: function(d) {
-        console.log(d.hasil)
-        setter(d)
+    success: function (d) {
+      console.log(d.hasil)
+      setter(d)
 
-        },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
 
     }
-});
+  });
 
 }
 
@@ -159,23 +159,17 @@ let onlineSearch = async (url) =>
   }).then((res: any) => {
     /*the return format must in object of 
       {
-        success: false,
-        data: {}, --> the data property must in format array of object [{key: {key}, value : {value}}, ...]
+        success: false, => true or false
+        data: {}, --> the data property must in format array of object [{value: {value}, label : {label}}, ...]
         message: status (200, 400 ,500 , etc )
       }
     }*/
-    if (res.status === 200) {
-      let temp = res.json();
-      return temp;
-    } else {
-      return {
-        success: false,
-        data: {},
-        message: res.status
-      }
+    return {
+      success: true,
+      data: [{}],
+      message: 200
     }
-  }).then((res: any) => {
-    return res;
+
   }));
 
 //function to get response, remark, principal and reference
@@ -198,7 +192,7 @@ let setSubmitMobile = function (res, rem, princ, ref) {
   remarkGear = rem
   principalGear = princ
   referenceGear = ref
-  
+
   console.log('----------', new Date(), '----------');
 
   console.log('response', responseGear)

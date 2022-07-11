@@ -17,14 +17,14 @@ import { locale, setLocale } from './stores/LocaleStore';
 import { summary, setSummary } from './stores/SummaryStore';
 import { useLoaderDispatch } from "./loader/FormLoaderProvider"
 
-import { saveAnswer, setEnableFalse, runValidation, referenceIndexLookup} from "./GlobalFunction";
+import { saveAnswer, setEnableFalse, runValidation, referenceIndexLookup, refocusLastSelector } from "./GlobalFunction";
 import { toastInfo } from "./FormInput";
 
-import { referenceHistoryEnable, setReferenceHistoryEnable} from './stores/ReferenceStore';
+import { referenceHistoryEnable, setReferenceHistoryEnable } from './stores/ReferenceStore';
 
 import dayjs from 'dayjs';
-import utc from  'dayjs/plugin/utc';
-import timezone from  'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 
 
 
@@ -71,7 +71,7 @@ const Form: Component<{
     if (componentIndex !== -1 && (reference.details[componentIndex].answer) && (reference.details[componentIndex].enable)) answer = reference.details[componentIndex].answer;
     return answer;
   }
-  const [renderGear, setRenderGear] = createSignal('FormGear-'+gearVersion+' 🚀:');
+  const [renderGear, setRenderGear] = createSignal('FormGear-' + gearVersion + ' 🚀:');
 
   const { setLoader, removeLoader } = useLoaderDispatch();
   const [prop, setProp] = createSignal(getProp(''));
@@ -175,7 +175,7 @@ const Form: Component<{
     })
 
     props.response.details.answers.forEach((element, index) => {
-      if(!element.dataKey.includes("#")){
+      if (!element.dataKey.includes("#")) {
         let refPosition = reference.details.findIndex(obj => obj.dataKey === element.dataKey);
         if (refPosition !== -1) {
           let sidePosition = sidebar.details.findIndex(obj => {
@@ -211,28 +211,28 @@ const Form: Component<{
       saveAnswer(element.dataKey, 'enable', enable, sidePosition, { 'clientMode': getProp('clientMode'), 'baseUrl': getProp('baseUrl') });
     })
 
-    for(let index=0; index < reference.details.length; index ++){
+    for (let index = 0; index < reference.details.length; index++) {
       let obj = reference.details[index]
-      if(obj.index[obj.index.length - 2] === 0 && obj.level > 1){
-          continue
+      if (obj.index[obj.index.length - 2] === 0 && obj.level > 1) {
+        continue
       }
-      if((obj.enable) && obj.componentValidation !== undefined){
+      if ((obj.enable) && obj.componentValidation !== undefined) {
         runValidation(obj.dataKey, JSON.parse(JSON.stringify(obj)), null);
       }
 
-      if((obj.enable) && obj.sourceOption !== undefined){
-          let sourceOptionObj = reference.details [referenceIndexLookup(obj.sourceOption)]
-          if(obj.answer){
-              let x = [];
-              obj.answer.forEach(val => {
-                  sourceOptionObj.answer.forEach(op => {
-                      if(val.value == op.value){
-                          x.push(op);
-                      }
-                  })
-              })
-              setReference('details', index, 'answer', x);
-          }
+      if ((obj.enable) && obj.sourceOption !== undefined) {
+        let sourceOptionObj = reference.details[referenceIndexLookup(obj.sourceOption)]
+        if (obj.answer) {
+          let x = [];
+          obj.answer.forEach(val => {
+            sourceOptionObj.answer.forEach(op => {
+              if (val.value == op.value) {
+                x.push(op);
+              }
+            })
+          })
+          setReference('details', index, 'answer', x);
+        }
       }
     }
     // console.timeEnd('tmpEnableComp ')
@@ -247,7 +247,7 @@ const Form: Component<{
         setNote('details', 'notes', updatedNote);
       }
     })
-    setRenderGear('FormGear-'+gearVersion+' ♻️:')
+    setRenderGear('FormGear-' + gearVersion + ' ♻️:')
   }
 
   // console.log(reference.details)
@@ -268,14 +268,14 @@ const Form: Component<{
     let _blank = 0;
     reference.details.forEach((element, index) => {
       let enableFalse = referenceEnableFalse().findIndex(obj => obj.parentIndex.toString() === element.index.slice(0, -2).toString());
-      if(enableFalse == -1 && element.type > 4 && element.enable){
-        if((element.answer !== undefined) && (element.answer !== '') && (element.answer !== null)) {
-            _answer += 1;
+      if (enableFalse == -1 && element.type > 4 && element.enable) {
+        if ((element.answer !== undefined) && (element.answer !== '') && (element.answer !== null)) {
+          _answer += 1;
         }
-        if(((element.answer === undefined || element.answer === '') || ((element.type == 21) && element.answer.length == 1) || ((element.type == 22) && element.answer.length == 1))  && !(JSON.parse(JSON.stringify(element.index[element.index.length - 2])) == 0 && element.level > 1)) {
-            _blank += 1;
+        if (((element.answer === undefined || element.answer === '') || ((element.type == 21) && element.answer.length == 1) || ((element.type == 22) && element.answer.length == 1)) && !(JSON.parse(JSON.stringify(element.index[element.index.length - 2])) == 0 && element.level > 1)) {
+          _blank += 1;
         }
-        if(element.validationState == 2) {
+        if (element.validationState == 2) {
           _error += 1;
         }
       }
@@ -325,6 +325,9 @@ const Form: Component<{
     }
 
     document.getElementById("FormGear-loader").classList.add('hidden')
+
+    refocusLastSelector()
+
   })
 
   const toggleSwitch = (event: MouseEvent) => {
@@ -362,7 +365,7 @@ const Form: Component<{
         && (element.answer !== null)
       ) {
         let enableFalse = referenceEnableFalse().findIndex(obj => obj.parentIndex.toString() === element.index.slice(0, -2).toString());
-        if (enableFalse == -1){
+        if (enableFalse == -1) {
           dataForm.push({
             dataKey: element.dataKey,
             answer: element.answer
@@ -388,10 +391,10 @@ const Form: Component<{
     setResponse('details', 'docState', docState());
     setResponse('details', 'summary', JSON.parse(JSON.stringify(summary)));
 
-    let now = dayjs().format('YYYY-MM-DD HH:mm:ss');    
+    let now = dayjs().format('YYYY-MM-DD HH:mm:ss');
     var dt = new Date();
     var s = dt.getTimezoneOffset();
-    var timeToGet = Number((s/60)*-1);
+    var timeToGet = Number((s / 60) * -1);
     dayjs.extend(timezone);
     dayjs.extend(utc);
     let tz = dayjs.tz.guess();
@@ -400,17 +403,17 @@ const Form: Component<{
       setResponse('details', 'createdBy', form.formConfig.username) :
       setResponse('details', 'updatedBy', form.formConfig.username);
 
-    if(response.details.createdAt === undefined || (response.details.createdAt !== undefined && response.details.createdAt === '')){
-      setResponse('details', 'createdAt', now) ;
-      setResponse('details', 'createdAtTimezone', tz.toString()) 
+    if (response.details.createdAt === undefined || (response.details.createdAt !== undefined && response.details.createdAt === '')) {
+      setResponse('details', 'createdAt', now);
+      setResponse('details', 'createdAtTimezone', tz.toString())
       setResponse('details', 'createdAtGMT', timeToGet);
     } else {
-      if(response.details.createdAtTimezone === undefined || (response.details.createdAtTimezone !== undefined && response.details.createdAtTimezone === '')){
-        setResponse('details', 'createdAtTimezone', tz.toString()) 
+      if (response.details.createdAtTimezone === undefined || (response.details.createdAtTimezone !== undefined && response.details.createdAtTimezone === '')) {
+        setResponse('details', 'createdAtTimezone', tz.toString())
         setResponse('details', 'createdAtGMT', timeToGet);
       }
       setResponse('details', 'updatedAt', now);
-      setResponse('details', 'updatedAtTimezone', tz.toString()) 
+      setResponse('details', 'updatedAtTimezone', tz.toString())
       setResponse('details', 'updatedAtGMT', timeToGet);
     }
 
@@ -424,17 +427,17 @@ const Form: Component<{
       setPrincipal('details', 'createdBy', form.formConfig.username) :
       setPrincipal('details', 'updatedBy', form.formConfig.username);
 
-    if(principal.details.createdAt === undefined || (principal.details.createdAt !== undefined && principal.details.createdAt === '')){
-      setPrincipal('details', 'createdAt', now) ;
-      setPrincipal('details', 'createdAtTimezone', tz.toString()) 
+    if (principal.details.createdAt === undefined || (principal.details.createdAt !== undefined && principal.details.createdAt === '')) {
+      setPrincipal('details', 'createdAt', now);
+      setPrincipal('details', 'createdAtTimezone', tz.toString())
       setPrincipal('details', 'createdAtGMT', timeToGet);
     } else {
-      if(principal.details.createdAtTimezone === undefined || (principal.details.createdAtTimezone !== undefined && principal.details.createdAtTimezone === '')){
-        setPrincipal('details', 'createdAtTimezone', tz.toString()) 
+      if (principal.details.createdAtTimezone === undefined || (principal.details.createdAtTimezone !== undefined && principal.details.createdAtTimezone === '')) {
+        setPrincipal('details', 'createdAtTimezone', tz.toString())
         setPrincipal('details', 'createdAtGMT', timeToGet);
       }
       setPrincipal('details', 'updatedAt', now);
-      setPrincipal('details', 'updatedAtTimezone', tz.toString()) 
+      setPrincipal('details', 'updatedAtTimezone', tz.toString())
       setPrincipal('details', 'updatedAtGMT', timeToGet);
     }
 
@@ -448,17 +451,17 @@ const Form: Component<{
       setRemark('details', 'createdBy', form.formConfig.username) :
       setRemark('details', 'updatedBy', form.formConfig.username);
 
-    if(remark.details.createdAt === undefined || (remark.details.createdAt !== undefined && remark.details.createdAt === '')){
-      setRemark('details', 'createdAt', now) ;
-      setRemark('details', 'createdAtTimezone', tz.toString()) 
+    if (remark.details.createdAt === undefined || (remark.details.createdAt !== undefined && remark.details.createdAt === '')) {
+      setRemark('details', 'createdAt', now);
+      setRemark('details', 'createdAtTimezone', tz.toString())
       setRemark('details', 'createdAtGMT', timeToGet);
     } else {
-      if(remark.details.createdAtTimezone === undefined || (remark.details.createdAtTimezone !== undefined && remark.details.createdAtTimezone === '')){
-        setRemark('details', 'createdAtTimezone', tz.toString()) 
+      if (remark.details.createdAtTimezone === undefined || (remark.details.createdAtTimezone !== undefined && remark.details.createdAtTimezone === '')) {
+        setRemark('details', 'createdAtTimezone', tz.toString())
         setRemark('details', 'createdAtGMT', timeToGet);
       }
       setRemark('details', 'updatedAt', now);
-      setRemark('details', 'updatedAtTimezone', tz.toString()) 
+      setRemark('details', 'updatedAtTimezone', tz.toString())
       setRemark('details', 'updatedAtGMT', timeToGet);
     }
 
@@ -555,14 +558,14 @@ const Form: Component<{
     window.scrollTo({ top: 0, behavior: "smooth" });
     component.scrollTo({ top: 0, behavior: "smooth" });
   }
-  
+
   const showListError = (event: MouseEvent) => {
     let filteredError = [];
     let filteredWarning = [];
 
     reference.details.forEach((element, i) => {
       let enableFalse = referenceEnableFalse().findIndex(obj => obj.parentIndex.toString() === element.index.slice(0, -2).toString());
-      if (enableFalse == -1){
+      if (enableFalse == -1) {
         if (element.type > 4 && (element.enable) && element.validationState == 2) {
           let sidebarIndex = element.level > 1 ? element.index.slice(0, -1) : element.index.slice(0, -2)
           filteredError.push({ label: element.label, message: element.validationMessage, sideIndex: sidebarIndex, dataKey: element.dataKey })
@@ -604,7 +607,7 @@ const Form: Component<{
 
     reference.details.forEach((element, i) => {
       let enableFalse = referenceEnableFalse().findIndex(obj => obj.parentIndex.toString() === element.index.slice(0, -2).toString());
-      if (enableFalse == -1){
+      if (enableFalse == -1) {
         if ((element.type > 4) && (element.enable) && ((element.answer === undefined || element.answer === '')
           || ((element.type == 21) && element.answer.length == 1) || ((element.type == 22) && element.answer.length == 1))
           && !(JSON.parse(JSON.stringify(element.index[element.index.length - 2])) == 0 && element.level > 1)) {
@@ -680,7 +683,7 @@ const Form: Component<{
     // activeCaptcha.innerHTML = `${theCaptcha}`;
   }
 
-  const revalidateError = (event: MouseEvent) => {    
+  const revalidateError = (event: MouseEvent) => {
     setLoader({});
     setTimeout(() => setEnableFalse(), 50);
     // revalidateQ();
@@ -689,12 +692,12 @@ const Form: Component<{
     }
   }
 
-  const revalidateQ = () => {    
-    reference.details.forEach((object, ind) => { 
+  const revalidateQ = () => {
+    reference.details.forEach((object, ind) => {
 
       let updatedRef = JSON.parse(JSON.stringify(object));
       let enableFalse = referenceEnableFalse().findIndex(obj => obj.parentIndex.toString() === updatedRef.index.slice(0, -2).toString());
-      if (enableFalse == -1){
+      if (enableFalse == -1) {
         if ((updatedRef.enable) && updatedRef.required !== undefined && (updatedRef.required)) {
           let editedDataKey = updatedRef.dataKey.split('@');
           let newEdited = editedDataKey[0].split('#');
@@ -709,14 +712,14 @@ const Form: Component<{
               typeAnswer === 'object' && !isNaN(updatedRef.answer) ||
               typeAnswer === 'number' && isNaN(updatedRef.answer) ||
               JSON.stringify(updatedRef.answer) === '[]') {
-                updatedRef.validationMessage.push(locale.details.language[0].validationRequired);
-                updatedRef.validationState = 2;
-              }
+              updatedRef.validationMessage.push(locale.details.language[0].validationRequired);
+              updatedRef.validationState = 2;
+            }
             setReference('details', ind, updatedRef);
           }
         }
-      // }else{
-      //   setReference('details', ind, 'enable', false);
+        // }else{
+        //   setReference('details', ind, 'enable', false);
       }
 
     })
@@ -727,7 +730,7 @@ const Form: Component<{
     checkDocState();
     if (docState() === 'E') {
       toastInfo(locale.details.language[0].submitInvalid, 3000, "", "bg-pink-600/80");
-    } else {      
+    } else {
       setLoader({});
       setTimeout(() => setEnableFalse(), 50);
       revalidateQ();
@@ -829,67 +832,67 @@ const Form: Component<{
             <div class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full">
 
               <div class="bg-white px-4 pt-5 pb-4 sm:p-6">
-                  <div class="sm:flex sm:items-start mt-6">
-                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full text-yellow-400 bg-yellow-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                      </svg>
-                    </div>
-                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                      <h3 class="text-lg leading-6 font-medium text-gray-900" id="titleModalError">List Remark</h3>
-                      <div class="relative overflow-auto">
-                        <div class="shadow-sm overflow-auto my-6">
-                          <table class="border-collapse table-fixed w-full text-sm">
-                            <thead class="text-sm font-semibold text-gray-600 bg-gray-50">
-                              <tr>
-                                <th class="p-2 whitespace-nowrap font-semibold text-left w-1/12">No</th>
-                                <th class="p-2 whitespace-nowrap font-semibold text-left w-5/12">Field</th>
-                                <th class="p-2 whitespace-nowrap font-semibold text-left w-1/12"></th>
-                              </tr>
-                            </thead>
-                            <tbody class="text-sm divide-y divide-gray-100 ">
-                              <For each={listRemarkPage()}>
-                                {(item, index) => (
-                                  <tr class="text-gray-600">
-                                    <td class="border-b border-slate-100 p-2 align-top">
-                                      <div class="text-left text-sm font-light">&nbsp;&nbsp;{Number(index()) + 1 + (currentRemarkPage() * 3 - 3)}</div>
-                                    </td>
-                                    <td class="border-b border-slate-100 p-2 align-top">
-                                      <div class="text-left text-sm font-light" innerHTML={item['label']} />
-                                    </td>
-                                    <td class="border-b border-slate-100 align-top p-2">
-                                      <button class="bg-transparent text-gray-500 rounded-full focus:outline-none h-5 w-5 hover:bg-gray-400 hover:text-white flex justify-center items-center"
-                                        onClick={(e) => { lookInto(e, item.sideIndex, item.dataKey) }}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" stroke-width="2">
-                                          <path fill-rule="evenodd" d="M6.672 1.911a1 1 0 10-1.932.518l.259.966a1 1 0 001.932-.518l-.26-.966zM2.429 4.74a1 1 0 10-.517 1.932l.966.259a1 1 0 00.517-1.932l-.966-.26zm8.814-.569a1 1 0 00-1.415-1.414l-.707.707a1 1 0 101.415 1.415l.707-.708zm-7.071 7.072l.707-.707A1 1 0 003.465 9.12l-.708.707a1 1 0 001.415 1.415zm3.2-5.171a1 1 0 00-1.3 1.3l4 10a1 1 0 001.823.075l1.38-2.759 3.018 3.02a1 1 0 001.414-1.415l-3.019-3.02 2.76-1.379a1 1 0 00-.076-1.822l-10-4z" clip-rule="evenodd" />
-                                        </svg>
-                                      </button>
-                                    </td>
-                                  </tr>
-                                )}
-                              </For>
-                            </tbody>
-                          </table>
-                        </div>
-                        <div class="flex justify-start items-center text-center font-light px-3 pb-3">
-                          <button type="button" class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base 
-                                    font-light text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-                            onClick={e => showListPage(listRemark().length, 3, currentRemarkPage() - 1, listRemark(), 4)}
-                            disabled={(currentRemarkPage() == 1) ? true : false}
-                          >Prev</button>
-
-                          <div class="text-center px-4 text-xs">{currentRemarkPage}</div>
-
-                          <button type="button" class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base 
-                                    font-light text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-                            onClick={e => showListPage(listRemark().length, 3, currentRemarkPage() + 1, listRemark(), 4)}
-                            disabled={(currentRemarkPage() == maxRemarkPage()) ? true : false}
-                          >Next</button>
-                        </div>
-                      </div>
-
-                    </div>
+                <div class="sm:flex sm:items-start mt-6">
+                  <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full text-yellow-400 bg-yellow-100 sm:mx-0 sm:h-10 sm:w-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                    </svg>
                   </div>
+                  <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900" id="titleModalError">List Remark</h3>
+                    <div class="relative overflow-auto">
+                      <div class="shadow-sm overflow-auto my-6">
+                        <table class="border-collapse table-fixed w-full text-sm">
+                          <thead class="text-sm font-semibold text-gray-600 bg-gray-50">
+                            <tr>
+                              <th class="p-2 whitespace-nowrap font-semibold text-left w-1/12">No</th>
+                              <th class="p-2 whitespace-nowrap font-semibold text-left w-5/12">Field</th>
+                              <th class="p-2 whitespace-nowrap font-semibold text-left w-1/12"></th>
+                            </tr>
+                          </thead>
+                          <tbody class="text-sm divide-y divide-gray-100 ">
+                            <For each={listRemarkPage()}>
+                              {(item, index) => (
+                                <tr class="text-gray-600">
+                                  <td class="border-b border-slate-100 p-2 align-top">
+                                    <div class="text-left text-sm font-light">&nbsp;&nbsp;{Number(index()) + 1 + (currentRemarkPage() * 3 - 3)}</div>
+                                  </td>
+                                  <td class="border-b border-slate-100 p-2 align-top">
+                                    <div class="text-left text-sm font-light" innerHTML={item['label']} />
+                                  </td>
+                                  <td class="border-b border-slate-100 align-top p-2">
+                                    <button class="bg-transparent text-gray-500 rounded-full focus:outline-none h-5 w-5 hover:bg-gray-400 hover:text-white flex justify-center items-center"
+                                      onClick={(e) => { lookInto(e, item.sideIndex, item.dataKey) }}>
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" stroke-width="2">
+                                        <path fill-rule="evenodd" d="M6.672 1.911a1 1 0 10-1.932.518l.259.966a1 1 0 001.932-.518l-.26-.966zM2.429 4.74a1 1 0 10-.517 1.932l.966.259a1 1 0 00.517-1.932l-.966-.26zm8.814-.569a1 1 0 00-1.415-1.414l-.707.707a1 1 0 101.415 1.415l.707-.708zm-7.071 7.072l.707-.707A1 1 0 003.465 9.12l-.708.707a1 1 0 001.415 1.415zm3.2-5.171a1 1 0 00-1.3 1.3l4 10a1 1 0 001.823.075l1.38-2.759 3.018 3.02a1 1 0 001.414-1.415l-3.019-3.02 2.76-1.379a1 1 0 00-.076-1.822l-10-4z" clip-rule="evenodd" />
+                                      </svg>
+                                    </button>
+                                  </td>
+                                </tr>
+                              )}
+                            </For>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="flex justify-start items-center text-center font-light px-3 pb-3">
+                        <button type="button" class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base 
+                                    font-light text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+                          onClick={e => showListPage(listRemark().length, 3, currentRemarkPage() - 1, listRemark(), 4)}
+                          disabled={(currentRemarkPage() == 1) ? true : false}
+                        >Prev</button>
+
+                        <div class="text-center px-4 text-xs">{currentRemarkPage}</div>
+
+                        <button type="button" class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base 
+                                    font-light text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+                          onClick={e => showListPage(listRemark().length, 3, currentRemarkPage() + 1, listRemark(), 4)}
+                          disabled={(currentRemarkPage() == maxRemarkPage()) ? true : false}
+                        >Next</button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
               </div>
 
               <div class="bg-white px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
@@ -912,67 +915,67 @@ const Form: Component<{
             <div class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full">
 
               <div class="bg-white px-4 pt-5 pb-4 sm:p-6">
-                  <div class="sm:flex sm:items-start mt-6">
-                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-gray-200 sm:mx-0 sm:h-10 sm:w-10 text-gray-500">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                      <h3 class="text-lg leading-6 font-medium text-gray-900" id="titleModalError">List Blank</h3>
-                      <div class="relative overflow-auto">
-                        <div class="shadow-sm overflow-auto my-6">
-                          <table class="border-collapse table-fixed w-full text-sm">
-                            <thead class="text-sm font-semibold text-gray-600 bg-gray-50">
-                              <tr>
-                                <th class="p-2 whitespace-nowrap font-semibold text-left w-1/12">No</th>
-                                <th class="p-2 whitespace-nowrap font-semibold text-left w-5/12">Field</th>
-                                <th class="p-2 whitespace-nowrap font-semibold text-left w-1/12"></th>
-                              </tr>
-                            </thead>
-                            <tbody class="text-sm divide-y divide-gray-100 ">
-                              <For each={listBlankPage()}>
-                                {(item, index) => (
-                                  <tr class="text-gray-600">
-                                    <td class="border-b border-slate-100 p-2 align-top">
-                                      <div class="text-left text-sm font-light">&nbsp;&nbsp;{Number(index()) + 1 + (currentBlankPage() * 3 - 3)}</div>
-                                    </td>
-                                    <td class="border-b border-slate-100 p-2 align-top">
-                                      <div class="text-left text-sm font-light" innerHTML={item['label']} />
-                                    </td>
-                                    <td class="border-b border-slate-100 align-top p-2">
-                                      <button class="bg-transparent text-gray-500 rounded-full focus:outline-none h-5 w-5 hover:bg-gray-400 hover:text-white flex justify-center items-center"
-                                        onClick={(e) => { lookInto(e, item.sideIndex, item.dataKey) }}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" stroke-width="2">
-                                          <path fill-rule="evenodd" d="M6.672 1.911a1 1 0 10-1.932.518l.259.966a1 1 0 001.932-.518l-.26-.966zM2.429 4.74a1 1 0 10-.517 1.932l.966.259a1 1 0 00.517-1.932l-.966-.26zm8.814-.569a1 1 0 00-1.415-1.414l-.707.707a1 1 0 101.415 1.415l.707-.708zm-7.071 7.072l.707-.707A1 1 0 003.465 9.12l-.708.707a1 1 0 001.415 1.415zm3.2-5.171a1 1 0 00-1.3 1.3l4 10a1 1 0 001.823.075l1.38-2.759 3.018 3.02a1 1 0 001.414-1.415l-3.019-3.02 2.76-1.379a1 1 0 00-.076-1.822l-10-4z" clip-rule="evenodd" />
-                                        </svg>
-                                      </button>
-                                    </td>
-                                  </tr>
-                                )}
-                              </For>
-                            </tbody>
-                          </table>
-                        </div>
-                        <div class="flex justify-start items-center text-center font-light px-3 pb-3">
-                          <button type="button" class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base 
-                                    font-light text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-                            onClick={e => showListPage(listBlank().length, 3, currentBlankPage() - 1, listBlank(), 3)}
-                            disabled={(currentBlankPage() == 1) ? true : false}
-                          >Prev</button>
-
-                          <div class="text-center px-4 text-xs">{currentBlankPage}</div>
-
-                          <button type="button" class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base 
-                                    font-light text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-                            onClick={e => showListPage(listBlank().length, 3, currentBlankPage() + 1, listBlank(), 3)}
-                            disabled={(currentBlankPage() == maxBlankPage()) ? true : false}
-                          >Next</button>
-                        </div>
-                      </div>
-
-                    </div>
+                <div class="sm:flex sm:items-start mt-6">
+                  <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-gray-200 sm:mx-0 sm:h-10 sm:w-10 text-gray-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                   </div>
+                  <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900" id="titleModalError">List Blank</h3>
+                    <div class="relative overflow-auto">
+                      <div class="shadow-sm overflow-auto my-6">
+                        <table class="border-collapse table-fixed w-full text-sm">
+                          <thead class="text-sm font-semibold text-gray-600 bg-gray-50">
+                            <tr>
+                              <th class="p-2 whitespace-nowrap font-semibold text-left w-1/12">No</th>
+                              <th class="p-2 whitespace-nowrap font-semibold text-left w-5/12">Field</th>
+                              <th class="p-2 whitespace-nowrap font-semibold text-left w-1/12"></th>
+                            </tr>
+                          </thead>
+                          <tbody class="text-sm divide-y divide-gray-100 ">
+                            <For each={listBlankPage()}>
+                              {(item, index) => (
+                                <tr class="text-gray-600">
+                                  <td class="border-b border-slate-100 p-2 align-top">
+                                    <div class="text-left text-sm font-light">&nbsp;&nbsp;{Number(index()) + 1 + (currentBlankPage() * 3 - 3)}</div>
+                                  </td>
+                                  <td class="border-b border-slate-100 p-2 align-top">
+                                    <div class="text-left text-sm font-light" innerHTML={item['label']} />
+                                  </td>
+                                  <td class="border-b border-slate-100 align-top p-2">
+                                    <button class="bg-transparent text-gray-500 rounded-full focus:outline-none h-5 w-5 hover:bg-gray-400 hover:text-white flex justify-center items-center"
+                                      onClick={(e) => { lookInto(e, item.sideIndex, item.dataKey) }}>
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" stroke-width="2">
+                                        <path fill-rule="evenodd" d="M6.672 1.911a1 1 0 10-1.932.518l.259.966a1 1 0 001.932-.518l-.26-.966zM2.429 4.74a1 1 0 10-.517 1.932l.966.259a1 1 0 00.517-1.932l-.966-.26zm8.814-.569a1 1 0 00-1.415-1.414l-.707.707a1 1 0 101.415 1.415l.707-.708zm-7.071 7.072l.707-.707A1 1 0 003.465 9.12l-.708.707a1 1 0 001.415 1.415zm3.2-5.171a1 1 0 00-1.3 1.3l4 10a1 1 0 001.823.075l1.38-2.759 3.018 3.02a1 1 0 001.414-1.415l-3.019-3.02 2.76-1.379a1 1 0 00-.076-1.822l-10-4z" clip-rule="evenodd" />
+                                      </svg>
+                                    </button>
+                                  </td>
+                                </tr>
+                              )}
+                            </For>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="flex justify-start items-center text-center font-light px-3 pb-3">
+                        <button type="button" class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base 
+                                    font-light text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+                          onClick={e => showListPage(listBlank().length, 3, currentBlankPage() - 1, listBlank(), 3)}
+                          disabled={(currentBlankPage() == 1) ? true : false}
+                        >Prev</button>
+
+                        <div class="text-center px-4 text-xs">{currentBlankPage}</div>
+
+                        <button type="button" class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base 
+                                    font-light text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+                          onClick={e => showListPage(listBlank().length, 3, currentBlankPage() + 1, listBlank(), 3)}
+                          disabled={(currentBlankPage() == maxBlankPage()) ? true : false}
+                        >Next</button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
               </div>
 
               <div class="bg-white px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
@@ -1168,7 +1171,7 @@ const Form: Component<{
                 sidebar-span absolute inset-y-0 left-0 transform -translate-x-full transition-transform duration-500 ease-in-out md:relative md:translate-x-0 z-10">
                 <div class=" text-gray-400 tracking-wider flex justify-between ">
                   <div class="text-lg block p-4 text-gray-600 dark:text-white font-bold sm:text-xl" innerHTML={props.template.details.acronym
-                    + '<div class="text-xs font-light text-gray-600 ">🚀'+gearVersion+' 📋' + templateVersion + ' ✔️' + validationVersion + ' </div>  '} />
+                    + '<div class="text-xs font-light text-gray-600 ">🚀' + gearVersion + ' 📋' + templateVersion + ' ✔️' + validationVersion + ' </div>  '} />
 
                   <button type="button"
                     class="md:hidden p-2 mobile-menu-button " onClick={sidebarCollapse}>
@@ -1344,7 +1347,7 @@ const Form: Component<{
                       <div class="h-20 text-5xl text-center sm:flex flex-col flex-coltext-white font-medium xs:h-auto xs:square xl:border-b " onClick={showListBlank}>
                         {summary.blank}
                         <div class="font-light text-xs">{locale.details.language[0].summaryBlank}</div>
-                      </div>                      
+                      </div>
                       <div class="h-20 text-5xl text-center sm:flex flex-col flex-coltext-white font-medium xs:h-auto xs:square xl:border-b " onClick={revalidateError}>
                         {summary.error}
                         <div class="font-light text-xs">{locale.details.language[0].summaryError}</div>

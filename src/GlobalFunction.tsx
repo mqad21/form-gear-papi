@@ -21,6 +21,8 @@ import { getConfig } from './Form';
 import { template, setTemplate, Questionnaire } from './stores/TemplateStore';
 
 import Toastify from 'toastify-js'
+import { LocalStorageKey } from './Constant';
+import { ControlType } from './FormType';
 
 export const default_eval_enable = true
 export const default_eval_validation = true
@@ -1352,4 +1354,243 @@ export function reloadDataFromHistory(){
             width: "400px"
         }
     }).showToast();
+}
+
+export const transformToPapi = (template: TemplateDetail, validation: ValidationDetail) => {
+    const toggleInputs = []
+    const radioInputs = []
+
+    template.components[0].forEach((components: any, index1) => {
+        components.components[0].forEach((component: Component, index2) => {
+            const input = {
+                index: [index1, index2],
+                component
+            }
+            switch (component.type) {
+                case ControlType.ToggleInput:
+                    toggleInputs.push(input)
+                    break;
+                case ControlType.RadioInput:
+                    radioInputs.push(input)
+            }
+        })
+    })
+
+    const transformInput = (sourceInputs: any[], targetType: ControlType, validationGenerator: (component) => any[]) => {
+        sourceInputs.forEach((input: any) => {
+            const validations = validationGenerator(input.component)
+            validation.testFunctions.push({
+                dataKey: input.component.dataKey,
+                validations,
+                componentValidation: [input.component.dataKey]
+            })
+        })
+    }
+
+    transformInput(radioInputs, ControlType.TextInput, (component: any) => {
+        const { messageValue, testValue } = getOptionValue(component.options)
+        return [
+            {
+                message: `Value must be ${messageValue}`,
+                test: `let val = getValue('${component.dataKey}'); console.log('val',val[0]); if(val[0] != undefined) ${testValue}.includes(val[0].value) == false;`,
+                type: 2
+            }
+        ]
+    })
+
+    return [template, validation]
+}
+
+export const getOptionValue = (options: any[]) => {
+    options = options.map(option => option.value)
+    const messageValue = joinWords(options, ",", "or")
+    const testValue = `[${options.map(it => `'${it}',${it}`).join(",")}]`
+    return { messageValue, testValue }
+}
+
+export const joinWords = (words: any[], delimiter: String, conjunction: String) => {
+    const last = words.pop();
+    return `${words.join(delimiter + ' ')} ${conjunction} ${last}`;
+}
+
+export const cleanLabel = (label: String) => {
+    const splitted = label.split(".")
+    splitted.shift()
+    return splitted.join(".")
+}
+
+export const getQuerySelector = (elem) => {
+    var element = elem;
+    if (element.id) {
+        return `#${element.id}`;
+    }
+
+    const path = [];
+    let currentElement = element;
+    let error = false;
+
+    while (currentElement.tagName !== 'BODY') {
+        const parent = currentElement.parentElement;
+
+        if (!parent) {
+            error = true;
+            break;
+        }
+
+        const childTagCount = {};
+        let nthChildFound = false;
+
+        for (const child of parent.children) {
+            const tag = child.tagName;
+            const count = childTagCount[tag] || 0;
+            childTagCount[tag] = count + 1;
+
+            if (child === currentElement) {
+                nthChildFound = true;
+                break;
+            }
+        }
+
+        if (!nthChildFound) {
+            error = true;
+            break;
+        }
+
+        const count = childTagCount[currentElement.tagName];
+        const tag = currentElement.tagName.toLowerCase();
+        const selector = `${tag}:nth-of-type(${count})`;
+
+        path.push(selector);
+        currentElement = parent;
+    }
+
+    if (error) {
+        console.error(element);
+        throw new Error('Unable to create query selector');
+    }
+
+    path.push('body');
+
+    const querySelector = path.reverse().join(' > ');
+
+    return querySelector;
+}
+
+export const scrollCenterInput = (elem: HTMLElement) => {
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        var component = document.querySelector(".mobile-component-div");
+    } else {
+        var component = document.querySelector(".component-div");
+    }
+
+    let center = component.clientHeight / 2;
+    let top = elem.offsetTop
+
+    if (top > center) {
+        component.scrollTo(0, top - center);
+    }
+}
+
+export const saveCurrentFocus = () => {
+    const lastFocusElem = document.querySelector(":focus")
+    if (lastFocusElem) {
+        const querySelector = getQuerySelector(lastFocusElem)
+        localStorage.setItem(LocalStorageKey.LAST_SELECTOR, querySelector)
+    }
+}
+
+export const focusFirstInput = () => {
+    const elem = document.querySelector("input:not(.hidden-input):not(:disabled),textarea:not(.hidden-input):not(:disabled)") as HTMLElement
+    elem?.focus()
+    return elem
+}
+
+export const refocusLastSelector = () => {
+    const lastSelector = localStorage.getItem(LocalStorageKey.LAST_SELECTOR)
+    const lastElement = document.querySelector(lastSelector) as HTMLElement
+    if (lastElement) {
+        lastElement.focus()
+    } else {
+        focusFirstInput()
+    }
+}
+
+export const getHasSideCompEnable = (dataKey: String) => {
+    return JSON.parse(JSON.stringify(sidebar.details.filter(obj => {
+        if (obj.componentEnable !== undefined) {
+            const cekInsideIndex = obj.componentEnable.findIndex(objChild => {
+                let newDataKey = '';
+                let tmpDataKey = objChild.split('@');
+                let splitDataKey = tmpDataKey[0].split('#');
+                let splLength = splitDataKey.length;
+                switch (tmpDataKey[1]) {
+                    case '$ROW$': {
+                        newDataKey = tmpDataKey[0];
+                        break;
+                    }
+                    case '$ROW1$': {
+                        if (splLength > 2) splitDataKey.length = splLength - 1;
+                        newDataKey = splitDataKey.join('#');
+                        break;
+                    }
+                    case '$ROW2$': {
+                        if (splLength > 3) splitDataKey.length = splLength - 2;
+                        newDataKey = splitDataKey.join('#');
+                        break;
+                    }
+                    default: {
+                        newDataKey = objChild;
+                        break;
+                    }
+                }
+                return (newDataKey === dataKey) ? true : false;
+            });
+            return (cekInsideIndex == -1) ? false : true;
+        }
+    })));
+}
+
+export const getHasComponentEnable = (dataKey: String) => {
+    return JSON.parse(JSON.stringify(reference.details.filter(obj => {
+        if (obj.componentEnable !== undefined) {
+            const cekInsideIndex = obj.componentEnable.findIndex(objChild => {
+                let newDataKey = '';
+                let tmpDataKey = objChild.split('@');
+                let splitDataKey = tmpDataKey[0].split('#');
+                let splLength = splitDataKey.length;
+                switch (tmpDataKey[1]) {
+                    case '$ROW$': {
+                        newDataKey = tmpDataKey[0];
+                        break;
+                    }
+                    case '$ROW1$': {
+                        if (splLength > 2) splitDataKey.length = splLength - 1;
+                        newDataKey = splitDataKey.join('#');
+                        break;
+                    }
+                    case '$ROW2$': {
+                        if (splLength > 3) splitDataKey.length = splLength - 2;
+                        newDataKey = splitDataKey.join('#');
+                        break;
+                    }
+                    default: {
+                        newDataKey = objChild;
+                        break;
+                    }
+                }
+                return (newDataKey === dataKey) ? true : false;
+            });
+            return (cekInsideIndex == -1) ? false : true;
+        }
+    })));
+}
+
+export const hasEnable = (dataKey: String) => {
+    return getHasComponentEnable(dataKey).length > 0 || getHasSideCompEnable(dataKey).length > 0
+}
+
+export const getUpdatedRef = (dataKey: String) => {
+    const refPosition = reference.details.findIndex(obj => obj.dataKey === dataKey);
+    const updatedRef = JSON.parse(JSON.stringify(reference.details[refPosition]));
+    return { refPosition, updatedRef }
 }

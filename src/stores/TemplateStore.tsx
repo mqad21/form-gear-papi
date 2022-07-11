@@ -6,7 +6,7 @@ import { Language } from "./LocaleStore";
 export type Component = {
     label: string
     dataKey: string
-    type: string
+    type: Number
     currency?: string
     source?: string
     path?: string
@@ -28,7 +28,7 @@ export type Component = {
     disableInitial?: boolean
 }
 
-export type Detail = {
+export type TemplateDetail = {
     description: string
     dataKey: string
     acronym: string
@@ -40,7 +40,7 @@ export type Detail = {
   
 export interface Questionnaire{
     status: number
-    details: Detail
+    details: TemplateDetail
 }
 
 export const [template, setTemplate] = createStore<Questionnaire>({
