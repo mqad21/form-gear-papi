@@ -1,0 +1,64 @@
+{
+   "description":"CBP",
+   "dataKey":"bi-cbp-2022",
+   "predata":[
+      {
+        "dataKey": "provinsi",
+        "answer": [
+            {
+                "value": "61",
+                "label": "[61] KALIMANTAN BARAT"                    
+            }
+         ]
+      },
+      {
+         "dataKey":"kabupaten",
+         "answer": [
+            {
+                  "value": "6109",
+                  "label": "[09] SEKADAU"                    
+            }
+         ]
+      },
+      {
+         "dataKey":"kecamatan",
+         "answer": [
+            {
+                  "value": "6109010",
+                  "label": "[010] SEKADAU HILIR"                 
+            }
+         ]
+      },
+      {
+         "dataKey":"desa",
+         "answer": [
+            {
+                  "value": "6109010001",
+                  "label": "[001] MUNGGUK"                 
+            }
+         ]
+      },
+      {
+         "dataKey": "klasifikasi_desa",
+         "answer": [
+             {
+                 "value": "1",
+                 "label": "1.  -  Perkotaan"
+             }
+         ]
+      },
+      {
+         "dataKey": "nkwt",
+         "answer": "6109010001001"
+      },
+      {
+         "dataKey": "no_ruta",
+         "answer": "1"
+      },
+      {
+         "dataKey": "nama_krt",
+         "answer": "Setyadi"
+      }
+   ]
+}
+ 

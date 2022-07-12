@@ -24,6 +24,7 @@ import semverCompare from "semver-compare";
 import { toastInfo } from "./FormInput";
 
 import { initReferenceMap, transformToPapi } from "./GlobalFunction";
+import { ClientMode } from "./Constant";
 
 export const gearVersion = '1.0.2';
 export let templateVersion = '0.0.0';

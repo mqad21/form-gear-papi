@@ -1,7 +1,7 @@
 import { FormComponentBase } from "../FormType"
 import { createSignal, Show, For, Switch, Match } from 'solid-js'
 import { ClientMode } from "../Constant"
-import { handleInputFocus } from "../Event"
+import { handleInputFocus, handleInputKeyDown } from "../Event"
 
 const TextInput: FormComponentBase = props => {
   const config = props.config
@@ -77,6 +77,7 @@ const TextInput: FormComponentBase = props => {
               onChange={(e) => {
                 props.onValueChange(e.currentTarget.value);
               }}
+              onKeyDown={(e) => handleInputKeyDown(e, props)}
               onFocus={(e) => handleInputFocus(e, props)}
               maxlength={props.component.lengthInput[0].maxlength !== undefined ? props.component.lengthInput[0].maxlength : ''}
               minlength={props.component.lengthInput[0].minlength !== undefined ? props.component.lengthInput[0].minlength : ''}

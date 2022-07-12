@@ -2,23 +2,41 @@ import { ClientMode } from "./Constant";
 import { hasEnable, saveCurrentFocus, scrollCenterInput } from "./GlobalFunction";
 
 export const handleInputFocus = (e, props) => {
-    const elem = e.target
-    saveCurrentFocus()
-    scrollCenterInput(elem)
-    console.log("props", props)
+    if (props.config.clientMode == ClientMode.PAPI) {
+        const elem = e.target
+        saveCurrentFocus()
+        scrollCenterInput(elem)
+    }
 }
 
 export const handleInputKeyDown = (e, props) => {
-    const elem = e.target
     handleTabPress(e, props)
+    handleEnterPress(e, props)
 }
 
 export const handleTabPress = (e, props) => {
-    "use strict";
     if (e.keyCode == 9) {
         if (props.config.clientMode == ClientMode.PAPI && hasEnable(props.component.dataKey)) {
-            e.preventDefault()   
+            e.preventDefault()
             e.target.blur()
-        }   
+        }
+    }
+}
+
+export const handleEnterPress = (e, props) => {
+    if (e.keyCode == 13) {
+        if (e.shiftKey) {
+            e.stopPropagation()
+            return;
+        }
+
+        e.preventDefault();
+        const inputs =
+            Array.prototype.slice.call(document.querySelectorAll("input,textarea,select"))
+        const index =
+            (inputs.indexOf(document.activeElement) + 1) % inputs.length
+        const input = inputs[index]
+        input.focus()
+        input.select()
     }
 }

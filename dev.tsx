@@ -24,12 +24,12 @@ var principalGear = null;
 var referenceGear = null;
 
 //JSON Object defined template
-let reference = await fetch("../src/data/splf/reference.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
-let template = await fetch("../src/data/splf/template.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
-let preset = await fetch("../src/data/splf/preset.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
-let response = await fetch("../src/data/response.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
-let validation = await fetch("../src/data/splf/validation.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
-let remark = await fetch("../src/data/remark.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
+let reference = await fetch("../src/data/reference.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
+let template = await fetch("../src/data/bi/template.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
+let preset = await fetch("../src/data/bi/preset.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
+let response = await fetch("../src/data/bi/response.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
+let validation = await fetch("../src/data/bi/validation.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
+let remark = await fetch("../src/data/bi/remark.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
 
 //function to open camera on mobile  CAPI
 function openCamera() {

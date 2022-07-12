@@ -1,0 +1,1233 @@
+{
+    "description":"Validasi ST2023 GB-UTP",
+    "dataKey":"ST2023-L1-L2.UTP_V",
+    "version":"0.0.4",
+    "testFunctions":[
+        {
+            "dataKey":"l1_r510",
+            "componentValidation":["l1_r510", "var_l1_r510", "l1_r509", "l1_r503"],
+            "validations": [
+                {
+                    "test":"let kk = getValue('l1_r503'); let krt = getValue('var_l1_r510'); let filter = getValue('l1_r509'); if (filter.length > 0 && filter !== undefined && filter !== '' && kk.length > 0 && krt.length > 0) { filter[0].value < 3 && kk == krt }",
+                    "message":"Nama KRT tidak boleh dengan nama KK",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r112",
+            "componentValidation":["l2_r112"],
+            "validations": [
+                {
+                    "test":"getValue('l2_r112').length == 1 && getValue('l2_r112') !== '-'",
+                    "message":"Jika no telpon terisi 1 digit, isikan tanda setrip (-)",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r113",
+            "componentValidation":["l2_r113"],
+            "validations": [
+                {
+                    "test":"getValue('l2_r113').length == 1 && getValue('l2_r113') !== '-'",
+                    "message":"Jika email terisi 1 digit, isikan tanda setrip (-)",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r203",
+            "componentValidation":["l2_r203", "l2_r201"],
+            "validations": [
+                {
+                    "test":"getValue('l2_r203').length !== Number(getValue('l2_r201'))+1 ",
+                    "message":"Jumlah ART pada rincian R203 tidak sama dengan isian R201",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r204",
+            "componentValidation":["l2_r204","l2_r109","l2_r203_nama","var_r204","l2_r202"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let val204 = getValue('l2_r204#'+row0); if(val204.length > 0) ((getValue('l2_r109').toUpperCase()).trim() == (getValue('l2_r203_nama#'+row0).toUpperCase()).trim() && val204[0].value !== '1') ",
+                    "message":"R204 tidak sama dengan 1, tetapi R203 = R109",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let val204 = getValue('l2_r204#'+row0); val204.length == 0",
+                    "message":"Hubungan dengan KRT tidak boleh kosong",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let val204 = getValue('l2_r204#'+row0); if(val204.length > 0) (getValue('l2_r109').toUpperCase()).trim() !== (getValue('l2_r203_nama#'+row0).toUpperCase()).trim() && val204[0].value == '1'",
+                    "message":"R204 sama dengan 1, tetapi R203 tidak sama dengan R109",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let val204 = getValue('l2_r204#'+row0); if(val204.length > 0) getValue('l2_r202#'+row0) == 1 && val204[0].value !== '1'" ,
+                    "message":"R202 sama dengan 1, tetapi R204 tidak sama dengan 1",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let val204 = getValue('l2_r204#'+row0); if(val204.length > 0) getValue('l2_r202#'+row0) !== 1 && val204[0].value == '1'" ,
+                    "message":"R202 tidak sama dengan 1, tetapi R204 sama dengan 1",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r206",
+            "componentValidation":["l2_r206","l2_r204"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let val204 = getValue('l2_r204#'+row0); if(val204.length > 0) val204[0].value == '1' && getValue('l2_r206#'+row0) < 10 ",
+                    "message":"R206 < 10, tetapi R204 = 1",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r207",
+            "componentValidation":["l2_r207","l2_r206","var_r207"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let val207 = getValue('l2_r207#'+row0); if(val207.length > 0) { val207[0].value == '3' && getValue('l2_r206#'+row0) < 11 }",
+                    "message":"R207 = 3, tetapi R206 < 11",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let val207 = getValue('l2_r207#'+row0); if(val207.length > 0) { val207[0].value  == '4' && getValue('l2_r206#'+row0) < 14 }",
+                    "message":"R207 = 4, tetapi R206 < 14",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let val207 = getValue('l2_r207#'+row0); if(val207.length > 0) { val207[0].value == '5' && getValue('l2_r206#'+row0) < 17 }",
+                    "message":"R207 = 5, tetapi R206 < 17",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let val207 = getValue('l2_r207#'+row0); if(val207.length > 0) { val207[0].value == '6' && getValue('l2_r206#'+row0) < 18 }",
+                    "message":"R207 = 6, tetapi R206 < 18",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let val207 = getValue('l2_r207#'+row0); if(val207.length > 0) { val207[0].value == '7' && getValue('l2_r206#'+row0) < 20 }",
+                    "message":"R207 = 7, tetapi R206 < 20",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let val207 = getValue('l2_r207#'+row0); if(val207.length > 0) { val207[0].value == '8' && getValue('l2_r206#'+row0) < 21 }",
+                    "message":"R207 = 8, tetapi R206 < 21",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let val207 = getValue('l2_r207#'+row0); if(val207.length > 0) { val207[0].value == '9' && getValue('l2_r206#'+row0) < 22 }",
+                    "message":"R207 = 9, tetapi R206 < 22",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let val207 = getValue('l2_r207#'+row0); if(val207.length > 0) { val207[0].value == '10' && getValue('l2_r206#'+row0) < 23 }",
+                    "message":"R207 = 10, tetapi R206 < 23",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r303",
+            "componentValidation":["l2_r303"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let val303 = getValue('l2_r303#'+row0); val303.length == 1 && val303 !== '-'",
+                    "message":"Rincian R303 terisi 1 digit namun tidak terisi kode -",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let val303 = getValue('l2_r303#'+row0); val303.length > 1 && (val303 < 1100000000000000 || val303 > 9999999999999999)",
+                    "message":"Rincian R303 harus pada rentang 1100000000000000-9999999999999999",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r310",
+            "componentValidation":["l2_r310", "l2_r309"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); parseFloat(getValue('l2_r310#'+row1+'#'+row0)) > parseFloat(getValue('l2_r309#'+row1+'#'+row0))",
+                    "message":"Rincian R310 > R309",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r311",
+            "componentValidation":["l2_r311", "l2_r309"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); parseFloat(getValue('l2_r311#'+row1+'#'+row0)) > parseFloat(getValue('l2_r309#'+row1+'#'+row0))",
+                    "message":"Rincian R311 > R309",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r312",
+            "componentValidation":["l2_r312", "l2_r309"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); parseFloat(getValue('l2_r312#'+row1+'#'+row0)) > parseFloat(getValue('l2_r309#'+row1+'#'+row0))",
+                    "message":"Rincian R312 > R309",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r313",
+            "componentValidation":["l2_r313", "l2_r309"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); parseFloat(getValue('l2_r313#'+row1+'#'+row0)) > parseFloat(getValue('l2_r309#'+row1+'#'+row0))",
+                    "message":"Rincian R313 > R309",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r314",
+            "componentValidation":["l2_r314", "l2_r309"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); parseFloat(getValue('l2_r314#'+row1+'#'+row0)) > parseFloat(getValue('l2_r309#'+row1+'#'+row0))",
+                    "message":"Rincian R314 > R309",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r315",
+            "componentValidation":["l2_r315", "l2_r309"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); parseFloat(getValue('l2_r315#'+row1+'#'+row0)) > parseFloat(getValue('l2_r309#'+row1+'#'+row0))",
+                    "message":"Rincian R315 > R309",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r316",
+            "componentValidation":["l2_r316", "l2_r309"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); parseFloat(getValue('l2_r316#'+row1+'#'+row0)) > parseFloat(getValue('l2_r309#'+row1+'#'+row0))",
+                    "message":"Rincian R316 > R309",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r317",
+            "componentValidation":["l2_r317", "l2_r309"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); parseFloat(getValue('l2_r317#'+row1+'#'+row0)) > parseFloat(getValue('l2_r309#'+row1+'#'+row0))",
+                    "message":"Rincian R317 > R309",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r318",
+            "componentValidation":["l2_r318", "l2_r309"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); parseFloat(getValue('l2_r318#'+row1+'#'+row0)) > parseFloat(getValue('l2_r309#'+row1+'#'+row0))",
+                    "message":"Rincian R318 > R309",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r319",
+            "componentValidation":["l2_r319", "l2_r318", "l2_r317", "l2_r316","l2_r315","l2_r314","l2_r313","l2_r312","l2_r311","l2_r310","l2_r309"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); parseFloat(getValue('l2_r319#'+row1+'#'+row0)) > parseFloat(getValue('l2_r309#'+row1+'#'+row0))",
+                    "message":"Rincian R319 > R309",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); ( Number(getValue('l2_r310#'+row1+'#'+row0)) + Number(getValue('l2_r311#'+row1+'#'+row0)) + Number(getValue('l2_r312#'+row1+'#'+row0)) + Number(getValue('l2_r313#'+row1+'#'+row0)) + Number(getValue('l2_r314#'+row1+'#'+row0)) + Number(getValue('l2_r315#'+row1+'#'+row0)) + Number(getValue('l2_r316#'+row1+'#'+row0)) + Number(getValue('l2_r317#'+row1+'#'+row0)) + Number(getValue('l2_r318#'+row1+'#'+row0)) + Number(getValue('l2_r319#'+row1+'#'+row0)) ) !== Number(getValue('l2_r309#'+row1+'#'+row0))",
+                    "message":"Rincian R309 tidak sama dengan hasil penjumlahan (R310 + R311 + R312 + R313 + R314 + R315 + R316 + R317 + R318 + R319) ",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r401",
+            "componentValidation":["l2_r401","l2_r210"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let val210 = getValue('l2_r210#'+row0); let val401 = getValue('l2_r401#'+row0); let val501 = getValue('l2_r501#'+row0); let val601 = getValue('l2_r601#'+row0); var opsi = []; if (val210 !== '' && val210 !== undefined && val401 !== '' && val401 !== undefined && val401.length > 0) { opsi=val210.filter((a=>a.value == '1')); (opsi.length == 0 && val401[0].value == '1')}",
+                    "message":"R401=1, tetapi R210 tidak ada kode 1",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r407",
+            "componentValidation":["l2_r406","l2_r407"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); let val406 = getValue('l2_r406#'+row2+'#'+row1+'#'+row0); let val407 = getValue('l2_r407#'+row2+'#'+row1+'#'+row0); if(val406[0] !== undefined && val407[0] !== undefined && val406 !== '' && val407 !== ''){ (Number(val406[0].value) > 4 && Number(val407[0].value) == 2022)}",
+                    "message":"Jika R406 > 4 maka R407 harus 2022",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); let val406 = getValue('l2_r406#'+row2+'#'+row1+'#'+row0); let val407 = getValue('l2_r407#'+row2+'#'+row1+'#'+row0); if(val406[0] !== undefined && val407[0] !== undefined && val406 !== '' && val407 !== ''){ (Number(val406[0].value) < 5 && Number(val407[0].value) == 2021)}",
+                    "message":"Apa benar tanaman semusim ditanam sebelum Mei 2021?",
+                    "type":1
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); let val407 = getValue('l2_r407#'+row2+'#'+row1+'#'+row0); if(val407[0] !== undefined && val407 !== ''){ (Number(val407[0].value) == 2020)}",
+                    "message":"Apa benar tanaman semusim ditanam sebelum Mei 2021?",
+                    "type":1
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r407a",
+            "componentValidation":["l2_r407","l2_r407a"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); let val407 = getValue('l2_r407#'+row2+'#'+row1+'#'+row0); if(val407[0] !== undefined && val407 !== '') {let val407a = getValue('l2_r407a#'+row2+'#'+row1+'#'+row0); (val407a === undefined || val407a === '')}",
+                    "message":"Jika R407 isi, maka R407a tidak boleh blank",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r408",
+            "componentValidation":["l2_r407a", "l2_r408"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); let val407a = getValue('l2_r407a#'+row2+'#'+row1+'#'+row0); if(val407a[0] !== undefined && val407a !== '') {let val408 = getValue('l2_r408#'+row2+'#'+row1+'#'+row0); (val408 === undefined || val408 === '')}",
+                    "message":"Jika R407a isi, maka R408 tidak boleh blank",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r409",
+            "componentValidation":["l2_r408","l2_r409","l2_r407","l2_r406"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); let val408 = getValue('l2_r408#'+row2+'#'+row1+'#'+row0); let val409 = getValue('l2_r409#'+row2+'#'+row1+'#'+row0); let val407 = getValue('l2_r407#'+row2+'#'+row1+'#'+row0); if(val407[0] !== undefined && val408[0] !== undefined && val409[0] !== undefined && val407 !== '' && val408 !== '' && val409 !== ''){ (Number(val409[0].value) < Number(val407[0].value))}",
+                    "message":" R409 < R407, tetapi R408 ada isian",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); let val408 = getValue('l2_r408#'+row2+'#'+row1+'#'+row0); let val409 = getValue('l2_r409#'+row2+'#'+row1+'#'+row0); if(val408[0] !== undefined && val409[0] !== undefined && val408 !== '' && val409 !== ''){ (Number(val408[0].value) > 4 && Number(val409[0].value) !== 2021)}",
+                    "message":"Jika R409 tidak sama dengan 2021, tetapi R408 > 04 (April)",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); let val408 = getValue('l2_r408#'+row2+'#'+row1+'#'+row0); let val409 = getValue('l2_r409#'+row2+'#'+row1+'#'+row0); let val407 = getValue('l2_r407#'+row2+'#'+row1+'#'+row0); let val406 = getValue('l2_r406#'+row2+'#'+row1+'#'+row0); if(val406[0] !== undefined && val407[0] !== undefined && val408[0] !== undefined && val409[0] !== undefined && val406 !== '' && val407 !== '' && val408 !== '' && val409 !== ''){ (Number(val409[0].value) == Number(val407[0].value) && Number(val408[0].value) < Number(val406[0].value))}",
+                    "message":" R408 < R406, tetapi R409=R407",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); let val408 = getValue('l2_r408#'+row2+'#'+row1+'#'+row0); let val409 = getValue('l2_r409#'+row2+'#'+row1+'#'+row0); if(val408[0] !== undefined && val409[0] !== undefined && val408 !== '' && val409 !== ''){ (Number(val408[0].value) > 4 && Number(val409[0].value) == 2022)}",
+                    "message":"Jika R409 sama dengan 2022, tetapi R408 > 04 (April)",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); let val408 = getValue('l2_r408#'+row2+'#'+row1+'#'+row0); let val409 = getValue('l2_r409#'+row2+'#'+row1+'#'+row0); if(val408[0] !== undefined && val409[0] !== undefined && val408 !== '' && val409 !== ''){ (Number(val408[0].value) < 5 && Number(val409[0].value) == 2021)}",
+                    "message":"R408 < 05 (Mei), tetapi R409=2021",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r410",
+            "componentValidation":["l2_r407a","l2_r410"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); let val410 = getValue('l2_r410#'+row2+'#'+row1+'#'+row0); let val407 = getValue('l2_r407a#'+row2+'#'+row1+'#'+row0); if(val410 !== undefined && val410 !== '' && val407[0] !== undefined && val407 !== '') { val407[0].value == '2' && val410.length > 1 }",
+                    "message":"R407a berkode 0 tapi R410 tidak hanya terpilih kode 0 - Belum Panen",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); let val410 = getValue('l2_r410#'+row2+'#'+row1+'#'+row0); let val407 = getValue('l2_r407a#'+row2+'#'+row1+'#'+row0); if(val410 !== undefined && val410 !== '' && val407[0] !== undefined && val407 !== '') { let arr=[]; arr = val410.filter((a=>a.value == '4')); val407[0].value == '2' && arr.length == 0 }",
+                    "message":"R407a berkode 0 tapi R410 tidak ada yang terpilih kode 0 - Belum Panen",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r411",
+            "componentValidation":["l2_r406","l2_r411"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); let val406 = getValue('l2_r406#'+row2+'#'+row1+'#'+row0); if(val406[0] !== undefined && val406 !== '') {let val411 = getValue('l2_r411#'+row2+'#'+row1+'#'+row0); (val411 === undefined || val411 === '')}",
+                    "message":"Jika R406 isi, maka R411 tidak boleh blank",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r412",
+            "componentValidation":["l2_r412","l2_r411"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); let val412 = getValue('l2_r412#'+row2+'#'+row1+'#'+row0); if(val412 !== '') { Number(val412) == 0; }",
+                    "message":"Apakah benar R412 = 0? Kondisi 0 hanya untuk tanaman yang PUSO. Jika benar, maka tambahkan keterangan PUSO pada catatan",
+                    "type":1
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); let val412 = getValue('l2_r412#'+row2+'#'+row1+'#'+row0); let val411 = getValue('l2_r411#'+row2+'#'+row1+'#'+row0);  if(val412 !== '' && val411 !== '') { Number(val412) > Number(val411); }",
+                    "message":"R412 > R411",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r416",
+            "componentValidation":["l2_r416", "l2_r412"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); let val416 = getValue('l2_r416#'+row2+'#'+row1+'#'+row0); let val412 = getValue('l2_r412#'+row2+'#'+row1+'#'+row0); Number(val412) == 0 && Number(val416) > 0",
+                    "message":"R416 ada isian, tetapi R412 = 0",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); Number(getValue('l2_r416#'+row2+'#'+row1+'#'+row0)) == 0",
+                    "message":"Apakah benar R416 = 0? Kondisi 0 hanya untuk tanaman yang PUSO",
+                    "type":1
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r417",
+            "componentValidation":["l2_r417", "l2_r412"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); let val417 = getValue('l2_r417#'+row2+'#'+row1+'#'+row0); let val412 = getValue('l2_r412#'+row2+'#'+row1+'#'+row0); Number(val412) == 0 && Number(val417) > 0",
+                    "message":"R417 ada isian, tetapi R412 = 0",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); Number(getValue('l2_r417#'+row2+'#'+row1+'#'+row0)) == 0",
+                    "message":"Apakah benar R417 = 0? Kondisi 0 hanya untuk tanaman yang PUSO",
+                    "type":1
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r501",
+            "componentValidation":["l2_r501","l2_r210"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let val210 = getValue('l2_r210#'+row0); let val401 = getValue('l2_r401#'+row0); let val501 = getValue('l2_r501#'+row0); let val601 = getValue('l2_r601#'+row0); var opsi = []; if (val210 !== '' && val210 !== undefined && val501 !== '' && val501 !== undefined && val501.length > 0) { opsi=val210.filter((a=>a.value == '1')); (opsi.length == 0 && val501[0].value == '1')}",
+                    "message":"R501=1, tetapi R210 tidak ada kode 1",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r507",
+            "componentValidation":["l2_r507"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); let val507 = getValue('l2_r507#'+row2+'#'+row1+'#'+row0); if(val507 !== undefined && val507 !== '') { let arr=[]; arr = val507.filter((a=>a.value == '4')); arr.length > 0 && val507.length > 1 }",
+                    "message":"R507 kode 1 atau 2 atau 3 dipilih, tetapi R507 ada kode 0",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r508",
+            "componentValidation":["l2_r504", "l2_r506", "l2_r507", "l2_r508"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val504 = getValue('l2_r504#'+row1+'#'+row0); let val506 = getValue('l2_r506#'+row1+'#'+row0); let val507 = getValue('l2_r507#'+row1+'#'+row0); let val508 = getValue('l2_r508#'+row1+'#'+row0); if(val504 !== undefined && val504 !== '' && val506 !== undefined && val506 !== '' && val507 !== undefined && val507 !== '') { let arr1=[]; arr1 = val504.filter((a=>a.value == '1')); let arr2=[]; arr2 = val507.filter((a=>a.value == '4')); arr1.length > 0 && arr2.length > 0 && val506[0].value == '1' && Number(val508) == 0 }",
+                    "message":"R508 = 0, tetapi R504 ada kode 1 dan R506 berkode 1 dan R507 ada kode 0",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r510",
+            "componentValidation":["l2_r510", "l2_r509", "l2_r508","total_l2_r315"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val508 = getValue('l2_r508#'+row1+'#'+row0); let val509 = getValue('l2_r509#'+row1+'#'+row0); let val510 = getValue('l2_r510#'+row1+'#'+row0); (Number(val508) + Number(val509) + Number(val510)) == 0",
+                    "message":"(R508+R509+R510) = 0, tetapi R504 ada kode 1 dan R506 berkode 1",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val508 = getValue('l2_r508#'+row1+'#'+row0); let val509 = getValue('l2_r509#'+row1+'#'+row0); let val510 = getValue('l2_r510#'+row1+'#'+row0); let lahan = getValue('total_l2_r315#'+row1); (Number(val508) + Number(val509) + Number(val510)) > Number(lahan)",
+                    "message":"(R508+R509+R510) >  jumlah R315 untuk semua bidang",
+                    "type":2
+                }
+                
+            ]
+        },
+        {
+            "dataKey":"l2_r511",
+            "componentValidation":["l2_r511", "l2_r507", "l2_r508"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val508 = getValue('l2_r508#'+row1+'#'+row0); let val511 = getValue('l2_r511#'+row1+'#'+row0); if (val508 !== '' && val508 !== undefined && val511 !== '' && val511 !== undefined) { Number(val508) == 0 && Number(val511) > 0 }",
+                    "message":" R511 = 0, jika R508 = 0",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val508 = getValue('l2_r508#'+row1+'#'+row0); let val511 = getValue('l2_r511#'+row1+'#'+row0); if (val508 !== '' && val508 !== undefined && val511 !== '' && val511 !== undefined) { Number(val508) > 0 && Number(val511) == 0 }",
+                    "message":"R511 > 0, jika R508 > 0",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val507 = getValue('l2_r507#'+row1+'#'+row0); let val511 = getValue('l2_r511#'+row1+'#'+row0); if(val507 !== undefined && val507 !== '' && val511 !== undefined && val511 !== '') { let arr1=[]; arr1 = val507.filter((a=>a.value == '4')); arr1.length > 0 && Number(val511) == 0 }",
+                    "message":" R511 harus > 0, jika R507 ada kode 0",
+                    "type":2
+                }
+                
+            ]
+        },
+        {
+            "dataKey":"l2_r512",
+            "componentValidation":["l2_r512", "l2_r507", "l2_r509"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val509 = getValue('l2_r509#'+row1+'#'+row0); let val512 = getValue('l2_r512#'+row1+'#'+row0); if (val509 !== '' && val509 !== undefined && val512 !== '' && val512 !== undefined) { Number(val509) == 0 && Number(val512) > 0 }",
+                    "message":" R512 = 0, jika R509 = 0",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val509 = getValue('l2_r509#'+row1+'#'+row0); let val512 = getValue('l2_r512#'+row1+'#'+row0); if (val509 !== '' && val509 !== undefined && val512 !== '' && val512 !== undefined) { Number(val509) > 0 && Number(val512) == 0 }",
+                    "message":"R512 > 0, jika R509 > 0",
+                    "type":2
+                }
+                
+            ]
+        },
+        {
+            "dataKey":"l2_r513",
+            "componentValidation":["l2_r513", "l2_r512", "l2_r511","l2_r511","l2_r510","l2_r504"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val510 = getValue('l2_r510#'+row1+'#'+row0); let val513 = getValue('l2_r513#'+row1+'#'+row0); if (val510 !== '' && val510 !== undefined && val513 !== '' && val513 !== undefined) { Number(val510) == 0 && Number(val513) > 0 }",
+                    "message":" R513 = 0, jika R510 = 0",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val510 = getValue('l2_r510#'+row1+'#'+row0); let val513 = getValue('l2_r513#'+row1+'#'+row0); if (val510 !== '' && val510 !== undefined && val513 !== '' && val513 !== undefined) { Number(val510) > 0 && Number(val513) == 0 }",
+                    "message":"R513 > 0, jika R510 > 0",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val511 = getValue('l2_r511#'+row1+'#'+row0); let val512 = getValue('l2_r512#'+row1+'#'+row0); let val513 = getValue('l2_r513#'+row1+'#'+row0); (Number(val511) + Number(val512) + Number(val513)) == 0",
+                    "message":"(R511+R512+R513) = 0, tetapi R502 ada isian dan R504 ada kode 1",
+                    "type":2
+                }
+                
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r601",
+            "componentValidation":["l2_r601", "l2_r210", "l2_r501", "l2_r401"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let val210 = getValue('l2_r210#'+row0); let val401 = getValue('l2_r401#'+row0); let val501 = getValue('l2_r501#'+row0); let val601 = getValue('l2_r601#'+row0); var opsi = []; if (val210 !== '' && val210 !== undefined && val601 !== '' && val601 !== undefined && val601.length > 0 && val401 !== '' && val401 !== undefined && val501 !== '' && val501 !== undefined) { opsi=val210.filter((a=>a.value == '1')); (opsi.length > 0 && val401[0].value == '2' && val501[0].value == '2' && val601[0].value == '2')}",
+                    "message":"R401 dan atau R501 dan atau R601 tidak ada yang berkode 1, tetapi R210 ada kode 1",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let val210 = getValue('l2_r210#'+row0); let val401 = getValue('l2_r401#'+row0); let val501 = getValue('l2_r501#'+row0); let val601 = getValue('l2_r601#'+row0); var opsi = []; if (val210 !== '' && val210 !== undefined && val601 !== '' && val601 !== undefined && val601.length > 0) { opsi=val210.filter((a=>a.value == '1')); (opsi.length == 0 && val601[0].value == '1')}",
+                    "message":"R601=1, tetapi R210 tidak ada kode 1",
+                    "type":2
+                }
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r606",
+            "componentValidation":["l2_r606", "l2_r603"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val603 = getValue('l2_r603#'+row1+'#'+row0); let val606 = getValue('l2_r606#'+row1+'#'+row0); if (val603 !== '' && val603 !== undefined && val606 !== '' && val606 !== undefined) { (val603 !== '4302' && val603 !== '4306' && val603 !== '4308' && val603 !== '4420') && Number(val606) == 0} ",
+                    "message":"R606 = 0, tetapi R601=1 dan R603 tidak sama dengan 4302, 4306, 4308",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r607",
+            "componentValidation":["l2_r606_tbesar", "l2_r607", "l2_r608", "l2_r609", "l2_r610", "l2_r611", "l2_r612","l2_r613"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); Number(getValue('l2_r606_tbesar#'+row2+'#'+row1+'#'+row0)) < Number(getValue('l2_r607#'+row2+'#'+row1+'#'+row0))",
+                    "message":"R607 > R606",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r608",
+            "componentValidation":["l2_r606_tbesar", "l2_r607", "l2_r608", "l2_r609", "l2_r610", "l2_r611", "l2_r612","l2_r613"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); Number(getValue('l2_r606_tbesar#'+row2+'#'+row1+'#'+row0)) < Number(getValue('l2_r608#'+row2+'#'+row1+'#'+row0))",
+                    "message":"R608 > R606",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r609",
+            "componentValidation":["l2_r606_tbesar", "l2_r607", "l2_r608", "l2_r609", "l2_r610", "l2_r611", "l2_r612","l2_r613"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); Number(getValue('l2_r606_tbesar#'+row2+'#'+row1+'#'+row0)) < Number(getValue('l2_r609#'+row2+'#'+row1+'#'+row0))",
+                    "message":"R609 > R606",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r610",
+            "componentValidation":["l2_r606_tbesar", "l2_r607", "l2_r608", "l2_r609", "l2_r610", "l2_r611", "l2_r612","l2_r613"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); Number(getValue('l2_r606_tbesar#'+row2+'#'+row1+'#'+row0)) < Number(getValue('l2_r610#'+row2+'#'+row1+'#'+row0))",
+                    "message":"R610 > R606",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r611",
+            "componentValidation":["l2_r606_tbesar", "l2_r607", "l2_r608", "l2_r609", "l2_r610", "l2_r611", "l2_r612","l2_r613"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); Number(getValue('l2_r606_tbesar#'+row2+'#'+row1+'#'+row0)) < Number(getValue('l2_r611#'+row2+'#'+row1+'#'+row0))",
+                    "message":"R611 > R606",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r612",
+            "componentValidation":["l2_r606_tbesar", "l2_r607", "l2_r608", "l2_r609", "l2_r610", "l2_r611", "l2_r612","l2_r613"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); Number(getValue('l2_r606_tbesar#'+row2+'#'+row1+'#'+row0)) < Number(getValue('l2_r612#'+row2+'#'+row1+'#'+row0))",
+                    "message":"R612 > R606",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r613",
+            "componentValidation":["l2_r606_tbesar", "l2_r607", "l2_r608", "l2_r609", "l2_r610", "l2_r611", "l2_r612","l2_r613"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let row2 = getRowIndex(2); Number(getValue('l2_r606_tbesar#'+row2+'#'+row1+'#'+row0)) !== Number(getValue('l2_r607#'+row2+'#'+row1+'#'+row0)) + Number(getValue('l2_r608#'+row2+'#'+row1+'#'+row0)) + Number(getValue('l2_r609#'+row2+'#'+row1+'#'+row0)) + Number(getValue('l2_r610#'+row2+'#'+row1+'#'+row0)) + Number(getValue('l2_r611#'+row2+'#'+row1+'#'+row0)) + Number(getValue('l2_r612#'+row2+'#'+row1+'#'+row0)) + Number(getValue('l2_r613#'+row2+'#'+row1+'#'+row0))",
+                    "message":"R607+ R608 + R609 + R610 + R611 + R612 + R613 tidak sama dengan R606",
+                    "type":2
+                }
+                
+            ]
+        },
+        {
+            "dataKey":"l2_r701",
+            "componentValidation":["l2_r701", "l2_r210"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let val210 = getValue('l2_r210#'+row0); let val701 = getValue('l2_r701#'+row0); var opsi = []; if (val210 !== '' && val210 !== undefined && val701 !== '' && val701 !== undefined && val701.length > 0) { opsi=val210.filter((a=>a.value == '2')); (opsi.length == 0 && val701[0].value == '1')}",
+                    "message":"R701=1 tetapi  R210 tidak mengandung  kode 2",
+                    "type":2
+                }
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r705",
+            "componentValidation":["l2_r705", "l2_r704"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val705 = getValue('l2_r705#'+row1+'#'+row0); let val704 = getValue('l2_r704#'+row1+'#'+row0); var opsi = []; if (val705 !== '' && val705 !== undefined && val705.length>0 && val704 !== '' && val704 !== undefined) { opsi=val704.filter((a=>a.value == '1')); opsi.length > 0 && val705[0].value == '3'}",
+                    "message":"R705 BLANK atau berkode 3, tetapi R704 mengandung kode 1",
+                    "type":2
+                }
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r710",
+            "componentValidation":["l2_r707","l2_r708","l2_r709","l2_r710"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); Number(getValue('l2_r707#'+row1+'#'+row0)) + Number(getValue('l2_r708#'+row1+'#'+row0)) + Number(getValue('l2_r709#'+row1+'#'+row0)) + Number(getValue('l2_r710#'+row1+'#'+row0)) == 0",
+                    "message":"R707 s.d R710 semua nol atau BLANK, tetapi R704 mengandung kode 1 ",
+                    "type":2
+                }
+            ]
+        },
+        {
+            "dataKey":"l2_r711",
+            "componentValidation":["l2_r711","l2_r708","l2_r709","l2_r710"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val711 = getValue('l2_r711#'+row1+'#'+row0); var opsi = []; if (val711 !== '' && val711 !== undefined) { opsi=val711.filter((a=>a.value == '4')); opsi.length > 0 && val711.length > 1}",
+                    "message":"R711 mengandung kode 1,2, atau 3  tetapi kode 0 juga terpilih",
+                    "type":2
+                }
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r721",
+            "componentValidation":["l2_r721","l2_r210"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let val210 = getValue('l2_r210#'+row0); let val721 = getValue('l2_r721#'+row0); var opsi = []; if (val210 !== '' && val210 !== undefined && val721 !== '' && val721 !== undefined && val721.length > 0) { opsi=val210.filter((a=>a.value == '2')); (opsi.length == 0 && val721[0].value == '1')}",
+                    "message":"R721=1 tetapi  R210 tidak mengandung  kode 2",
+                    "type":2
+                }
+            ]
+        },
+       
+        {
+            "dataKey":"l2_r724",
+            "componentValidation":["l2_r724", "filter_r724_1", "filter_r724_2", "l2_r723"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val724 = getValue('l2_r724#'+row1+'#'+row0); let filter_1 = getValue('filter_r724_1#'+row1+'#'+row0); let filter_2 = getValue('filter_r724_2#'+row1+'#'+row0); var opsi = []; if (val724 !== undefined && val724 !== '' && val724.length > 0) { opsi = val724.filter((a=>a.value == '1')); filter_1 && opsi.length > 0}",
+                    "message":"R724  tidak sama dengan 1  tetapi  R723 =   6301,6302,6303,6304,6305, 6306, 6307, 6308, 6309, 6399",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val724 = getValue('l2_r724#'+row1+'#'+row0); let filter_1 = getValue('filter_r724_1#'+row1+'#'+row0); let filter_2 = getValue('filter_r724_2#'+row1+'#'+row0); var opsi = []; if (val724 !== undefined && val724 !== '' && val724.length > 0) { opsi = val724.filter((a=>a.value == '2')); filter_2 && opsi.length > 0}",
+                    "message":"R724 tidak sama dengan 2 tetapi R723 =  6201,6202,6203,6204,6205,6206,6207,6208,6209,6210, 6211,6212,6213,6214,6215,6217,6218,6219,6220,6221,6222,6223,6224,6225,6226,6227,6228,6229,6230,6231,6232,6233,6234,6235,6236, 6249",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val724 = getValue('l2_r724#'+row1+'#'+row0); let val723 = getValue('l2_r723#'+row1+'#'+row0); var opsi = []; if (val724 !== undefined && val724 !== '' && val724.length > 0) { opsi = val724.filter((a=>a.value == '3')); val723 == '6216' && opsi.length > 0 }",
+                    "message":"R724 tidak sama dengan 3 tetapi R723 = 6216 ",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val724 = getValue('l2_r724#'+row1+'#'+row0); let val723 = getValue('l2_r723#'+row1+'#'+row0); var opsi = []; if (val724 !== undefined && val724 !== '' && val724.length > 0) { opsi = val724.filter((a=>a.value == '4')); val723 == '6202' && opsi.length > 0}",
+                    "message":"R724 tidak sama dengan 4 tetapi R723 = 6202 ",
+                    "type":2
+                }
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r729",
+            "componentValidation":["l2_r729","l2_r210"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let val210 = getValue('l2_r210#'+row0); let val729 = getValue('l2_r729#'+row0); var opsi = []; if (val210 !== '' && val210 !== undefined && val729 !== '' && val729 !== undefined && val729.length > 0) { opsi=val210.filter((a=>a.value == '2')); (opsi.length == 0 && val729[0].value == '1')}",
+                    "message":"R729=1 tetapi  R210 tidak mengandung  kode 2",
+                    "type":2
+                }
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r732",
+            "componentValidation":["l2_r732", "l2_r731","filter_r732_1","filter_r732_2"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val732 = getValue('l2_r732#'+row1+'#'+row0); let val731 = getValue('l2_r731#'+row1+'#'+row0); if (val732.length>0 && val732 !== '' && val732 !== undefined) { (val731 == '6409' || val731 == '6412' || val731 == '6499') && val732[0].value !== '1' }",
+                    "message":"R732 tidak sama dengan 1 tetapi  R731 = 6409,6412,6499",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val732 = getValue('l2_r732#'+row1+'#'+row0); let val731 = getValue('l2_r731#'+row1+'#'+row0); let kode = getValue('filter_r732_1#'+row1+'#'+row0); if (val732.length>0 && val732 !== '' && val732 !== undefined) { kode && val732[0].value !== '2' }",
+                    "message":"R732 tidak sama dengan 2 tetapi R731=6401, 6402,6403,6404,6405,6406, 6410,  6413,6414, 6499",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val732 = getValue('l2_r732#'+row1+'#'+row0); let val731 = getValue('l2_r731#'+row1+'#'+row0); let kode = getValue('filter_r732_1#'+row1+'#'+row0); if (val732.length>0 && val732 !== '' && val732 !== undefined) { val731 == '6499' && val732[0].value !== '3' }",
+                    "message":"R732 tidak sama dengan 3 tetapi R731 = 6499",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val732 = getValue('l2_r732#'+row1+'#'+row0); let val731 = getValue('l2_r731#'+row1+'#'+row0); let kode = getValue('filter_r732_1#'+row1+'#'+row0); if (val732.length>0 && val732 !== '' && val732 !== undefined) { (val731 == '6408' || val731 == '6410' || val731 == '6499') && val732[0].value !== '4' }",
+                    "message":"R732 tidak sama dengan 4 tetapi R731 = 6408,6410, 6499 ",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val732 = getValue('l2_r732#'+row1+'#'+row0); let val731 = getValue('l2_r731#'+row1+'#'+row0); let kode = getValue('filter_r732_2#'+row1+'#'+row0); if (val732.length>0 && val732 !== '' && val732 !== undefined) { kode && val732[0].value !== '5' }",
+                    "message":"R732 tidak sama dengan 5 tetapi R731 = 6251,6252,6253,6254,6255,6256,6257,6258,6259,6260, 6261,6262,6263,6264,6265,6266,6267,6268,6269,6270,6271,6272, 6273,6274,6275, 6299,6415,6499",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val732 = getValue('l2_r732#'+row1+'#'+row0); let val731 = getValue('l2_r731#'+row1+'#'+row0); let kode = getValue('filter_r732_1#'+row1+'#'+row0); if (val732.length>0 && val732 !== '' && val732 !== undefined) { (val731 == '6407' || val731 == '6411' || val731 == '6499') && val732[0].value !== '6' }",
+                    "message":"R732 tidak sama dengan 6 tetapi R731= 6407,6411,6499 ",
+                    "type":2
+                }
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r801",
+            "componentValidation":["l2_r801", "l2_r210"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let val210 = getValue('l2_r210#'+row0); let val801 = getValue('l2_r801#'+row0); var opsi = []; if (val210 !== '' && val210 !== undefined && val801 !== '' && val801 !== undefined && val801.length > 0) { opsi=val210.filter((a=>a.value == '2')); (opsi.length == 0 && val801[0].value == '1')}",
+                    "message":"R801=1 tetapi  R210 tidak mengandung  kode 2",
+                    "type":2
+                }
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r805_1",
+            "componentValidation":["l2_r805_1", "l2_r803","l2_r803_awalan"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val805 = getValue('l2_r805_1#'+row1+'#'+row0); let val803 = getValue('l2_r803#'+row1+'#'+row0); if (val805 !== '' && val805 !== undefined && val805.length > 0) { val803 == '5166' && val805[0].value > 1}",
+                    "message":"R803 = 5166 (rumput laut di laut), tapi R805 terpilih selain kode 1.",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val805 = getValue('l2_r805_1#'+row1+'#'+row0); let val803 = getValue('l2_r803#'+row1+'#'+row0); if (val805 !== '' && val805 !== undefined && val805.length > 0) { val803 == '5215' && val805[0].value !== '4'}",
+                    "message":"R803 = 5215 (rumput laut di tambak), tapi R805 terpilih selain kode 4.",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val805 = getValue('l2_r805_1#'+row1+'#'+row0); let val803 = getValue('l2_r803#'+row1+'#'+row0); let cek = getValue('l2_r803_awalan#'+row1+'#'+row0); if (val805 !== '' && val805 !== undefined && val805.length > 0) { (cek == '51' || cek == '53') && val805[0].value == '4'}",
+                    "message":"Jika 2 digit pertama R803 = 51 atau 53, R805 terpilih kode 4",
+                    "type":2
+                }
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r812_1",
+            "componentValidation":["l2_r812_1","l2_r809_1"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val812 = getValue('l2_r812_1#'+row1+'#'+row0); let val809 = getValue('l2_r812_1#'+row1+'#'+row0); Number(val809) > 0 && Number(val812) == 0",
+                    "message":"R812 = 0 atau BLANK, tetapi R809 > 0",
+                    "type":2
+                }
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r813_1",
+            "componentValidation":["l2_r813_1", "l2_r804"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val813 = getValue('l2_r813_1#'+row1+'#'+row0); let val804 = getValue('l2_r804#'+row1+'#'+row0); var opsi = []; if (val804 !== '' && val804 !== undefined && val804.length > 0 && val813 !== '' && val813 !== undefined && val813.length>0) {opsi=val804.filter((a=>a.value < 4)); opsi.length>0 && val813[0].value == '2'}",
+                    "message":"JR804 = 1, 2, atau 3, tapi R813 terpilih kode 2 (ekor)",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val813 = getValue('l2_r813_1#'+row1+'#'+row0); let val804 = getValue('l2_r804#'+row1+'#'+row0); var opsi = []; if (val804 !== '' && val804 !== undefined && val804.length > 0 && val813 !== '' && val813 !== undefined && val813.length>0) {opsi=val804.filter((a=>a.value > 3)); opsi.length > 0 && val813[0].value == '1'}",
+                    "message":"JR804 = 4 atau 5, tapi R813 terpilih kode 1 (kg)",
+                    "type":2
+                }
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r805_2",
+            "componentValidation":["l2_r805_2", "l2_r803","l2_r803_awalan"],
+            "validations": [
+               
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val805 = getValue('l2_r805_2#'+row1+'#'+row0); let val803 = getValue('l2_r803#'+row1+'#'+row0); if (val805 !== '' && val805 !== undefined && val805.length > 0) { val803 == '5166' && val805[0].value > 1}",
+                    "message":"R803 = 5166 (rumput laut di laut), tapi R805 terpilih selain kode 1.",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val805 = getValue('l2_r805_2#'+row1+'#'+row0); let val803 = getValue('l2_r803#'+row1+'#'+row0); if (val805 !== '' && val805 !== undefined && val805.length > 0) { val803 == '5215' && val805[0].value !== '4'}",
+                    "message":"R803 = 5215 (rumput laut di tambak), tapi R805 terpilih selain kode 4.",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val805 = getValue('l2_r805_2#'+row1+'#'+row0); let val803 = getValue('l2_r803#'+row1+'#'+row0); let cek = getValue('l2_r803_awalan#'+row1+'#'+row0); if (val805 !== '' && val805 !== undefined && val805.length > 0) { (cek == '51' || cek == '53') && val805[0].value == '4'}",
+                    "message":"Jika 2 digit pertama R803 = 51 atau 53, R805 terpilih kode 4",
+                    "type":2
+                }
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r812_2",
+            "componentValidation":["l2_r812_2","l2_r809_2"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val812 = getValue('l2_r812_2#'+row1+'#'+row0); let val809 = getValue('l2_r812_2#'+row1+'#'+row0); Number(val809) > 0 && Number(val812) == 0",
+                    "message":"R812 = 0 atau BLANK, tetapi R809 > 0",
+                    "type":2
+                }
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r813_2",
+            "componentValidation":["l2_r813_2", "l2_r804"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val813 = getValue('l2_r813_2#'+row1+'#'+row0); let val804 = getValue('l2_r804#'+row1+'#'+row0); var opsi = []; if (val804 !== '' && val804 !== undefined && val804.length > 0 && val813 !== '' && val813 !== undefined && val813.length>0) {opsi=val804.filter((a=>a.value < 4)); opsi.length>0 && val813[0].value == '2'}",
+                    "message":"JR804 = 1, 2, atau 3, tapi R813 terpilih kode 2 (ekor)",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val813 = getValue('l2_r813_2#'+row1+'#'+row0); let val804 = getValue('l2_r804#'+row1+'#'+row0); var opsi = []; if (val804 !== '' && val804 !== undefined && val804.length > 0 && val813 !== '' && val813 !== undefined && val813.length>0) {opsi=val804.filter((a=>a.value > 3)); opsi.length > 0 && val813[0].value == '1'}",
+                    "message":"JR804 = 4 atau 5, tapi R813 terpilih kode 1 (kg)",
+                    "type":2
+                }
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r817",
+            "componentValidation":["l2_r817", "l2_r701", "l2_r721", "l2_r801", "l2_r210"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let val210 = getValue('l2_r210#'+row0); let val701 = getValue('l2_r701#'+row0); let val721 = getValue('l2_r721#'+row0); let val801 = getValue('l2_r801#'+row0); let val817 = getValue('l2_r817#'+row0); var opsi = []; if (val210 !== '' && val210 !== undefined && val701 !== '' && val701 !== undefined && val701.length > 0 && val721 !== '' && val721 !== undefined && val801 !== '' && val801 !== undefined && val801.length > 0 && val817 !== '' && val817 !== undefined && val817.length > 0) { opsi=val210.filter((a=>a.value == '2')); (opsi.length > 0 && val701[0].value == '2' && val721[0].value == '2' && val801[0].value == '2' && val817[0].value == '2')}",
+                    "message":"R701, R721, R801  atau R817 berkode 0, tetapi R210 ada kode 2 dan R215 ada nomor urut",
+                    "type":2
+                }
+
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r825a",
+            "componentValidation":["l2_r825a"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let jml = getValue('l2_r825a#'+row1+'#'+row0); if (jml !== '' && jml.length>0) {Number(jml) == 0}",
+                    "message":"Apa benar selama 1 Mei 2021 s.d 30 April 2022 tidak ada hasil tangkapan sama sekali?",
+                    "type":1
+                }
+
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r828a",
+            "componentValidation":["l2_r828a","l2_r825a"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val828 = getValue('l2_r828a#'+row1+'#'+row0); let val825 = getValue('l2_r825a#'+row1+'#'+row0); if (val828 !== '' && val828 !== undefined && val828.length>0 && val825 !== '') { Number(val825) == 0 && val828[0].value < 4 }",
+                    "message":"R828.A tidak sama dengan 0, tetapi [R818 ada kode A] dan [jumlah R825.A = 0]",
+                    "type":2
+                }
+
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r825b",
+            "componentValidation":["l2_r825b"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let jml = getValue('l2_r825b#'+row1+'#'+row0); if (jml !== '' && jml.length > 0) {Number(jml) == 0}",
+                    "message":"Apa benar selama 1 Mei 2021 s.d 30 April 2022 tidak ada hasil tangkapan sama sekali?",
+                    "type":1
+                }
+
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r828b",
+            "componentValidation":["l2_r828b","l2_r825b"],
+            "validations": [
+               
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val828 = getValue('l2_r828b#'+row1+'#'+row0); let val825 = getValue('l2_r825b#'+row1+'#'+row0); if (val828 !== '' && val828 !== undefined && val828.length>0 && val825 !== '') { Number(val825) == 0 && val828[0].value < 4 }",
+                    "message":"R828.A tidak sama dengan 0, tetapi [R818 ada kode B] dan [jumlah R825.B = 0]",
+                    "type":2
+                }
+
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r828c",
+            "componentValidation":["l2_r828c","l2_r826c"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val828 = getValue('l2_r828c#'+row0); let val825 = getValue('l2_r826c#'+row0); if (val828 !== '' && val828 !== undefined && val828.length>0 && val825 !== '') { Number(val825) == 0 && val828[0].value < 4 }",
+                    "message":"R828.C tidak sama dengan 0, tetapi [R818 ada kode C] dan [jumlah R826.C = 0]",
+                    "type":2
+                }
+
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r828d",
+            "componentValidation":["l2_r828d","l2_r826d"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val828 = getValue('l2_r828d#'+row0); let val825 = getValue('l2_r826d#'+row0); if (val828 !== '' && val828 !== undefined && val828.length>0 && val825 !== '') { Number(val825) == 0 && val828[0].value < 4 }",
+                    "message":"R828.C tidak sama dengan 0, tetapi [R818 ada kode C] dan [jumlah R826.C = 0]",
+                    "type":2
+                }
+
+            ]
+        },
+        {
+            "dataKey":"l2_r901a_6",
+            "componentValidation":["l2_r901a_6","l2_r901a_1","l2_r901a_2","l2_r901a_3","l2_r901a_4","l2_r901a_5","l2_r901a_6", "l2_r210"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let a = getValue('l2_r901a_1#'+row0); let b = getValue('l2_r901a_2#'+row0); let c = getValue('l2_r901a_3#'+row0); let d = getValue('l2_r901a_4#'+row0); let e = getValue('l2_r901a_5#'+row0); let f = getValue('l2_r901a_6#'+row0); let val210 = getValue('l2_r210#'+row0); var opsi =[]; if (a !== '' && a.length > 0 && b !== '' && b.length > 0 && c !== '' && c.length > 0 && d !== '' && d.length > 0 && e !== '' && e.length > 0 && f !== '' && f.length > 0 && val210 !== '' && val210.length > 0) { opsi=val210.filter((a=>a.value == '3')); opsi.length == 0 && (a[0].value == '1' || b[0].value == '1' || c[0].value == '1' || d[0].value == '1' || e[0].value == '1' || f[0].value == '1')}",
+                    "message":"3. R901a_1 s.d. R901a_6  salah satu ada yang berkode 1, tetapi R210 tidak ada kode 3",
+                    "type":2
+                }
+
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r902_1",
+            "componentValidation":["l2_r902_1","list_tp_blok4","list_horti_blok4","list_kebun_blok4","list_horti_blok5","list_kebun_blok5"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let nilai = getValue('l2_r902_1#'+row0); let kode = getValue('list_tp_blok4#'+row0); if (nilai !== '' && nilai !== undefined && nilai.length>0) { nilai[0].value == '1' && (kode == '' || kode == 0 || kode == undefined) }",
+                    "message":"R902_1 = 1, tetapi R403 tidak ada kode jenis tanaman pangan (1102 s.d 1299)",
+                    "type":2
+                }
+
+            ]
+        },
+        {
+            "dataKey":"l2_r902_2",
+            "componentValidation":["l2_r902_2","list_tp_blok4","list_horti_blok4","list_kebun_blok4","list_horti_blok5","list_kebun_blok5"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let nilai = getValue('l2_r902_2#'+row0); let kode1 = getValue('list_horti_blok4#'+row0); let kode2 = getValue('list_horti_blok5#'+row0); if (nilai !== '' && nilai !== undefined && nilai.length>0) { nilai[0].value == '1' && (kode1 == '' || kode1 == 0 || kode1 == undefined) && (kode2 == '' || kode2 == 0 || kode2 == undefined)}",
+                    "message":"R902_2 = 1, tetapi R403 dan/atau R503 tidak ada kode jenis tanaman hortikultura (2201 s.d 2899, 2101 s.d 2799)",
+                    "type":2
+                }
+
+            ]
+        },
+        {
+            "dataKey":"l2_r902_3",
+            "componentValidation":["l2_r902_3","list_tp_blok4","list_horti_blok4","list_kebun_blok4","list_horti_blok5","list_kebun_blok4"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let nilai = getValue('l2_r902_3#'+row0); let kode1 = getValue('list_kebun_blok4#'+row0); let kode2 = getValue('list_kebun_blok5#'+row0); if (nilai !== '' && nilai !== undefined && nilai.length>0) { nilai[0].value == '1' && (kode1 == '' || kode1 == 0 || kode1 == undefined) && (kode2 == '' || kode2 == 0 || kode2 == undefined)}",
+                    "message":"R902_3 = 1, tetapi R403 dan/atau R503 tidak ada kode jenis tanaman perkebunan (3201 s.d 3299, 3101s.d 3199)",
+                    "type":2
+                }
+
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r903_1",
+            "componentValidation":["l2_r903_1","list_tp_blok4","list_horti_blok4","list_kebun_blok4","list_horti_blok5","list_kebun_blok5"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let nilai = getValue('l2_r903_1#'+row0); let kode = getValue('list_tp_blok4#'+row0); if (nilai !== '' && nilai !== undefined && nilai.length>0) { nilai[0].value == '1' && (kode == '' || kode == 0 || kode == undefined) }",
+                    "message":"R903_1 = 1, tetapi R403 tidak ada kode jenis tanaman pangan (1102 s.d 1299)",
+                    "type":2
+                }
+
+            ]
+        },
+        {
+            "dataKey":"l2_r903_2",
+            "componentValidation":["l2_r903_2","list_tp_blok4","list_horti_blok4","list_kebun_blok4","list_horti_blok5","list_kebun_blok5"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let nilai = getValue('l2_r903_2#'+row0); let kode1 = getValue('list_horti_blok4#'+row0); let kode2 = getValue('list_horti_blok5#'+row0); if (nilai !== '' && nilai !== undefined && nilai.length>0) { nilai[0].value == '1' && (kode1 == '' || kode1 == 0 || kode1 == undefined) && (kode2 == '' || kode2 == 0 || kode2 == undefined)}",
+                    "message":"R903_2 = 1, tetapi R403 dan/atau R503 tidak ada kode jenis tanaman hortikultura (2201 s.d 2899, 2101 s.d 2799)",
+                    "type":2
+                }
+
+            ]
+        },
+        {
+            "dataKey":"l2_r903_3",
+            "componentValidation":["l2_r903_3","list_tp_blok4","list_horti_blok4","list_kebun_blok4","list_horti_blok5","list_kebun_blok4"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let nilai = getValue('l2_r903_3#'+row0); let kode1 = getValue('list_kebun_blok4#'+row0); let kode2 = getValue('list_kebun_blok5#'+row0); if (nilai !== '' && nilai !== undefined && nilai.length>0) { nilai[0].value == '1' && (kode1 == '' || kode1 == 0 || kode1 == undefined) && (kode2 == '' || kode2 == 0 || kode2 == undefined)}",
+                    "message":"R903_3 = 1, tetapi R403 dan/atau R503 tidak ada kode jenis tanaman perkebunan (3201 s.d 3299, 3101s.d 3199)",
+                    "type":2
+                }
+
+            ]
+        },
+        
+        {
+            "dataKey":"l2_r1002d_4",
+            "componentValidation":["l2_r1002d_4", "l2_r1002d_3", "l2_r1002d_2", "l2_r1002d_1", "l2_r1002_a"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let a = getValue('l2_r1002d_1#'+row0); let b = getValue('l2_r1002d_2#'+row0); let c = getValue('l2_r1002d_3#'+row0); let d = getValue('l2_r1002d_4#'+row0); let e = getValue('l2_r1002_a#'+row0); if (a !== '' && a.length > 0 && b !== '' && b.length > 0 && c !== '' && c.length > 0 && d !== '' && d.length > 0 && e !== '' && e.length > 0) { (a[0].value == '2' && b[0].value == '2' && c[0].value == '2' && d[0].value == '2') && e[0].value == '1'}",
+                    "message":"Semua rincian (R1002d1,R1002d2,R1002d3,R1002d4 ) berkode 0, tetapi  R215 ada nomor urut, R1002a=1",
+                    "type":2
+                }
+
+            ]
+        },
+        {
+            "dataKey":"l2_r1006_a",
+            "componentValidation":["l2_r1006_a", "l2_r401", "l2_r501", "l2_r701"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let a = getValue('l2_r401#'+row0); let b = getValue('l2_r501#'+row0); let c = getValue('l2_r701#'+row0); let val1006 = getValue('l2_r1006_a#'+row0); var opsi = []; if (a !== '' && a.length > 0 && b !== '' && b.length > 0 && c !== '' && c.length > 0 && val1006 !== '' && val1006.length > 0) { opsi=val1006.filter((a=>a.value == '10')); (a[0].value == '1' || b[0].value == '1' || c[0].value == '1') && opsi.length > 0 }",
+                    "message":"Jika R401=1 dan/atau R501=1 dan/atau R701=1, tetapi R1006a terisi juga kode 0",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val1006 = getValue('l2_r1006_a#'+row0); var opsi1 = []; var opsi2 = []; if (val1006 !== '' && val1006.length > 0) { opsi1=val1006.filter((a=>a.value == '10' || a.value == '9')); opsi2=val1006.filter((a=>a.value < 9)); (opsi1.length > 0 && opsi2.length > 0) }",
+                    "message":"Jika R215 ada nomor urut dan R1006a=0, maka kode 1, 2, 3, 4, 5, atau 6 tidak boleh terpilih",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let a = getValue('l2_r401#'+row0); let b = getValue('l2_r501#'+row0); let c = getValue('l2_r701#'+row0); let val1006 = getValue('l2_r1006_a#'+row0); var opsi = []; if (a !== '' && a.length > 0 && b !== '' && b.length > 0 && c !== '' && c.length > 0 && val1006 !== '' && val1006.length > 0) { opsi=val1006.filter((a=>a.value < 10)); (a[0].value == '2' && b[0].value == '2' && c[0].value == '2') && opsi.length > 0 }",
+                    "message":"Jika R401=0 dan R501=0 dan R701=0, tetapi R1006a terisi juga kode 1, 2, 3, 4, 5, 6 atau 9",
+                    "type":2
+                }
+
+            ]
+        },
+        {
+            "dataKey":"l2_r1006_b",
+            "componentValidation":["l2_r1006_b", "l2_r401", "l2_r501", "l2_r701"],
+            "validations": [
+                
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let a = getValue('l2_r401#'+row0); let b = getValue('l2_r501#'+row0); let c = getValue('l2_r701#'+row0); let val1006 = getValue('l2_r1006_b#'+row0); var opsi = []; if (a !== '' && a.length > 0 && b !== '' && b.length > 0 && c !== '' && c.length > 0 && val1006 !== '' && val1006.length > 0) { opsi=val1006.filter((a=>a.value == '10')); (a[0].value == '1' || b[0].value == '1' || c[0].value == '1') && opsi.length > 0 }",
+                    "message":"Jika R401=1 dan/atau R501=1 dan/atau R701=1, tetapi R1006a terisi juga kode 0",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let val1006 = getValue('l2_r1006_b#'+row0); var opsi1 = []; var opsi2 = []; if (val1006 !== '' && val1006.length > 0) { opsi1=val1006.filter((a=>a.value == '10' || a.value == '9')); opsi2=val1006.filter((a=>a.value < 9)); (opsi1.length > 0 && opsi2.length > 0) }",
+                    "message":"Jika R215 ada nomor urut dan R1006a=0 atau 9, maka kode 1, 2, 3, 4, 5, atau 6 tidak boleh terpilih",
+                    "type":2
+                },
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let a = getValue('l2_r401#'+row0); let b = getValue('l2_r501#'+row0); let c = getValue('l2_r701#'+row0); let val1006 = getValue('l2_r1006_b#'+row0); var opsi = []; if (a !== '' && a.length > 0 && b !== '' && b.length > 0 && c !== '' && c.length > 0 && val1006 !== '' && val1006.length > 0) { opsi=val1006.filter((a=>a.value < 10)); (a[0].value == '2' && b[0].value == '2' && c[0].value == '2') && opsi.length > 0 }",
+                    "message":"Jika R401=0 dan R501=0 dan R701=0, tetapi R1006a terisi juga kode 1, 2, 3, 4, 5, 6 atau 9",
+                    "type":2
+                }
+
+            ]
+        },
+        {
+            "dataKey":"l2_r1010b_3",
+            "componentValidation":["l2_r1010b_1", "l2_r1010b_2", "l2_r1010b_3", "l2_r1010_a"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let a = getValue('l2_r1010b_1#'+row0); let b = getValue('l2_r1010b_2#'+row0); let c = getValue('l2_r1010b_3#'+row0); let vala = getValue('l2_r1010_a#'+row0); if (a !== '' && a !== undefined && a.length > 0 && b !== '' && b !== undefined && b.length > 0 && c !== '' && c !== undefined && c.length > 0 && vala !== '' && vala !== undefined && vala.length > 0) { vala[0].value == '1' && (a[0].value == '2' && b[0].value == '2' && c[0].value == '2') }",
+                    "message":"Semua rincian (R1010b1, R1010b2, R1010b3)  berkode 0, tetapi R1010a berkode 1",
+                    "type":2
+                }
+
+            ]
+        },
+        {
+            "dataKey":"l2_r1010c_4",
+            "componentValidation":["l2_r1010c_1", "l2_r1010c_2", "l2_r1010c_3", "l2_r1010c_4", "l2_r1010_a"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let a = getValue('l2_r1010c_1#'+row0); let b = getValue('l2_r1010c_2#'+row0); let c = getValue('l2_r1010c_3#'+row0); let d = getValue('l2_r1010c_4#'+row0); let vala = getValue('l2_r1010_a#'+row0); if (a !== '' && a !== undefined && a.length > 0 && b !== '' && b !== undefined && b.length > 0 && c !== '' && c !== undefined && c.length > 0 && d !== '' && d !== undefined && d.length > 0 && vala !== '' && vala !== undefined && vala.length > 0) { vala[0].value == '1' && (a[0].value == '2' && b[0].value == '2' && c[0].value == '2' && d[0].value == '2') }",
+                    "message":"Semua rincian (R1010c1,R1010c2,R1010c3,R1010c4)  berkode 0, tetapi R1010a=1",
+                    "type":2
+                }
+
+            ]
+        },
+        {
+            "dataKey":"l2_r1012b_5",
+            "componentValidation":["l2_r1012b_1", "l2_r1012b_2", "l2_r1012b_3", "l2_r1012b_4", "l2_r1012b_5", "l2_r1012a"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let a = getValue('l2_r1012b_1#'+row0); let b = getValue('l2_r1012b_2#'+row0); let c = getValue('l2_r1012b_3#'+row0); let d = getValue('l2_r1012b_4#'+row0); let e = getValue('l2_r1012b_5#'+row0); let vala = getValue('l2_r1012a#'+row0); if (a !== '' && a !== undefined && a.length > 0 && b !== '' && b !== undefined && b.length > 0 && c !== '' && c !== undefined && c.length > 0 && d !== '' && d !== undefined && d.length > 0 && e !== '' && e !== undefined && e.length > 0 && vala !== '' && vala !== undefined && vala.length > 0) { vala[0].value == '1' && (a[0].value == '2' && b[0].value == '2' && c[0].value == '2' && d[0].value == '2' && e[0].value == '2') }",
+                    "message":"R1012b1; R1012b2; R1012b3; R1012b4; R1012b5 semua kode 0, tetapi R1012a=1",
+                    "type":2
+                }
+
+            ]
+        },
+        {
+            "dataKey":"l2_r1012b_5",
+            "componentValidation":["l2_r1012b_1", "l2_r1012b_2", "l2_r1012b_3", "l2_r1012b_4", "l2_r1012b_5", "l2_r1012a"],
+            "validations": [
+                {
+                    "test":"let row0 = getRowIndex(0); let row1 = getRowIndex(1); let a = getValue('l2_r1012b_1#'+row0); let b = getValue('l2_r1012b_2#'+row0); let c = getValue('l2_r1012b_3#'+row0); let d = getValue('l2_r1012b_4#'+row0); let e = getValue('l2_r1012b_5#'+row0); let vala = getValue('l2_r1012a#'+row0); if (a !== '' && a !== undefined && a.length > 0 && b !== '' && b !== undefined && b.length > 0 && c !== '' && c !== undefined && c.length > 0 && d !== '' && d !== undefined && d.length > 0 && e !== '' && e !== undefined && e.length > 0 && vala !== '' && vala !== undefined && vala.length > 0) { vala[0].value == '1' && (a[0].value == '2' && b[0].value == '2' && c[0].value == '2' && d[0].value == '2' && e[0].value == '2') }",
+                    "message":"R1012b1; R1012b2; R1012b3; R1012b4; R1012b5 semua kode 0, tetapi R1012a=1",
+                    "type":2
+                }
+
+            ]
+        },
+        {
+            "dataKey":"l2_catatan",
+            "componentValidation":["l2_catatan"],
+            "validations": [
+                {
+                    "test":"let catatan = getValue('l2_catatan'); if (catatan !== '' && catatan.length > 0) { catatan.length == 1 && catatan !== '-' }",
+                    "message":"Catatan belum ada isian",
+                    "type":2
+                }
+
+            ]
+        }
+
+
+    ]
+ }
+  

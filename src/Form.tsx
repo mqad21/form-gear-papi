@@ -1,4 +1,4 @@
-import { createSignal, createEffect, Component, For, Show, Switch, Match } from "solid-js";
+import { createSignal, createEffect, Component, For, Show, Switch, Match, createRenderEffect } from "solid-js";
 import { useForm } from "./FormProvider";
 import FormComponent from './FormComponent';
 import { gearVersion, templateVersion, validationVersion } from "./FormGear"
@@ -326,9 +326,9 @@ const Form: Component<{
 
     document.getElementById("FormGear-loader").classList.add('hidden')
 
-    refocusLastSelector()
-
+    setTimeout(refocusLastSelector, 200)
   })
+
 
   const toggleSwitch = (event: MouseEvent) => {
     document.documentElement.classList.toggle('dark');
@@ -1420,6 +1420,8 @@ const Form: Component<{
                   </div>
                 </div>
 
+                <input onFocus={previousPage} class="hidden-input h-0 bg-transparent border-0 outline-0 focus:outline-0 focus:border-0 focus:ring-0 caret-transparent" />
+
                 <FormComponent
                   onMobile={onMobile()}
                   components={components()}
@@ -1433,6 +1435,9 @@ const Form: Component<{
                   openMap={props.openMap}
                   setResponseMobile={props.setResponseMobile}
                 />
+
+                <input onFocus={nextPage} class="hidden-input h-0 bg-transparent border-0 outline-0 focus:outline-0 focus:border-0 focus:ring-0 caret-transparent" />
+
 
                 <div class="grid grid-cols-6 sticky w-full justify-end bottom-12 mt-10"
                   classList={{

@@ -1,0 +1,111 @@
+{
+    "description":"preset_lfsp2020_c2_1",
+    "dataKey":"preset_lfsp2020_c2_1",
+    "predata":[
+        {
+          "dataKey": "provinsi",
+          "answer": [
+              {
+                  "value": "32",
+                  "label": "[32] JAWA BARAT"                    
+              }
+          ]
+       },
+       {
+          "dataKey":"kabupaten",
+          "answer": [
+             {
+                 "value": "3201",
+                 "label": "[01] BOGOR"                    
+             }
+         ]
+       },
+       {
+          "dataKey":"kecamatan",
+          "answer": [
+             {
+                 "value": "3201140",
+                 "label": "[140] BABAKAN"                 
+             }
+         ]
+       },
+       {
+          "dataKey":"desa",
+          "answer": [
+             {
+                 "value": "3201140006",
+                 "label": "[006] CITARINGGUL"                 
+             }
+         ]
+       },
+       {
+          "dataKey":"klasifikasi_desa",
+          "answer": [
+             {
+                 "value": "1",
+                 "label": "1. Perkotaan"                  
+             }
+         ]
+       },
+       {
+          "dataKey":"nks",
+          "answer": [
+             {
+                 "value": "12345",
+                 "label": "12345"                    
+             }
+         ]
+       },
+       {
+          "dataKey":"nobs",
+          "answer": [
+             {
+                 "value": "003B",
+                 "label": "003B"                    
+             }
+         ]
+       },
+       {
+          "dataKey":"nobang",
+          "answer": [
+             {
+                 "value": "016",
+                 "label": "016"                    
+             }
+         ]
+       },          
+       {
+          "dataKey":"nus",
+          "answer": [
+             {
+                 "value": "16",
+                 "label": "16"                   
+             }
+         ]
+       },
+       {
+          "dataKey":"alamat",
+          "answer": "RT 004 RW 001"                               
+       },
+       {
+          "dataKey":"nama_krt",
+          "answer": "YANTI" 
+       },
+       {
+          "dataKey":"jml_art",
+          "answer": "5"
+       },
+       {
+          "dataKey":"nama_kontak",
+          "answer": "YANTI"
+       },
+       {
+          "dataKey":"telp_kontak",
+          "answer": "0811234582"
+       },
+       {
+          "dataKey":"email_kontak",
+          "answer": "YANT@gmail.com"
+       }
+    ]
+ }

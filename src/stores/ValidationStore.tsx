@@ -7,7 +7,7 @@ type TestFunction = {
     componentValidation?: string[]
 }
 
-type ValidationDetail = {
+export type ValidationDetail = {
     description: string;
     dataKey: string;
     version: string;

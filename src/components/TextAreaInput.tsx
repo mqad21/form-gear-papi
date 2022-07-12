@@ -1,6 +1,7 @@
 import { createSignal, For, Match, Show, Switch } from "solid-js"
 import { FormComponentBase } from "../FormType"
-import { handleInputFocus } from "../Event"
+import { handleInputFocus, handleInputKeyDown } from "../Event"
+import { ClientMode } from "../Constant"
 
 const TextAreaInput: FormComponentBase = props => {
   const config = props.config
@@ -13,7 +14,7 @@ const TextAreaInput: FormComponentBase = props => {
     (instruction()) ? setInstruction(false) : setInstruction(true);
   }
 
-  const [enableRemark] = createSignal(props.component.enableRemark !== undefined ? props.component.enableRemark : true);
+  const [enableRemark] = createSignal((props.component.enableRemark !== undefined ? props.component.enableRemark : true) && config.clientMode != ClientMode.PAPI);
   const [disableClickRemark] = createSignal((config.formMode > 2 && props.comments == 0) ? true : false);
 
   return (
@@ -55,7 +56,8 @@ const TextAreaInput: FormComponentBase = props => {
                 ' border-pink-600 dark:bg-pink-100 ': props.classValidation === 2,
               }}
               disabled={disableInput()}
-              onFocus={handleInputFocus}
+              onFocus={(e) => handleInputFocus(e, props)}
+              onKeyDown={(e) => handleInputKeyDown(e, props)}
               onChange={(e) => {
                 props.onValueChange(e.currentTarget.value)
               }}
@@ -74,6 +76,8 @@ const TextAreaInput: FormComponentBase = props => {
               onChange={(e) => {
                 props.onValueChange(e.currentTarget.value)
               }}
+              onKeyDown={(e) => handleInputKeyDown(e, props)}
+              onFocus={(e) => handleInputFocus(e, props)}
               maxlength={props.component.lengthInput[0].maxlength !== undefined ? props.component.lengthInput[0].maxlength : ''}
               minlength={props.component.lengthInput[0].minlength !== undefined ? props.component.lengthInput[0].minlength : ''}
             />

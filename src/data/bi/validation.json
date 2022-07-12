@@ -1,0 +1,116 @@
+{
+    "description":"Survey Cinta Bangga Paham Rupiah 2022",
+    "dataKey":"bi-cbp-2022",
+    "version":"0.1.0",
+    "testFunctions":[
+        {
+            "dataKey": "demografi_hubungan_krt",
+            "componentValidation": [
+                "demografi_hubungan_krt",
+                "demografi_no_urut_art",
+                "demografi_nama_art",
+                "nama_krt"
+            ],
+            "validations": [
+                {
+                    "test": "let row0 = getRowIndex(0); let hub_krt = getValue('demografi_hubungan_krt#'+row0); if(hub_krt.length > 0) { Number(hub_krt[0].value) > 1 && Number(getValue('demografi_no_urut_art#'+row0)) == 1 }",
+                    "message": "KRT harus ART dengan No Urut 1",
+                    "type": 2
+                },
+                {
+                    "test": "let row0 = getRowIndex(0); let hub_krt = getValue('demografi_hubungan_krt#'+row0); if(hub_krt.length > 0 && Number(hub_krt[0].value) == 1) { getValue('demografi_nama_art#'+row0) !== getValue('nama_krt') }",
+                    "message": "Nama KRT harus sama dengan Blok I Rincian 7",
+                    "type": 2
+                },
+                {
+                    "test": "let row0 = getRowIndex(0); let hub_krt = getValue('demografi_hubungan_krt#'+row0); if(hub_krt.length > 0) { Number(hub_krt[0].value) == 1 && Number(getValue('demografi_no_urut_art#'+row0)) > 1 }",
+                    "message": "ART dengan No Urut bukan 1 tidak diperkenankan dijadikan KRT",
+                    "type": 2
+                }
+            ]
+        },
+        {
+            "dataKey": "demografi_usia",
+            "componentValidation": [
+                "demografi_status_perkawinan",
+                "demografi_usia"
+            ],
+            "validations": [
+                {
+                    "test": "let row0 = getRowIndex(0); let kawin = getValue('demografi_status_perkawinan#'+row0); if(kawin.length > 0) { let usia = getValue('demografi_usia#'+row0); Number(kawin[0].value) == 2 && Number(usia) < 18 }",
+                    "message": "Jika kolom 6 (umur) berisi dibawah 18 tahun dan isian kol 5 (status perkawinan) berkode 2 (kawin), maka warning",
+                    "type": 1
+                },
+                {
+                    "test": "let row0 = getRowIndex(0); let kawin = getValue('demografi_status_perkawinan#'+row0); if(kawin.length > 0) { let usia = getValue('demografi_usia#'+row0); Number(kawin[0].value) >= 2 && Number(usia) < 10 }",
+                    "message": "Jika kol 4 (status perkawinan) berkode 2,3 atau 4 dan usia kurang dari 10 maka perlu cek kembali (warning keras)",
+                    "type": 1
+                }
+            ]
+        },
+        {
+            "dataKey": "demografi_partisipasi_sekolah",
+            "componentValidation": [
+                "demografi_partisipasi_sekolah",
+                "demografi_usia"
+            ],
+            "validations": [
+                {
+                    "test": "let row0 = getRowIndex(0); let partisipasi = getValue('demografi_partisipasi_sekolah#'+row0); if(partisipasi.length > 0) { let usia = getValue('demografi_usia#'+row0); Number(partisipasi[0].value) > 1 && Number(usia) < 5 }",
+                    "message": "Jika kolom 6 (umur) berisi dibawah 5 tahun isian kol 7 berkode 1, jika berkode 2 atau 3 maka warning",
+                    "type": 1
+                }
+            ]
+        },
+        {
+            "dataKey": "demografi_jenjang_pendidikan",
+            "componentValidation": [
+                "demografi_jenjang_pendidikan",
+                "demografi_usia"
+            ],
+            "validations": [
+                {
+                    "test": "let row0 = getRowIndex(0); let jenjang = getValue('demografi_jenjang_pendidikan#'+row0); if(jenjang.length > 0) { let usia = getValue('demografi_usia#'+row0); Number(jenjang[0].value) >= 3 && Number(usia) < 15 }",
+                    "message": "Jika kolom 6 (umur) bernilai dibawah 15 dan isian kolom 8 berkode 3 atau 4 maka warning",
+                    "type": 1
+                }
+            ]
+        },
+        {
+            "dataKey": "demografi_ijasah",
+            "componentValidation": [
+                "demografi_ijasah",
+                "demografi_partisipasi_sekolah",
+                "demografi_jenjang_pendidikan"
+            ],
+            "validations": [
+                {
+                    "test": "let row0 = getRowIndex(0); let ijasah = getValue('demografi_ijasah#'+row0); let partisipasi = getValue('demografi_partisipasi_sekolah#'+row0); if(ijasah.length > 0 && partisipasi.length > 0) { Number(partisipasi[0].value) == 1 && Number(ijasah[0].value) > 1 }",
+                    "message": "Jika isian kol 7 (partisipasi) berkode 1 maka isian kol 10 harus berkode 1",
+                    "type": 2
+                },
+                {
+                    "test": "let row0 = getRowIndex(0); let ijasah = getValue('demografi_ijasah#'+row0); let jenjang = getValue('demografi_jenjang_pendidikan#'+row0); if(ijasah.length > 0 && jenjang.length > 0) { Number(jenjang[0].value) == 1 && Number(ijasah[0].value) > 2 }",
+                    "message": "Jika isian kol 8 (jenjang) berkode 1 (SD) maka isian kol 10 harus berkode 1 atau 2",
+                    "type": 2
+                },
+                {
+                    "test": "let row0 = getRowIndex(0); let ijasah = getValue('demografi_ijasah#'+row0); let jenjang = getValue('demografi_jenjang_pendidikan#'+row0); if(ijasah.length > 0 && jenjang.length > 0) { Number(jenjang[0].value) == 2 && (Number(ijasah[0].value) == 1 || Number(ijasah[0].value) > 3) }",
+                    "message": "Jika isian kol 8 (jenjang) berkode 2 (SMP) maka isian kol 10 harus berkode 2 atau 3",
+                    "type": 2
+                },
+                {
+                    "test": "let row0 = getRowIndex(0); let ijasah = getValue('demografi_ijasah#'+row0); let jenjang = getValue('demografi_jenjang_pendidikan#'+row0); if(ijasah.length > 0 && jenjang.length > 0) { Number(jenjang[0].value) == 3 && (Number(ijasah[0].value) < 3 || Number(ijasah[0].value) == 5) }",
+                    "message": "Jika isian kol 8 (jenjang) berkode 3 (SMA) maka isian kol 10 harus berkode 3 atau 4",
+                    "type": 2
+                },
+                {
+                    "test": "let row0 = getRowIndex(0); let ijasah = getValue('demografi_ijasah#'+row0); let jenjang = getValue('demografi_jenjang_pendidikan#'+row0); if(ijasah.length > 0 && jenjang.length > 0) { Number(jenjang[0].value) == 4 && Number(ijasah[0].value) < 4 }",
+                    "message": "Jika isian kol 8 (jenjang) berkode 4 (D1+) maka isian kol 10 harus berkode 4 atau 5",
+                    "type": 2
+                }
+            ]
+        }
+    ]
+ }
+  

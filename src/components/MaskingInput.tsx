@@ -1,6 +1,8 @@
 import { createSignal, createEffect, For, Show, Switch, Match } from "solid-js"
 import { FormComponentBase } from "../FormType"
 import { createInputMask } from "@solid-primitives/input-mask"
+import { ClientMode } from "../Constant"
+import { handleInputFocus, handleInputKeyDown } from "../Event"
 
 const MaskingInput: FormComponentBase = props => {
   const config = props.config
@@ -40,7 +42,7 @@ const MaskingInput: FormComponentBase = props => {
     (instruction()) ? setInstruction(false) : setInstruction(true);
   }
 
-  const [enableRemark] = createSignal(props.component.enableRemark !== undefined ? props.component.enableRemark : true);
+  const [enableRemark] = createSignal((props.component.enableRemark !== undefined ? props.component.enableRemark : true) && config.clientMode != ClientMode.PAPI);
   const [disableClickRemark] = createSignal((config.formMode > 2  && props.comments == 0 ) ? true : false);
 
   return (
@@ -78,6 +80,8 @@ const MaskingInput: FormComponentBase = props => {
               class={ classInput } 
               placeholder={props.component.maskingFormat.replace(/[a]/g, '__').replace(/[9]/g, '#')}
               disabled = { disableInput() }
+              onKeyDown={(e) => handleInputKeyDown(e, props)}
+              onFocus={(e) => handleInputFocus(e, props)}
               onChange={(e) => handleOnChange(e.currentTarget.value)} 
               onclick={formatMask} oninput={formatMask} onpaste={formatMask} 
           />
