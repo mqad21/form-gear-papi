@@ -47,7 +47,8 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
   })
   
   try{
-    if (config.clientMode = ClientMode.PAPI) {
+    if (config.clientMode == ClientMode.PAPI) {
+      console.log('da');
       [templateFetch, validationFetch] = transformToPapi(templateFetch, validationFetch)
     }
 
