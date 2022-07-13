@@ -97,7 +97,7 @@ const RadioInput: FormComponentBase = props => {
 									<For each={options()}>
 										{(item, index) => (
 											<div class="font-light text-sm space-x-2 py-2.5 px-4 grid grid-cols-12" onClick={e => handleLabelClick(index())}>
-												<div class="col-span-1">
+												<div class="col-span-1 text-center">
 													<label class="cursor-pointer text-sm" for={props.component.dataKey + index()}>
 														<input type="radio" checked={settedValue === item.value}
 															class="checked:disabled:bg-gray-500 checked:dark:disabled:bg-gray-300 disabled:bg-gray-200 dark:disabled:bg-gray-700 dark:disabled:text-gray-400"
