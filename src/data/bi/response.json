@@ -64,11 +64,43 @@
             "answer": "Setyadi"
         },
         {
+            "dataKey": "alamat",
+            "answer": "Jalan Sesama"
+        },
+        {
+            "dataKey": "no_hp_responden",
+            "answer": "+62 812 6074 3660"
+        },
+        {
+            "dataKey": "nama_pencacah",
+            "answer": "Qadri"
+        },
+        {
+            "dataKey": "nama_pengawas",
+            "answer": "Febi"
+        },
+        {
+            "dataKey": "tgl_pencacahan",
+            "answer": "2000-02-29"
+        },
+        {
+            "dataKey": "no_hp_pencacah",
+            "answer": "+62 812 6074 3660"
+        },
+        {
+            "dataKey": "no_hp_pengawas",
+            "answer": "+62 812 6074 3660"
+        },
+        {
             "dataKey": "nama_art",
             "answer": [
                 {
-                    "label": "lastId#2",
+                    "label": "lastId#3",
                     "value": "0"
+                },
+                {
+                    "value": 3,
+                    "label": "Setyadi"
                 }
             ]
         },
@@ -110,6 +142,90 @@
             ]
         },
         {
+            "dataKey": "demografi_no_urut_art#3",
+            "answer": 1
+        },
+        {
+            "dataKey": "demografi_nama_art#3",
+            "answer": "Setyadi"
+        },
+        {
+            "dataKey": "demografi_hubungan_krt#3",
+            "answer": [
+                {
+                    "value": "1",
+                    "label": "1  -  KRT"
+                }
+            ]
+        },
+        {
+            "dataKey": "demografi_jk#3",
+            "answer": [
+                {
+                    "value": "1",
+                    "label": "1  -  Laki-laki"
+                }
+            ]
+        },
+        {
+            "dataKey": "demografi_status_perkawinan#3",
+            "answer": [
+                {
+                    "value": "1",
+                    "label": "1  -  Belum Kawin"
+                }
+            ]
+        },
+        {
+            "dataKey": "demografi_usia#3",
+            "answer": []
+        },
+        {
+            "dataKey": "demografi_partisipasi_sekolah#3",
+            "answer": []
+        },
+        {
+            "dataKey": "kelas#3",
+            "answer": [
+                {
+                    "label": "1  -  Kelas 1",
+                    "value": "1"
+                },
+                {
+                    "label": "2  -  Kelas 2",
+                    "value": "2"
+                },
+                {
+                    "label": "3  -  Kelas 3",
+                    "value": "3"
+                },
+                {
+                    "label": "4  -  Kelas 4",
+                    "value": "4"
+                },
+                {
+                    "label": "5  -  Kelas 5",
+                    "value": "5"
+                },
+                {
+                    "label": "6  -  Kelas 6",
+                    "value": "6"
+                },
+                {
+                    "label": "7  -  Kelas 7",
+                    "value": "7"
+                },
+                {
+                    "label": "8  -  Tamat",
+                    "value": "8"
+                }
+            ]
+        },
+        {
+            "dataKey": "demografi_seminggu_lalu#3",
+            "answer": []
+        },
+        {
             "dataKey": "ibu_rumahtangga",
             "answer": []
         },
@@ -120,384 +236,27 @@
         {
             "dataKey": "anak_rumahtangga",
             "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_C_pengetahuan_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_C_pengetahuan_2#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_C_pengetahuan_3#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_C_pengetahuan_4#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_C_pengetahuan_5#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_C_perilaku_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_C_perilaku_2#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_C_perilaku_3#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_C_perilaku_4#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_B_pengetahuan_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_B_pengetahuan_2#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_B_pengetahuan_3#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_B_pengetahuan_4#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_B_pengetahuan_5#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_B_pengetahuan_6#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_B_pengetahuan_7#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_B_pengetahuan_8#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_B_perilaku_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_B_perilaku_2#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_B_perilaku_3#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_B_perilaku_4#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_B_perilaku_5#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_B_perilaku_6#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_B_perilaku_7#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_B_perilaku_8#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_B_perilaku_9#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_A_pengetahuan_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_A_pengetahuan_2#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_A_pengetahuan_3#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_A_pengetahuan_4#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_A_perilaku_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_A_perilaku_2#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4a_A_perilaku_3#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_C_pengetahuan_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_C_pengetahuan_2#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_C_pengetahuan_3#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_C_pengetahuan_4#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_C_pengetahuan_5#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_C_perilaku_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_C_perilaku_2#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_C_perilaku_3#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_B_pengetahuan_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_B_pengetahuan_2#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_B_pengetahuan_3#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_B_pengetahuan_4#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_B_perilaku_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_B_perilaku_2#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_B_perilaku_3#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_A_pengetahuan_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_A_pengetahuan_2#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_A_pengetahuan_3#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_A_perilaku_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_A_perilaku_2#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4b_A_perilaku_3#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_C_pengetahuan_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_C_pengetahuan_2#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_C_pengetahuan_3#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_C_pengetahuan_4#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_C_pengetahuan_5#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_C_perilaku_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_C_perilaku_2#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_C_perilaku_3#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_C_perilaku_4#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_C_perilaku_5#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_B_pengetahuan_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_B_pengetahuan_2#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_B_pengetahuan_3#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_B_pengetahuan_4#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_B_pengetahuan_5#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_B_perilaku_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_B_perilaku_2#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_B_perilaku_3#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_B_perilaku_4#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_A_pengetahuan_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_A_pengetahuan_2#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_A_pengetahuan_3#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_A_pengetahuan_4#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_A_pengetahuan_5#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_A_pengetahuan_6#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_A_pengetahuan_7#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_A_pengetahuan_8#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_A_perilaku_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_A_perilaku_2#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_A_perilaku_3#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_A_perilaku_4#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_A_perilaku_5#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b4c_A_perilaku_6#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b5_1#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b5_5#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b5_6#1",
-            "answer": []
-        },
-        {
-            "dataKey": "ibu_b5_7#1",
-            "answer": []
         }
     ],
     "templateVersion": "0.1.3",
     "validationVersion": "0.1.0",
-    "docState": "E",
-    "createdAt": "",
+    "docState": "C",
+    "createdAt": "2022-07-12 10:43:40",
     "createdBy": "AdityaSetyadi",
     "editedBy": "AdityaSetyadi",
     "lastUpdated": "2022-05-29 19:45:12",
     "summary": {
-        "answer": 97,
-        "blank": 11,
+        "answer": 19,
+        "blank": 3,
         "error": 0,
         "remark": 0
     },
-    "updatedAt": "2022-06-24 12:37:27"
+    "updatedAt": "2022-07-13 09:00:45",
+    "templateDataKey": "bi-cbp-2022",
+    "gearVersion": "1.0.2",
+    "updatedBy": "AdityaSetyadi",
+    "createdAtTimezone": "Asia/Bangkok",
+    "createdAtGMT": 7,
+    "updatedAtTimezone": "Asia/Bangkok",
+    "updatedAtGMT": 7
 }

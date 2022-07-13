@@ -9330,14 +9330,12 @@
                      "label":"<div class=\"text-left flex pl-4\" ><p></p><p class=\"ml-6\">Koordinat lokasi</p></div>",
                      "dataKey":"location",
                      "enableRemark":false,
-                     "required":true,
                      "type":33
                   },
                   {
                      "label":"<div class=\"text-left flex pl-4\" ><p>  </p><p class=\"ml-6\">Foto responden dengan souvenir</p></div>",
                      "dataKey":"responden_photo",
                      "enableRemark":false,
-                     "required":true,
                      "client":2,
                      "type":32
                   }

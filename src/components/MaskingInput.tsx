@@ -45,6 +45,7 @@ const MaskingInput: FormComponentBase = props => {
   const [enableRemark] = createSignal((props.component.enableRemark !== undefined ? props.component.enableRemark : true) && config.clientMode != ClientMode.PAPI);
   const [disableClickRemark] = createSignal((config.formMode > 2  && props.comments == 0 ) ? true : false);
 
+
   return (
     <div class="md:grid md:grid-cols-3 border-b border-gray-300/[.40] dark:border-gray-200/[.10] p-2">
       <div class="font-light text-sm space-y-2 py-2.5 px-2">

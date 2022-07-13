@@ -1,7 +1,7 @@
 import { createSignal, Show, For, Switch, Match } from "solid-js"
 import { ClientMode } from "../Constant"
 import { FormComponentBase } from "../FormType"
-import { handleInputFocus } from "../Event"
+import { handleInputFocus, handleInputKeyDown } from "../Event"
 
 const NumberInput: FormComponentBase = props => {
   const config = props.config
@@ -61,7 +61,7 @@ const NumberInput: FormComponentBase = props => {
                 props.onValueChange(e.currentTarget.value);
               }}
               onFocus={(e) => handleInputFocus(e, props)}
-            />
+              onKeyDown={(e) => handleInputKeyDown(e, props)} />
           </Show>
           <Show when={props.component.lengthInput !== undefined && props.component.lengthInput.length > 0}>
             <input value={props.value} type="number"
@@ -77,6 +77,8 @@ const NumberInput: FormComponentBase = props => {
               onChange={(e) => {
                 props.onValueChange(e.currentTarget.value);
               }}
+              onFocus={(e) => handleInputFocus(e, props)}
+              onKeyDown={(e) => handleInputKeyDown(e, props)}
               oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
               maxlength={props.component.lengthInput[0].maxlength !== undefined ? props.component.lengthInput[0].maxlength : ''}
               minlength={props.component.lengthInput[0].minlength !== undefined ? props.component.lengthInput[0].minlength : ''}

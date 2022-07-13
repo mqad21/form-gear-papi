@@ -2,7 +2,7 @@ import { For, Show, Match, Switch, createMemo, createSignal, createEffect } from
 import { ClientMode } from "../Constant";
 import { FormComponentBase, Option } from "../FormType";
 import { handleInputFocus, handleInputKeyDown } from "../Event"
-import { reference, setReference } from '../stores/ReferenceStore';
+import { reference } from '../stores/ReferenceStore';
 import { cleanLabel } from "../GlobalFunction";
 
 const RadioInput: FormComponentBase = props => {
@@ -200,7 +200,7 @@ const RadioInput: FormComponentBase = props => {
 					</div>
 				</div>
 			</Show>
-			<Show when={config.clientMode == ClientMode.CAPI}>
+			<Show when={config.clientMode != ClientMode.PAPI}>
 				<div class="grid md:grid-cols-3 border-b border-gray-300/[.50] dark:border-gray-200/[.10] p-2">
 					<div class="font-light text-sm space-y-2 py-2.5 px-2">
 						<div class="inline-flex space-x-2">

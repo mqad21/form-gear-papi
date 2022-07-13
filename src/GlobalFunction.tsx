@@ -1359,6 +1359,7 @@ export function reloadDataFromHistory() {
 export const transformToPapi = (template: TemplateDetail, validation: ValidationDetail) => {
     const toggleInputs = []
     const radioInputs = []
+    const dateInputs = []
 
     template.components[0].forEach((components: any, index1) => {
         components.components[0].forEach((component: Component, index2) => {
@@ -1372,11 +1373,15 @@ export const transformToPapi = (template: TemplateDetail, validation: Validation
                     break;
                 case ControlType.RadioInput:
                     radioInputs.push(input)
+                    break;
+                case ControlType.DateInput:
+                    dateInputs.push(input)
+
             }
         })
     })
 
-    const transformInput = (sourceInputs: any[], targetType: ControlType, validationGenerator: (component) => any[]) => {
+    const transformInput = (sourceInputs: any[], validationGenerator: (component) => any[]) => {
         sourceInputs.forEach((input: any) => {
             const validations = validationGenerator(input.component)
             validation.testFunctions.push({
@@ -1387,12 +1392,22 @@ export const transformToPapi = (template: TemplateDetail, validation: Validation
         })
     }
 
-    transformInput(radioInputs, ControlType.TextInput, (component: any) => {
+    transformInput(radioInputs, (component: any) => {
         const { messageValue, testValue } = getOptionValue(component.options)
         return [
             {
                 message: `Value must be ${messageValue}`,
                 test: `let val = getValue('${component.dataKey}'); console.log('val',val[0]); if(val[0] != undefined) ${testValue}.includes(val[0].value) == false;`,
+                type: 2
+            }
+        ]
+    })
+
+    transformInput(dateInputs, (component: any) => {
+        return [
+            {
+                message: `Invalid date`,
+                test: `let val = getValue('${component.dataKey}'); !validateDateString(val)`,
                 type: 2
             }
         ]
@@ -1414,9 +1429,19 @@ export const joinWords = (words: any[], delimiter: String, conjunction: String) 
 }
 
 export const cleanLabel = (label: String) => {
-    const splitted = label.split(".")
-    splitted.shift()
-    return splitted.join(".")
+    if (label.includes("-")) {
+        var splitchar = "-"
+    } else if (label.includes(".")) {
+        var splitchar = "."
+    }
+
+    if (splitchar) {
+        const splitted = label.split(splitchar)
+        splitted.shift()
+        return splitted.join(splitchar).trim()
+    }
+
+    return label
 }
 
 export const getQuerySelector = (elem) => {
@@ -1501,7 +1526,6 @@ export const saveCurrentFocus = () => {
 
 export const focusFirstInput = () => {
     const elem = document.querySelector("input:not(.hidden-input):not(:disabled),textarea:not(.hidden-input):not(:disabled)") as HTMLElement
-    console.log("firtsElem", elem)
     elem?.focus()
     return elem
 }
@@ -1509,7 +1533,6 @@ export const focusFirstInput = () => {
 export const refocusLastSelector = () => {
     const lastSelector = localStorage.getItem(LocalStorageKey.LAST_SELECTOR)
     const lastElement = document.querySelector(lastSelector + ":not(:disabled)") as HTMLElement
-    console.log("lastElem", lastElement)
     if (lastElement) {
         lastElement.focus()
     } else {
@@ -1595,4 +1618,13 @@ export const getUpdatedRef = (dataKey: String) => {
     const refPosition = reference.details.findIndex(obj => obj.dataKey === dataKey);
     const updatedRef = JSON.parse(JSON.stringify(reference.details[refPosition]));
     return { refPosition, updatedRef }
+}
+
+export const validateDateString = (date: String): Boolean => {
+    const dateObject = new Date(date)
+    const isValidDate =
+        dateObject.toString() != "Invalid Date"
+        && !isNaN(dateObject)
+        && dateObject.toISOString().split("T")[0] === date
+    return isValidDate
 }

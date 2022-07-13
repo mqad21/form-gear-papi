@@ -17,7 +17,7 @@ import { locale, setLocale } from './stores/LocaleStore';
 import { summary, setSummary } from './stores/SummaryStore';
 import { useLoaderDispatch } from "./loader/FormLoaderProvider"
 
-import { saveAnswer, setEnableFalse, runValidation, referenceIndexLookup, refocusLastSelector } from "./GlobalFunction";
+import { saveAnswer, setEnableFalse, runValidation, referenceIndexLookup, refocusLastSelector, validateDateString } from "./GlobalFunction";
 import { toastInfo } from "./FormInput";
 
 import { referenceHistoryEnable, setReferenceHistoryEnable } from './stores/ReferenceStore';
@@ -152,7 +152,6 @@ const Form: Component<{
         return ((splLength - reducer) < 1) ? Number(splitDataKey[1]) : Number(splitDataKey[splLength - reducer]);
       }
       const [rowIndex, setRowIndex] = createSignal(getRowIndex(0));
-
       let answer = eval(element.expression);
       saveAnswer(element.dataKey, 'answer', answer, sidePosition, { 'clientMode': getProp('clientMode'), 'baseUrl': getProp('baseUrl') });
     })
