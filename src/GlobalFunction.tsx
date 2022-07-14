@@ -1,4 +1,4 @@
-import { reference, referenceEnableFalse, setReference, setReferenceEnableFalse } from './stores/ReferenceStore';
+import { Detail as ReferenceDetail, reference, referenceEnableFalse, setReference, setReferenceEnableFalse } from './stores/ReferenceStore';
 import { referenceMap, setReferenceMap } from './stores/ReferenceStore';
 import { sidebarIndexMap, setSidebarIndexMap } from './stores/ReferenceStore';
 import { referenceHistoryEnable, setReferenceHistoryEnable } from './stores/ReferenceStore';
@@ -9,7 +9,7 @@ import { compValidMap, setCompValidMap } from './stores/ReferenceStore';
 import { compSourceOptionMap, setCompSourceOptionMap } from './stores/ReferenceStore';
 import { compVarMap, setCompVarMap } from './stores/ReferenceStore';
 import { compSourceQuestionMap, setCompSourceQuestionMap } from './stores/ReferenceStore';
-import { validation, setValidation, ValidationDetail } from './stores/ValidationStore';
+import { validation, setValidation, Detail as ValidationDetail, TestFunction } from './stores/ValidationStore';
 import { sidebar, setSidebar } from './stores/SidebarStore';
 import { preset, setPreset, Preset } from './stores/PresetStore';
 import { response, setResponse, Response } from './stores/ResponseStore';
@@ -18,10 +18,10 @@ import { note, setNote } from './stores/NoteStore';
 import { createSignal, batch } from 'solid-js';
 import { locale, setLocale } from './stores/LocaleStore';
 import { getConfig } from './Form';
-import { template, setTemplate, Questionnaire, TemplateDetail, Component } from './stores/TemplateStore';
+import { template, setTemplate, Questionnaire, Detail as TemplateDetail, Component } from './stores/TemplateStore';
 
 import Toastify from 'toastify-js'
-import { LocalStorageKey } from './Constant';
+import { ClientMode, LocalStorageKey } from './Constant';
 import { ControlType } from './FormType';
 
 export const default_eval_enable = true
@@ -1356,18 +1356,44 @@ export function reloadDataFromHistory() {
     }).showToast();
 }
 
-export const transformToPapi = (template: TemplateDetail, validation: ValidationDetail) => {
-    const toggleInputs = []
-    const radioInputs = []
-    const dateInputs = []
+export const getPapiVal = (element) => {
+    switch (element.type) {
+        case ControlType.RadioInput:
+            const { messageValue, testValue } = getOptionValue(element.options)
+            return [
+                {
+                    message: `Value must be ${messageValue}`,
+                    test: `let val = getValue('${element.dataKey}'); console.log('val',val[0]); if(val[0] != undefined) ${testValue}.includes(val[0].value) == false;`,
+                    type: 2
+                },
+                element.dataKey
+            ]
+        default:
+            return []
+    }
+}
 
-    template.components[0].forEach((components: any, index1) => {
-        components.components[0].forEach((component: Component, index2) => {
+export const transformToPapi = (referenceList: ReferenceDetail[]) => {
+    try {
+        const toggleInputs = []
+        const radioInputs = []
+        const dateInputs = []
+
+
+        const transformInput = (sourceInputs: any[], validationGenerator: (component) => any[]) => {
+            sourceInputs.forEach((input: any) => {
+                const validations = validationGenerator(input.reference)
+                referenceList[input.index].validations = validations
+                referenceList[input.index].componentValidation = [input.reference.dataKey]
+            })
+        }
+
+        referenceList.forEach((reference: ReferenceDetail, index) => {
             const input = {
-                index: [index1, index2],
-                component
+                index,
+                reference
             }
-            switch (component.type) {
+            switch (reference.type) {
                 case ControlType.ToggleInput:
                     toggleInputs.push(input)
                     break;
@@ -1376,48 +1402,42 @@ export const transformToPapi = (template: TemplateDetail, validation: Validation
                     break;
                 case ControlType.DateInput:
                     dateInputs.push(input)
-
             }
         })
-    })
 
-    const transformInput = (sourceInputs: any[], validationGenerator: (component) => any[]) => {
-        sourceInputs.forEach((input: any) => {
-            const validations = validationGenerator(input.component)
-            validation.testFunctions.push({
-                dataKey: input.component.dataKey,
-                validations,
-                componentValidation: [input.component.dataKey]
-            })
+        transformInput(radioInputs, (component: any) => {
+            const { messageValue, testValue } = getOptionValue(component.options)
+            return [
+                {
+                    message: `Value must be ${messageValue}`,
+                    test: `let val = getValue('${component.dataKey}'); console.log('val',val[0]); if(val[0] != undefined) ${testValue}.includes(val[0].value) == false;`,
+                    type: 2
+                }
+            ]
         })
+
+        console.log("radioInputs", radioInputs)
+
+        // transformInput(dateInputs, (component: any) => {
+        //     return [
+        //         {
+        //             message: `Invalid date`,
+        //             test: `let val = getValue('${component.dataKey}'); !validateDateString(val)`,
+        //             type: 2
+        //         }
+        //     ]
+        // })
+
+        console.log("PAPI validation  ", validation)
+    } catch (e) {
+        console.error(e)
     }
 
-    transformInput(radioInputs, (component: any) => {
-        const { messageValue, testValue } = getOptionValue(component.options)
-        return [
-            {
-                message: `Value must be ${messageValue}`,
-                test: `let val = getValue('${component.dataKey}'); console.log('val',val[0]); if(val[0] != undefined) ${testValue}.includes(val[0].value) == false;`,
-                type: 2
-            }
-        ]
-    })
-
-    transformInput(dateInputs, (component: any) => {
-        return [
-            {
-                message: `Invalid date`,
-                test: `let val = getValue('${component.dataKey}'); !validateDateString(val)`,
-                type: 2
-            }
-        ]
-    })
-
-    return [template, validation]
+    return referenceList
 }
 
 export const getOptionValue = (options: any[]) => {
-    options = options.map(option => option.value)
+    options = options?.map(option => option.value) || []
     const messageValue = joinWords(options, ",", "or")
     const testValue = `[${options.map(it => `'${it}',${it}`).join(",")}]`
     return { messageValue, testValue }

@@ -28,7 +28,7 @@ export type Component = {
     disableInitial?: boolean
 }
 
-export type TemplateDetail = {
+export type Detail = {
     description: string
     dataKey: string
     acronym: string
@@ -40,7 +40,7 @@ export type TemplateDetail = {
   
 export interface Questionnaire{
     status: number
-    details: TemplateDetail
+    details: Detail
 }
 
 export const [template, setTemplate] = createStore<Questionnaire>({

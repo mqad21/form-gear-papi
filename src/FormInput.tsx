@@ -133,8 +133,6 @@ const FormInput: FormComponentBase = props => {
     setReference('sidebar', sidebar.details)
   }
 
-
-
   const onUserClick = (dataKey: string) => {
     setData();
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -149,6 +147,7 @@ const FormInput: FormComponentBase = props => {
   }
 
   const onValueChange = (value: any) => {
+
     if (form.formConfig.clientMode == ClientMode.PAPI && hasEnable(props.component.dataKey)) {
       setLoader({});
     } else if (form.formConfig.clientMode != ClientMode.PAPI) {

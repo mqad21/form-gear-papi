@@ -10,7 +10,7 @@ export type Validations = {
     type: number //1 warning 2 invalid
 }
 
-type Detail = {
+export type Detail = {
     dataKey: string
     label: string
     hint: string

@@ -1,13 +1,13 @@
 import { createStore } from "solid-js/store";
 import { Validations } from "./ReferenceStore";
 
-type TestFunction = {
+export type TestFunction = {
     dataKey: string;
     validations?: Validations[]
     componentValidation?: string[]
 }
 
-export type ValidationDetail = {
+export type Detail = {
     description: string;
     dataKey: string;
     version: string;
@@ -16,7 +16,7 @@ export type ValidationDetail = {
   
 export interface Validation{
     status: number,
-    details: ValidationDetail
+    details: Detail,
 }
 
 export const [validation, setValidation] = createStore<Validation>({
@@ -26,5 +26,5 @@ export const [validation, setValidation] = createStore<Validation>({
         dataKey: '',
         version: '',
         testFunctions: []
-    }
+    },
 });

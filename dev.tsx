@@ -24,7 +24,7 @@ var principalGear = null;
 var referenceGear = null;
 
 //JSON Object defined template
-let reference = await fetch("../src/data/reference.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
+let reference = await fetch("../src/data/bi/reference.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
 let template = await fetch("../src/data/bi/template.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
 let preset = await fetch("../src/data/bi/preset.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
 let response = await fetch("../src/data/bi/response.json").then((res) => res.json()).catch((error: Error) => { return {} }) || []
