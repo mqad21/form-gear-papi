@@ -1547,6 +1547,10 @@ export const saveCurrentFocus = () => {
 export const focusFirstInput = () => {
     const elem = document.querySelector("input:not(.hidden-input):not(:disabled),textarea:not(.hidden-input):not(:disabled)") as HTMLElement
     elem?.focus()
+    if(elem?.name != null || elem?.name != undefined){
+        var component = document.getElementById(elem?.name + "___scrollView");
+        if(component != undefined) component.scrollIntoView({ behavior: "smooth" });
+    }
     return elem
 }
 
