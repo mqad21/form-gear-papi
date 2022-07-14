@@ -45,7 +45,7 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
   Object.keys(stuff).map((key) => {
     checkJson(stuff[key], `Failed to fetch ${key} file`)
   })
-
+  
   try {
     setTemplate({ details: templateFetch });
     setPreset({ details: presetFetch });
