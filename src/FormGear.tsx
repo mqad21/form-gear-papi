@@ -267,25 +267,6 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
                   compVal = validation.details.testFunctions[valPosition].componentValidation;
                 }
 
-                // try {
-                //   if (config.clientMode == ClientMode.PAPI) {
-                //     let [papiVals, papiCompVal] = getPapiVal(element[i])
-                //     if (papiVals && papiCompVal) {
-                //       if (!vals && !compVal) {
-                //         vals = [papiVals]
-                //         compVal = [papiCompVal]
-                //       } else {
-                //         vals.push(papiVals)
-                //         compVal.push(papiCompVal)
-                //       }
-                //     }
-                //     console.log("vals", vals)
-                //     console.log("compVal", compVal)
-                //   }
-                // } catch (e) {
-                //   console.error(e)
-                // }
-
                 let hasRemark = false;
                 if (element[i].enableRemark === undefined || (element[i].enableRemark !== undefined && element[i].enableRemark)) {
                   let remarkPosition = remark.details.notes.findIndex(obj => obj.dataKey === element[i].dataKey);

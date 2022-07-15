@@ -11,6 +11,7 @@ export const handleInputFocus = (e, props) => {
 }
 
 export const handleInputKeyDown = (e, props) => {
+    console.log("key down")
     handleTabPress(e, props)
     handleEnterPress(e, props)
 }
@@ -27,6 +28,7 @@ export const handleTabPress = (e, props) => {
 
 export const handleEnterPress = (e, props) => {
     if (e.keyCode == 13) {
+        console.log("enter")
         if (e.shiftKey) {
             e.stopPropagation()
             return;
@@ -34,14 +36,12 @@ export const handleEnterPress = (e, props) => {
         e.preventDefault();
 
         const inputs =
-            Array.prototype.slice.call(document.querySelectorAll("input,textarea,select"))
+            Array.prototype.slice.call(document.querySelectorAll("input:not(:disabled),textarea:not(.hidden-input):not(:disabled)"))
         const index =
             (inputs.indexOf(document.activeElement) + 1) % inputs.length
         const input = inputs[index]
 
-        if (props.config.clientMode == ClientMode.PAPI && hasEnable(props.component.dataKey) && validation.isValidating) {
-            return
-        }
+        console.log(input)
 
         input.focus()
         input.select()

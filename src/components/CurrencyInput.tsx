@@ -1,6 +1,8 @@
 import { createSignal, For, Match, Show, Switch } from "solid-js"
 import { FormComponentBase } from "../FormType"
 import createDebounce from "@solid-primitives/debounce";
+import { ClientMode } from "../Constant";
+import { handleInputFocus, handleInputKeyDown } from "../Event";
 
 const CurrencyInput: FormComponentBase = props => {
   const config = props.config
@@ -53,7 +55,7 @@ const CurrencyInput: FormComponentBase = props => {
     (instruction()) ? setInstruction(false) : setInstruction(true);
   }
 
-  const [enableRemark] = createSignal(props.component.enableRemark !== undefined ? props.component.enableRemark : true );
+  const [enableRemark] = createSignal((props.component.enableRemark !== undefined ? props.component.enableRemark : true) && config.clientMode != ClientMode.PAPI);
   const [disableClickRemark] = createSignal((config.formMode > 2  && props.comments == 0 ) ? true : false);
 
   return (
@@ -98,6 +100,8 @@ const CurrencyInput: FormComponentBase = props => {
                 id={"currencyInput"+ props.index}
                 onkeypress={e => checkFormat(e)}
                 onkeyup={e => handleOnKeyup(e.currentTarget.value)} 
+                onFocus={e => handleInputFocus(e, props)}
+                onkeydown={e => handleInputKeyDown(e, props)}
                 max = {props.component.rangeInput ? props.component.rangeInput[0].max !== undefined ? props.component.rangeInput[0].max : '' : ''}
                 min = {props.component.rangeInput ? props.component.rangeInput[0].min !== undefined ? props.component.rangeInput[0].min : '' : ''}
           />

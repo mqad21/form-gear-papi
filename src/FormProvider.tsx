@@ -6,7 +6,7 @@ type FormState = {
 	formConfig: FormConfig
 }
 
-type FormConfig = {
+export type FormConfig = {
 	clientMode: number // 1 => CAWI ; 2 => CAPI
 	baseUrl: string
 	lookupKey: string

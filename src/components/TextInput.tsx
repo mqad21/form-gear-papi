@@ -61,6 +61,7 @@ const TextInput: FormComponentBase = props => {
                 props.onValueChange(e.currentTarget.value);
               }}
               onFocus={(e) => handleInputFocus(e, props)}
+              onKeyDown={(e) => handleInputKeyDown(e, props)}
             />
           </Show>
           <Show when={props.component.lengthInput !== undefined && props.component.lengthInput.length > 0}>

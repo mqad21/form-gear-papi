@@ -1,4 +1,5 @@
 import { createStore } from "solid-js/store";
+import { joinWords } from "../GlobalFunction";
 
 export type Language = {
     componentAdded: string
@@ -28,13 +29,16 @@ export type Language = {
     validationRequired: string
     verificationInvalid: string
     verificationSubmitted: string
+    validationEmail: string
+    validationInclude: (options: string[]) => string,
+    validationDate: string
 }
 
 export type Locale = {
     language: Language[]
 }
-  
-export interface Questionnaire{
+
+export interface Questionnaire {
     status: number
     details: Locale
 }
@@ -70,7 +74,10 @@ export const [locale, setLocale] = createStore<Questionnaire>({
                 validationMinLength: "The minimum of allowed character is",
                 validationRequired: "Required",
                 verificationInvalid: "Please provide verification correctly",
-                verificationSubmitted: "The data is now being submitted. Thank you!"
+                verificationSubmitted: "The data is now being submitted. Thank you!",
+                validationEmail: "Email is not correct",
+                validationInclude: (options) => `Allowed values are ${joinWords(options, ", ", "or")}`,
+                validationDate: "Invalid date format"
             }
         ]
     }

@@ -256,7 +256,6 @@ const MultipleSelectInput: FormComponentBase = props => {
             updatedAnswer = [];
 
             props.onValueChange(updatedAnswer)
-
         }
 
     }

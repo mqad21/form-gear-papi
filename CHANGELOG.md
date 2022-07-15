@@ -7,11 +7,12 @@
 ### Changed
 - Redeploy setEnabeleFalse on value change to after saving answer
 - Rewrite code for setSummary to be more efficient
-- Rewrite code for filtering components with expression or / and validation to be more efficient. So, when they are disable, we don't have to run their validation or expression 
+- Rewrite code for filtering components with expression or / and validation to be more efficient. So, when they are disable, we don't have to run their validation or expression for the first time
 
 ### Fixed
 - Fix enablingSidebar including section and nested
 - Fix duplicate sidebar when creating nested
+- Fix sidebar sorting
 
 ---
 

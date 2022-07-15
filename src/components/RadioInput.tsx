@@ -49,18 +49,6 @@ const RadioInput: FormComponentBase = props => {
 
 	let classInput = 'w-full text-right rounded font-light px-4 py-2.5 text-sm text-gray-700 bg-white bg-clip-padding transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none disabled:bg-gray-200 dark:disabled:bg-gray-700 dark:disabled:text-gray-400';
 
-	const textInputLabel = props.component.label += `<br/><br/>${options().map(option => `<strong>[ ${option.value} ]</strong> ${cleanLabel(option.label)}`).join("<br/>")}`
-
-	const isOpenOption = options().findIndex(it => it.value == props.value[0]?.value && it.open) != -1
-
-	let openValueInput;
-
-	createEffect(() => {
-		if (isOpenOption) {
-			openValueInput.focus()
-		}
-	}, [isOpenOption])
-
 	return (
 		<div>
 			<Show when={config.clientMode == ClientMode.PAPI}>
@@ -84,50 +72,52 @@ const RadioInput: FormComponentBase = props => {
 							<Show when={instruction()}>
 								<div class="italic text-xs font-extralight text-zinc-400 " innerHTML={props.component.hint} />
 							</Show>
-							
+
 							<div class="grid font-light text-sm content-start"
-									classList={{
-										'grid-cols-1': props.component.cols === 1 || props.component.cols === undefined,
-										'grid-cols-2': props.component.cols === 2,
-										'grid-cols-3': props.component.cols === 3,
-										'grid-cols-4': props.component.cols === 4,
-										'grid-cols-5': props.component.cols === 5,
-									}}
-								>
-									<For each={options()}>
-										{(item, index) => (
-											<div class="font-light text-sm space-x-2 py-2.5 px-4 grid grid-cols-12" onClick={e => handleLabelClick(index())}>
-												<div class="col-span-1 text-center">
-													<label class="cursor-pointer text-sm" for={props.component.dataKey + index()}>
-														<input type="radio" checked={settedValue === item.value}
-															class="checked:disabled:bg-gray-500 checked:dark:disabled:bg-gray-300 disabled:bg-gray-200 dark:disabled:bg-gray-700 dark:disabled:text-gray-400"
-															value={item.value} name={props.component.dataKey} id={"radio-" + props.component.dataKey + "-" + index()}
-															disabled
-															onChange={e => handleOnChange(e.currentTarget.value, item.label)} />
-													</label>
-												</div>
-												<Switch>
-													<Match when={(item.open) && (settedValue === item.value)}>
-														<div class="col-span-11">
-															<input type="text" value={(props.value) ? props.value.length > 0 ? props.value[0].label : item.label : item.label}
-																name={props.component.dataKey} id={props.component.dataKey}
-																class="w-full font-light px-4 py-2.5 text-sm text-gray-700 bg-white bg-clip-padding
+								classList={{
+									'grid-cols-1': props.component.cols === 1 || props.component.cols === undefined,
+									'grid-cols-2': props.component.cols === 2,
+									'grid-cols-3': props.component.cols === 3,
+									'grid-cols-4': props.component.cols === 4,
+									'grid-cols-5': props.component.cols === 5,
+								}}
+							>
+								<For each={options()}>
+									{(item, index) => (
+										<div class="font-light text-sm space-x-2 py-2.5 px-4 grid grid-cols-12" onClick={e => handleLabelClick(index())}>
+											<div class="col-span-1 text-center">
+												<label class="cursor-pointer text-sm" for={props.component.dataKey + index()}>
+													<input type="radio" checked={settedValue === item.value}
+														class="checked:disabled:bg-gray-500 checked:dark:disabled:bg-gray-300 disabled:bg-gray-200 dark:disabled:bg-gray-700 dark:disabled:text-gray-400"
+														value={item.value} name={props.component.dataKey} id={"radio-" + props.component.dataKey + "-" + index()}
+														disabled
+														onChange={e => handleOnChange(e.currentTarget.value, item.label)} />
+												</label>
+											</div>
+											<Switch>
+												<Match when={(item.open) && (settedValue === item.value)}>
+													<div class="col-span-11">
+														<input type="text" value={(props.value) ? props.value.length > 0 ? props.value[0].label : item.label : item.label}
+															name={props.component.dataKey} id={props.component.dataKey}
+															class="w-full font-light px-4 py-2.5 text-sm text-gray-700 bg-white bg-clip-padding
 															border border-solid border-gray-300 rounded transition ease-in-out m-0
 															focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
 															disabled:bg-gray-200 dark:disabled:bg-gray-700 dark:disabled:text-gray-400"
-																disabled={disableInput()}
-																onChange={e => handleOnChange(item.value, e.currentTarget.value)}
-															/>
-														</div>
-													</Match>
-													<Match when={!(item.open) || (settedValue !== item.value)}>
-														<div class="col-span-11" innerHTML={item.label}></div>
-													</Match>
-												</Switch>
-											</div>
-										)}
-									</For>
-								</div>
+															disabled={disableInput()}
+															onKeyDown={e => handleInputKeyDown(e, props)}
+															onFocus={e => handleInputFocus(e, props)}
+															onChange={e => handleOnChange(item.value, e.currentTarget.value)}
+														/>
+													</div>
+												</Match>
+												<Match when={!(item.open) || (settedValue !== item.value)}>
+													<div class="col-span-11" innerHTML={item.label}></div>
+												</Match>
+											</Switch>
+										</div>
+									)}
+								</For>
+							</div>
 						</div>
 					</div>
 					<div class="font-light text-sm space-x-2 py-2.5 px-2 md:col-span-1 grid grid-cols-12">
@@ -174,21 +164,6 @@ const RadioInput: FormComponentBase = props => {
 									minlength={props.component.lengthInput[0].minlength !== undefined ? props.component.lengthInput[0].minlength : ''}
 								/>
 							</Show>
-							{/* <Show when={isOpenOption}>
-								<div class="col-span-11 py-4">
-									<input ref={openValueInput} type="text" value={props.value[0].label}
-										name={props.component.dataKey} id={props.component.dataKey}
-										class="w-full font-light px-4 py-2.5 text-sm text-gray-700 bg-white bg-clip-padding
-															border border-solid border-gray-300 rounded transition ease-in-out m-0
-															focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-															disabled:bg-gray-200 dark:disabled:bg-gray-700 dark:disabled:text-gray-400"
-										disabled={disableInput()}
-										onChange={e => handleOnChange(e.currentTarget.value)}
-										onFocus={(e) => handleInputFocus(e, props)}
-										onKeyDown={(e) => handleInputKeyDown(e, props)}
-									/>
-								</div>
-							</Show> */}
 						</div>
 						<Show when={enableRemark()}>
 							<div class=" flex justify-end ">
@@ -209,7 +184,7 @@ const RadioInput: FormComponentBase = props => {
 							</div>
 						</Show>
 					</div>
-					
+
 					<div class="col-span-12"
 						classList={{
 							' border-b border-orange-500 pb-3 ': props.classValidation === 1,

@@ -201,23 +201,23 @@
                         },
                         {
                            "label":"Movie",
-                           "value":"3"
-                        },
-                        {
-                           "label":"Cooking",
                            "value":"4"
                         },
                         {
+                           "label":"Cooking",
+                           "value":"8"
+                        },
+                        {
                            "label":"Working",
-                           "value":"5"
+                           "value":"16"
                         },
                         {
                            "label":"Travelling",
-                           "value":"6"
+                           "value":"32"
                         },
                         {
                            "label":"Other",
-                           "value":"13",
+                           "value":"64",
                            "open":true
                         }
                      ]

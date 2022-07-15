@@ -23,6 +23,7 @@ import { template, setTemplate, Questionnaire, Detail as TemplateDetail, Compone
 import Toastify from 'toastify-js'
 import { ClientMode, LocalStorageKey } from './Constant';
 import { ControlType } from './FormType';
+import { FormConfig } from './FormProvider';
 
 export const default_eval_enable = true
 export const default_eval_validation = true
@@ -259,7 +260,6 @@ export const insertSidebarArray = (dataKey: string, answer: any, beforeAnswer: a
     }
     let history = []
     components.forEach(el => {
-        // no longer used
         // reference.details.findIndex(obj => obj.dataKey === el.dataKey) === -1
         if (!(el.dataKey in referenceMap())) {
             updatedRef.splice(startPosition, 0, el);
@@ -333,7 +333,7 @@ export const insertSidebarArray = (dataKey: string, answer: any, beforeAnswer: a
                     if (JSON.stringify(sidebarIndexToBeFound) === JSON.stringify(myIndex)) {
                         let indexMe = Number(newSide.index[looping]);
                         let indexFind = (sidebar.details[y].index[looping] == undefined) ? 0 : Number(sidebar.details[y].index[looping]);
-                        if (indexMe >= indexFind) {
+                        if (looping == newSideLength - 1 || indexMe >= indexFind) {
                             updatedSidebar.splice(y + 1, 0, newSide);
                             loopingState = false;
                             break;
@@ -561,7 +561,7 @@ export const insertSidebarNumber = (dataKey: string, answer: any, beforeAnswer: 
                         if (JSON.stringify(sidebarIndexToBeFound) === JSON.stringify(myIndex)) {
                             let indexMe = Number(newSide.index[looping]);
                             let indexFind = (sidebar.details[y].index[looping] == undefined) ? 0 : Number(sidebar.details[y].index[looping]);
-                            if (indexMe >= indexFind) {
+                            if (looping == newSideLength - 1 || indexMe >= indexFind) {
                                 updatedSidebar.splice(y + 1, 0, newSide);
                                 loopingState = false;
                                 break;
@@ -681,7 +681,7 @@ export const runEnabling = (dataKey: string, activeComponentPosition: number, pr
     saveAnswer(dataKey, 'enable', enable, activeComponentPosition, null);
 }
 
-export const runValidation = (dataKey: string, updatedRef: any, activeComponentPosition: number) => {
+export const runValidation = (dataKey: string, updatedRef: any, activeComponentPosition: number, clientMode: ClientMode = null) => {
     const getRowIndex = (positionOffset: number) => {
         let editedDataKey = dataKey.split('@');
         let splitDataKey = editedDataKey[0].split('#');
@@ -728,6 +728,38 @@ export const runValidation = (dataKey: string, updatedRef: any, activeComponentP
                 biggest = 2;
             }
         }
+        if (updatedRef.type == 31 && updatedRef.answer !== undefined && typeof updatedRef.answer !== 'object') {
+            let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if (!re.test(updatedRef.answer)) {
+                updatedRef.validationMessage.push(locale.details.language[0].validationEmail);
+                biggest = 2;
+            }
+        }
+
+        /**
+         * Validate PAPI input
+         */
+        if (clientMode == ClientMode.PAPI) {
+            if (updatedRef.type == ControlType.RadioInput && updatedRef.answer !== undefined) {
+                const val = updatedRef.answer
+                const allowedVals = updatedRef.options?.map(opt => opt.value)
+                if (allowedVals !== undefined) {
+                    if (val[0] && !allowedVals.includes(val[0].value)) {
+                        updatedRef.validationMessage.push(locale.details.language[0].validationInclude(allowedVals))
+                        biggest = 2
+                    }
+                }
+            }
+
+            if (updatedRef.type == ControlType.DateInput && updatedRef.answer !== undefined) {
+                if (!validateDateString(updatedRef.answer)) {
+                    updatedRef.validationMessage.push(locale.details.language[0].validationDate)
+                    biggest = 2
+                }
+            }
+        }
+
+
         updatedRef.validationState = biggest;
     }
 
@@ -779,7 +811,7 @@ export const saveAnswer = (dataKey: string, attributeParam: any, answer: any, ac
         addHistory('saveAnswer', dataKey, refPosition, attributeParam, reference.details[refPosition][attributeParam])
         setReference('details', refPosition, attributeParam, answer);
         //validate for its own dataKey 
-        if (referenceHistoryEnable()) runValidation(dataKey, JSON.parse(JSON.stringify(reference.details[refPosition])), activeComponentPosition);
+        if (referenceHistoryEnable()) runValidation(dataKey, JSON.parse(JSON.stringify(reference.details[refPosition])), activeComponentPosition, prop?.clientMode);
 
         //do nothing if no changes, thanks to Budi's idea on pull request #5
         if (attributeParam === 'answer') {
@@ -919,7 +951,7 @@ export const saveAnswer = (dataKey: string, attributeParam: any, answer: any, ac
 
             if (hasComponentValidation.length > 0) {//at least this dataKey appears in minimum 1 validation
                 hasComponentValidation.forEach(elementVal => {
-                    runValidation(elementVal.dataKey, JSON.parse(JSON.stringify(elementVal)), activeComponentPosition);
+                    runValidation(elementVal.dataKey, JSON.parse(JSON.stringify(elementVal)), activeComponentPosition, prop?.clientMode);
                 });
             }
 
@@ -954,7 +986,7 @@ export const saveAnswer = (dataKey: string, attributeParam: any, answer: any, ac
 
             //variabel ~ executed when enable = TRUE
             const hasComponentVar = JSON.parse(JSON.stringify(reference.details.filter(obj => {
-                if ((obj.enable) && obj.componentVar !== undefined) {
+                if (obj.componentVar !== undefined) {
                     const cekInsideIndex = obj.componentVar.findIndex(objChild => {
                         let newKey = dataKey.split('@');//mereduce @
                         let newNewKey = newKey[0].split('#');//menghilangkan row nya
@@ -1546,6 +1578,7 @@ export const saveCurrentFocus = () => {
 
 export const focusFirstInput = () => {
     const elem = document.querySelector("input:not(.hidden-input):not(:disabled),textarea:not(.hidden-input):not(:disabled)") as HTMLElement
+    console.log("first elem", elem)
     elem?.focus()
     return elem
 }
@@ -1647,4 +1680,22 @@ export const validateDateString = (date: String): Boolean => {
         && !isNaN(dateObject)
         && dateObject.toISOString().split("T")[0] === date
     return isValidDate
+}
+
+export const findSumCombination = (number, listNumbers) => {
+    const sumCombination = []
+    const sortedNumbers = listNumbers.sort().reverse()
+    if (listNumbers.includes(number)) {
+        sumCombination.push(number)
+    } else {
+        let remaining = number
+        sortedNumbers.forEach(sortedNumber => {
+            if (sortedNumber < remaining) {
+                sumCombination.push(sortedNumber)
+                remaining -= sortedNumber
+            }
+        })
+    }
+    return sumCombination
+
 }
