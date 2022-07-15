@@ -25,6 +25,7 @@ import { referenceHistoryEnable, setReferenceHistoryEnable } from './stores/Refe
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import { ClientMode } from "./Constant";
 
 
 
@@ -1371,9 +1372,10 @@ const Form: Component<{
                   </div>
 
                 </div>
-              </Show>
+              </Show> 
 
-              <div class="component-div flex-grow bg-white dark:bg-gray-900 overflow-y-auto transition duration-500 ease-in-out z-10" onScroll={checkScrollTopWeb}>
+
+              <div class="component-div flex-grow bg-white dark:bg-gray-900 overflow-y-auto  z-10" onScroll={checkScrollTopWeb}>
 
                 <div class="sm:px-7 sm:pt-7 px-4 pt-4 flex flex-col w-full border-b border-gray-200 bg-white dark:bg-gray-900 dark:text-white dark:border-gray-800 xl:sticky top-0 z-10">
                   <div class="flex w-full items-center">
@@ -1417,10 +1419,48 @@ const Form: Component<{
                       </button>
                     </div>
                   </div>
-                  <div class="flex items-center space-x-3 sm:mt-7 mt-4">
-                  </div>
+
+                  <div class="flex items-center space-x-3 sm:mt-7 mt-4"></div>
+                  
+                  <Show when={form.formConfig.clientMode == ClientMode.PAPI}>
+                    <div class="flex relative flex-none min-w-full  px-2">
+
+                      <ul class="flex text-sm leading-6 text-slate-400 overflow-x-auto ">
+                        <For each={sidebar.details}>
+                          {(item, index) => (
+                            <Show when={item.enable}>                          
+                              <li class="flex-none">
+                                <a class="block py-2 px-4 rounded font-medium space-x-2 
+                                          hover:bg-blue-700 hover:text-white"
+                                  classList={{
+                                    'bg-blue-800 text-white': item.dataKey === form.activeComponent.dataKey
+                                  }}
+                                  href="javascript:void(0);"
+                                  onClick={(e) => {
+                                    var component = document.querySelector(".component-div");
+                                    window.scrollTo({ top: 0, behavior: "smooth" });
+                                    component.scrollTo({ top: 0, behavior: "smooth" });
+                                    // /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && sidebarCollapse(e);
+                                    form.formConfig.clientMode === 2 && writeResponse();
+                                    setLoader({});
+                                    setTimeout(() => setActiveComponent({ dataKey: item.dataKey, label: item.label, index: JSON.parse(JSON.stringify(item.index)), position: index() }), 50);
+                                  }}
+                                >
+                                  {index()+1}
+                                </a>
+                              </li>
+                            </Show>
+                          )}
+                        </For>
+                      </ul>
+                      
+                    </div>
+                  </Show>
+                  
+
                 </div>
 
+                
                 <input onFocus={previousPage} class="hidden-input h-0 bg-transparent border-0 outline-0 focus:outline-0 focus:border-0 focus:ring-0 caret-transparent" />
 
                 <FormComponent

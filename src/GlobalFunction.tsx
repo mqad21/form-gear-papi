@@ -1563,8 +1563,9 @@ export const scrollCenterInput = (elem: HTMLElement) => {
     let center = component.clientHeight / 2;
     let top = elem.offsetTop
 
-    if (top > center) {
-        component.scrollTo(0, top - center);
+    if (top > center) {        
+        component.scrollTo({ behavior: "smooth" } );
+        component.scrollTo(0, top - center) 
     }
 }
 
@@ -1580,6 +1581,11 @@ export const focusFirstInput = () => {
     const elem = document.querySelector("input:not(.hidden-input):not(:disabled),textarea:not(.hidden-input):not(:disabled)") as HTMLElement
     console.log("first elem", elem)
     elem?.focus()
+    if(elem?.name != null || elem?.name != undefined){
+        var component = document.getElementById(elem?.name + "___scrollView");
+        console.log(component,'s')
+        if(component != null || component != undefined) component.scrollIntoView({ behavior: "smooth" });
+    }
     return elem
 }
 
