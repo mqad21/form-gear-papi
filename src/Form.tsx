@@ -1160,11 +1160,11 @@ const Form: Component<{
         </div>
       </Show>
 
-      <div class="md:max-w-6xl mx-auto md:px-8 md:py-8">
+      <div class="transition-color duration-500">
         <div class="bg-gray-50 dark:bg-gray-900  dark:text-white text-gray-600 h-screen flex overflow-hidden text-sm font-montserrat rounded-lg shadow-xl dark:shadow-gray-800">
-          <div class="mobile-component-div flex-grow overflow-y-auto h-full flex flex-col bg-white dark:bg-gray-900 z-0" onScroll={checkScrollTopMobile}>
+          <div class="mobile-component-div flex-grow overflow-y-auto h-full flex flex-col  overflow-x-hidden bg-white dark:bg-gray-900 z-0" onScroll={checkScrollTopMobile} >
 
-            <div class="relative min-h-screen md:flex   ">
+            <div class="relative min-h-screen md:flex  ">
               {/* <div class="absolute pt-1 z-20 h-8 w-36 left-0 -ml-8 top-5 bg-teal-600/70 -rotate-45 text-white font-semibold text-center"  >&#946;eta 🤖</div> */}
 
               <Show when={form.formConfig.clientMode < 3}>
@@ -1185,11 +1185,11 @@ const Form: Component<{
 
                   <div class="h-3/6 overflow-y-auto">
 
-                      <nav class="transition-color duration-500">
+                      <nav class="">
                         <For each={sidebar.details}>
                           {(item_0, index) => (
                             <Show when={item_0.level == 0 && item_0.enable}>
-                              <ul class="formgear-sidebar transition-transform duration-1000">
+                              <ul class="formgear-sidebar ">
                                 <li>
                                   <a class="block py-2 px-4 rounded font-medium space-x-2 
                                             hover:bg-blue-700 hover:text-white"
@@ -1373,7 +1373,7 @@ const Form: Component<{
               </Show> 
 
 
-              <div class="component-div min-h-screen flex-grow bg-white dark:bg-gray-900 overflow-y-auto  z-10" onScroll={checkScrollTopWeb}>
+              <div class="component-div min-h-screen flex-grow bg-white dark:bg-gray-900 overflow-y-auto z-10" onScroll={checkScrollTopWeb}>
 
                 <div class="sm:px-7 sm:pt-7 px-4 pt-4 flex flex-col w-full border-b border-gray-200 bg-white dark:bg-gray-900 dark:text-white dark:border-gray-800 xl:sticky top-0 z-10">
                   <div class="flex w-full items-center">
@@ -1418,17 +1418,19 @@ const Form: Component<{
                     </div>
                   </div>
 
-                  <div class="flex items-center space-x-3 sm:mt-7 mt-4"></div>
+                  <div class="flex items-center space-x-3  mt-4"></div>
                   
                   <Show when={form.formConfig.clientMode == ClientMode.PAPI}>
-                    <div class="flex relative flex-none min-w-full  px-2">
-
-                      <ul class="flex text-sm leading-6 text-slate-400 overflow-x-auto ">
+                    <div class="flex relative flex-none min-w-full px-2 overflow-x-auto">
+                      <ul class="flex text-sm leading-6 text-slate-400  ">
                         <For each={sidebar.details}>
                           {(item, index) => (
                             <Show when={true}>                          
-                              <li class="flex-none">
-                                <a class="block py-2 px-4 rounded font-medium space-x-2 
+                              <li class="flex-none"
+                                classList={{
+                                  ' border-b-4 border-blue-800': item.dataKey === form.activeComponent.dataKey
+                                }}>
+                                <a class="block py-2 mb-1.5 px-4 rounded font-medium space-x-2 
                                           hover:bg-blue-700 hover:text-white"
                                   classList={{
                                     'bg-blue-800 text-white': item.dataKey === form.activeComponent.dataKey
@@ -1450,8 +1452,7 @@ const Form: Component<{
                             </Show>
                           )}
                         </For>
-                      </ul>
-                      
+                      </ul>                      
                     </div>
                   </Show>
                   
@@ -1475,13 +1476,15 @@ const Form: Component<{
                   setResponseMobile={props.setResponseMobile}
                 />
 
-                <input onFocus={nextPage} class="hidden-input h-0 bg-transparent border-0 outline-0 focus:outline-0 focus:border-0 focus:ring-0 caret-transparent" />
+                <input onFocus={nextPage} class="mt-16 hidden-input h-0 bg-transparent border-0 outline-0 focus:outline-0 focus:border-0 focus:ring-0 caret-transparent" />
 
 
-                <div class="grid grid-cols-6 sticky w-full justify-end bottom-12 mt-10"
+                <div class="grid grid-cols-6 w-full justify-end items-end bottom-8 right-0"
                   classList={{
                     'flex': onMobile() === false,
                     'hidden': onMobile() === true,
+                    'sticky': form.formConfig.clientMode < 3,
+                    'absolute': form.formConfig.clientMode == ClientMode.PAPI,
                   }}>
                   <div class=" flex justify-center items-center space-x-10 mx-10 col-start-2 col-end-6 py-2 rounded-full bg-gray-200/80 dark:bg-gray-800/90">
                     <button class="bg-blue-700  text-white p-2 rounded-full  focus:outline-none items-center h-10 w-10 hover:bg-blue-600 group inline-flex justify-center text-xs"
