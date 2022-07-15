@@ -1168,10 +1168,11 @@ const Form: Component<{
               {/* <div class="absolute pt-1 z-20 h-8 w-36 left-0 -ml-8 top-5 bg-teal-600/70 -rotate-45 text-white font-semibold text-center"  >&#946;eta 🤖</div> */}
 
               <Show when={form.formConfig.clientMode < 3}>
-                <div class="bg-gray-50 dark:bg-gray-900 w-72 flex-shrink-0 border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto p-5 space-y-4
+                <div class="bg-white dark:bg-gray-900 w-72 flex-shrink-0 border-r border-gray-200 dark:border-gray-800 max-h-screen p-5 space-y-2
                   sidebar-span absolute inset-y-0 left-0 transform -translate-x-full transition-transform duration-500 ease-in-out md:relative md:translate-x-0 z-10">
-                  <div class=" text-gray-400 tracking-wider flex justify-between ">
-                    <div class="text-lg block p-4 text-gray-600 dark:text-white font-bold sm:text-xl" innerHTML={props.template.details.acronym
+                  
+                  <div class=" text-gray-400 tracking-wider flex justify-between">
+                    <div class="text-lg block px-4 py-3 text-gray-600 dark:text-white font-bold sm:text-xl" innerHTML={props.template.details.acronym
                       + '<div class="text-xs font-light text-gray-600 ">🚀' + gearVersion + ' 📋' + templateVersion + ' ✔️' + validationVersion + ' </div>  '} />
 
                     <button type="button"
@@ -1182,178 +1183,175 @@ const Form: Component<{
                     </button>
                   </div>
 
-                  <div class="overflow-y-auto h-3/6">
+                  <div class="h-3/6 overflow-y-auto">
 
-                    <nav class="transition-color duration-500">
-                      <For each={sidebar.details}>
-                        {(item_0, index) => (
-                          <Show when={item_0.level == 0 && item_0.enable}>
-                            <ul class="formgear-sidebar transition-transform duration-1000">
-                              <li>
-                                <a class="block py-2 px-4 rounded font-medium space-x-2 
-                                          hover:bg-blue-700 hover:text-white"
-                                  classList={{
-                                    'bg-blue-800 text-white': item_0.dataKey === form.activeComponent.dataKey
-                                  }}
-                                  href="javascript:void(0);"
-                                  onClick={(e) => {
-                                    var component = document.querySelector(".component-div");
-                                    window.scrollTo({ top: 0, behavior: "smooth" });
-                                    component.scrollTo({ top: 0, behavior: "smooth" });
-                                    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && sidebarCollapse(e);
-                                    form.formConfig.clientMode === 2 && writeResponse();
-                                    setLoader({});
-                                    setTimeout(() => setActiveComponent({ dataKey: item_0.dataKey, label: item_0.label, index: JSON.parse(JSON.stringify(item_0.index)), position: index() }), 50);
-                                  }}
-                                >
-                                  {item_0.label}
-                                  <div class="font-light text-xs"><div innerHTML={item_0.description} /></div>
-                                </a>
+                      <nav class="transition-color duration-500">
+                        <For each={sidebar.details}>
+                          {(item_0, index) => (
+                            <Show when={item_0.level == 0 && item_0.enable}>
+                              <ul class="formgear-sidebar transition-transform duration-1000">
+                                <li>
+                                  <a class="block py-2 px-4 rounded font-medium space-x-2 
+                                            hover:bg-blue-700 hover:text-white"
+                                    classList={{
+                                      'bg-blue-800 text-white': item_0.dataKey === form.activeComponent.dataKey
+                                    }}
+                                    href="javascript:void(0);"
+                                    onClick={(e) => {
+                                      var component = document.querySelector(".component-div");
+                                      window.scrollTo({ top: 0, behavior: "smooth" });
+                                      component.scrollTo({ top: 0, behavior: "smooth" });
+                                      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && sidebarCollapse(e);
+                                      form.formConfig.clientMode === 2 && writeResponse();
+                                      setLoader({});
+                                      setTimeout(() => setActiveComponent({ dataKey: item_0.dataKey, label: item_0.label, index: JSON.parse(JSON.stringify(item_0.index)), position: index() }), 50);
+                                    }}
+                                  >
+                                    {item_0.label}
+                                    <div class="font-light text-xs"><div innerHTML={item_0.description} /></div>
+                                  </a>
 
-                                <For each={sidebar.details}>
-                                  {(item_1, index) => (
-                                    <Show when={item_1.level == 1
-                                      && item_0.index[1] == item_1.index[1] && item_1.enable}>
-                                      <ul class="border-l border-gray-300 dark:border-slate-500 ml-4"
-                                        classList={{
-                                          'show': item_0.index[1] === form.activeComponent.index[1]
-                                        }}
-                                      >
-                                        <li>
-                                          <a class="block py-2 px-4 rounded font-medium space-x-2 
-                                                  hover:bg-blue-700 hover:text-white"
-                                            classList={{
-                                              'bg-blue-800 text-white': item_1.dataKey === form.activeComponent.dataKey
-                                            }}
-                                            href="javascript:void(0);"
-                                            onClick={(e) => {
-                                              var component = document.querySelector(".component-div");
-                                              window.scrollTo({ top: 0, behavior: "smooth" });
-                                              component.scrollTo({ top: 0, behavior: "smooth" });
-                                              /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && sidebarCollapse(e);
-                                              form.formConfig.clientMode === 2 && writeResponse();
-                                              setLoader({});
-                                              setTimeout(() => setActiveComponent({ dataKey: item_1.dataKey, label: item_1.label, index: JSON.parse(JSON.stringify(item_1.index)), position: index() }), 50);
-                                            }}
-                                          >
-                                            {item_1.label}
-                                            <div class="font-light text-xs"><div innerHTML={item_1.description} /></div>
-                                          </a>
+                                  <For each={sidebar.details}>
+                                    {(item_1, index) => (
+                                      <Show when={item_1.level == 1
+                                        && item_0.index[1] == item_1.index[1] && item_1.enable}>
+                                        <ul class="border-l border-gray-300 dark:border-slate-500 ml-4"
+                                          classList={{
+                                            'show': item_0.index[1] === form.activeComponent.index[1]
+                                          }}
+                                        >
+                                          <li>
+                                            <a class="block py-2 px-4 rounded font-medium space-x-2 
+                                                    hover:bg-blue-700 hover:text-white"
+                                              classList={{
+                                                'bg-blue-800 text-white': item_1.dataKey === form.activeComponent.dataKey
+                                              }}
+                                              href="javascript:void(0);"
+                                              onClick={(e) => {
+                                                var component = document.querySelector(".component-div");
+                                                window.scrollTo({ top: 0, behavior: "smooth" });
+                                                component.scrollTo({ top: 0, behavior: "smooth" });
+                                                /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && sidebarCollapse(e);
+                                                form.formConfig.clientMode === 2 && writeResponse();
+                                                setLoader({});
+                                                setTimeout(() => setActiveComponent({ dataKey: item_1.dataKey, label: item_1.label, index: JSON.parse(JSON.stringify(item_1.index)), position: index() }), 50);
+                                              }}
+                                            >
+                                              {item_1.label}
+                                              <div class="font-light text-xs"><div innerHTML={item_1.description} /></div>
+                                            </a>
 
-                                          <For each={sidebar.details}>
-                                            {(item_2, index) => (
-                                              <Show when={item_2.level == 2
-                                                && item_0.index[1] == item_1.index[1]
-                                                && item_1.index[1] == item_2.index[1]
-                                                && item_1.index[3] == item_2.index[3]
-                                                && item_1.index[4] == item_2.index[4]
-                                                && item_2.enable}>
-                                                <ul class="border-l border-gray-300 dark:border-slate-500 ml-4  "
-                                                  classList={{
-                                                    'show': item_0.index[1] === form.activeComponent.index[1]
-                                                  }}
-                                                >
-                                                  <li>
-                                                    <a class="block py-2 px-4 rounded font-medium space-x-2 
-                                                          hover:bg-blue-700 hover:text-white"
-                                                      classList={{
-                                                        'bg-blue-800 text-white': item_2.dataKey === form.activeComponent.dataKey
-                                                      }}
-                                                      href="javascript:void(0);"
-                                                      onClick={(e) => {
-                                                        var component = document.querySelector(".component-div");
-                                                        window.scrollTo({ top: 0, behavior: "smooth" });
-                                                        component.scrollTo({ top: 0, behavior: "smooth" });
-                                                        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && sidebarCollapse(e);
-                                                        form.formConfig.clientMode === 2 && writeResponse();
-                                                        setLoader({});
-                                                        setTimeout(() => setActiveComponent({ dataKey: item_2.dataKey, label: item_2.label, index: JSON.parse(JSON.stringify(item_2.index)), position: index() }), 50);
-                                                      }}
-                                                    >
-                                                      {item_2.label}
-                                                      <div class="font-light text-xs"><div innerHTML={item_2.description} /></div>
-                                                    </a>
+                                            <For each={sidebar.details}>
+                                              {(item_2, index) => (
+                                                <Show when={item_2.level == 2
+                                                  && item_0.index[1] == item_1.index[1]
+                                                  && item_1.index[1] == item_2.index[1]
+                                                  && item_1.index[3] == item_2.index[3]
+                                                  && item_1.index[4] == item_2.index[4]
+                                                  && item_2.enable}>
+                                                  <ul class="border-l border-gray-300 dark:border-slate-500 ml-4  "
+                                                    classList={{
+                                                      'show': item_0.index[1] === form.activeComponent.index[1]
+                                                    }}
+                                                  >
+                                                    <li>
+                                                      <a class="block py-2 px-4 rounded font-medium space-x-2 
+                                                            hover:bg-blue-700 hover:text-white"
+                                                        classList={{
+                                                          'bg-blue-800 text-white': item_2.dataKey === form.activeComponent.dataKey
+                                                        }}
+                                                        href="javascript:void(0);"
+                                                        onClick={(e) => {
+                                                          var component = document.querySelector(".component-div");
+                                                          window.scrollTo({ top: 0, behavior: "smooth" });
+                                                          component.scrollTo({ top: 0, behavior: "smooth" });
+                                                          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && sidebarCollapse(e);
+                                                          form.formConfig.clientMode === 2 && writeResponse();
+                                                          setLoader({});
+                                                          setTimeout(() => setActiveComponent({ dataKey: item_2.dataKey, label: item_2.label, index: JSON.parse(JSON.stringify(item_2.index)), position: index() }), 50);
+                                                        }}
+                                                      >
+                                                        {item_2.label}
+                                                        <div class="font-light text-xs"><div innerHTML={item_2.description} /></div>
+                                                      </a>
 
-                                                    <For each={sidebar.details}>
-                                                      {(item_3, index) => (
-                                                        <Show when={item_3.level == 3
-                                                          && item_0.index[1] == item_1.index[1]
-                                                          && item_1.index[1] == item_2.index[1]
-                                                          && item_1.index[3] == item_2.index[3]
-                                                          && item_2.index[5] == item_3.index[5]
-                                                          && item_2.index[6] == item_3.index[6]
-                                                          && item_3.enable}>
-                                                          <ul class="border-l border-gray-300 dark:border-slate-500 ml-4"
-                                                            classList={{
-                                                              'show': item_0.index[1] === form.activeComponent.index[1]
-                                                            }}
-                                                          >
-                                                            <li>
-                                                              <a class="block py-2 px-4 rounded font-medium space-x-2 
-                                                                  hover:bg-blue-700 hover:text-white"
-                                                                classList={{
-                                                                  'bg-blue-800 text-white': item_3.dataKey === form.activeComponent.dataKey
-                                                                }}
-                                                                href="javascript:void(0);"
-                                                                onClick={(e) => {
-                                                                  var component = document.querySelector(".component-div");
-                                                                  window.scrollTo({ top: 0, behavior: "smooth" });
-                                                                  component.scrollTo({ top: 0, behavior: "smooth" });
-                                                                  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && sidebarCollapse(e);
-                                                                  form.formConfig.clientMode === 2 && writeResponse();
-                                                                  setLoader({});
-                                                                  setTimeout(() => setActiveComponent({ dataKey: item_3.dataKey, label: item_3.label, index: JSON.parse(JSON.stringify(item_3.index)), position: index() }), 50);
-                                                                }}
-                                                              >
-                                                                {item_3.label}
-                                                                <div class="font-light text-xs"><div innerHTML={item_3.description} /></div>
-                                                              </a>
-                                                            </li>
-                                                          </ul>
-                                                        </Show>
-                                                      )}
-                                                    </For>
+                                                      <For each={sidebar.details}>
+                                                        {(item_3, index) => (
+                                                          <Show when={item_3.level == 3
+                                                            && item_0.index[1] == item_1.index[1]
+                                                            && item_1.index[1] == item_2.index[1]
+                                                            && item_1.index[3] == item_2.index[3]
+                                                            && item_2.index[5] == item_3.index[5]
+                                                            && item_2.index[6] == item_3.index[6]
+                                                            && item_3.enable}>
+                                                            <ul class="border-l border-gray-300 dark:border-slate-500 ml-4"
+                                                              classList={{
+                                                                'show': item_0.index[1] === form.activeComponent.index[1]
+                                                              }}
+                                                            >
+                                                              <li>
+                                                                <a class="block py-2 px-4 rounded font-medium space-x-2 
+                                                                    hover:bg-blue-700 hover:text-white"
+                                                                  classList={{
+                                                                    'bg-blue-800 text-white': item_3.dataKey === form.activeComponent.dataKey
+                                                                  }}
+                                                                  href="javascript:void(0);"
+                                                                  onClick={(e) => {
+                                                                    var component = document.querySelector(".component-div");
+                                                                    window.scrollTo({ top: 0, behavior: "smooth" });
+                                                                    component.scrollTo({ top: 0, behavior: "smooth" });
+                                                                    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && sidebarCollapse(e);
+                                                                    form.formConfig.clientMode === 2 && writeResponse();
+                                                                    setLoader({});
+                                                                    setTimeout(() => setActiveComponent({ dataKey: item_3.dataKey, label: item_3.label, index: JSON.parse(JSON.stringify(item_3.index)), position: index() }), 50);
+                                                                  }}
+                                                                >
+                                                                  {item_3.label}
+                                                                  <div class="font-light text-xs"><div innerHTML={item_3.description} /></div>
+                                                                </a>
+                                                              </li>
+                                                            </ul>
+                                                          </Show>
+                                                        )}
+                                                      </For>
 
-                                                  </li>
-                                                </ul>
-                                              </Show>
-                                            )}
-                                          </For>
+                                                    </li>
+                                                  </ul>
+                                                </Show>
+                                              )}
+                                            </For>
 
-                                        </li>
-                                      </ul>
-                                    </Show>
-                                  )}
-                                </For>
+                                          </li>
+                                        </ul>
+                                      </Show>
+                                    )}
+                                  </For>
 
-                              </li>
-                            </ul>
-                          </Show>
-                        )}
-                      </For>
-                    </nav>
+                                </li>
+                              </ul>
+                            </Show>
+                          )}
+                        </For>
+                      </nav>
 
                   </div>
 
-                  <div class="flex items-center space-x-3 sm:mt-7 mt-4">
-                  </div>
-
-                  <div class="relative h-2/6">
-                    <div class="bg-white p-3 w-full flex flex-col  space-y-4 rounded-md dark:bg-gray-800 shadow absolute bottom-0 left-0">
+                  <div class="h-2/6">
+                    <div class="bg-white px-8 py-5 w-full flex flex-col dark:bg-gray-900 space-y-4 absolute bottom-0 left-0 ">
                       <div class="max-w-5xl grid grid-cols-2 gap-2">
-                        <div class="h-20 text-5xl text-center sm:flex flex-col flex-coltext-white font-medium xs:h-auto xs:square xl:border-b ">
+                        <div class="h-auto text-5xl text-center sm:flex flex-col flex-coltext-white font-medium ">
                           {summary.answer}
                           <div class="font-light text-xs">{locale.details.language[0].summaryAnswer}</div>
                         </div>
-                        <div class="h-20 text-5xl text-center sm:flex flex-col flex-coltext-white font-medium xs:h-auto xs:square xl:border-b " onClick={showListBlank}>
+                        <div class="h-auto text-5xl text-center sm:flex flex-col flex-coltext-white font-medium " onClick={showListBlank}>
                           {summary.blank}
                           <div class="font-light text-xs">{locale.details.language[0].summaryBlank}</div>
                         </div>
-                        <div class="h-20 text-5xl text-center sm:flex flex-col flex-coltext-white font-medium xs:h-auto xs:square xl:border-b " onClick={revalidateError}>
+                        <div class="h-auto text-5xl text-center sm:flex flex-col flex-coltext-white font-medium " onClick={revalidateError}>
                           {summary.error}
                           <div class="font-light text-xs">{locale.details.language[0].summaryError}</div>
                         </div>
-                        <div class="h-20 text-5xl text-center sm:flex flex-col flex-coltext-white font-medium xs:h-auto xs:square xl:border-b " onClick={showListRemark}>
+                        <div class="h-auto text-5xl text-center sm:flex flex-col flex-coltext-white font-medium " onClick={showListRemark}>
                           {summary.remark}
                           <div class="font-light text-xs">{locale.details.language[0].summaryRemark}</div>
                         </div>
@@ -1361,7 +1359,7 @@ const Form: Component<{
                       <div>
                         <Switch>
                           <Match when={(summary.error == 0 && config().formMode == 1)}>
-                            <button class="bg-teal-300 hover:bg-teal-200 text-teal-100 p-3 w-full rounded-md shadow font-medium" onClick={confirmSubmit}>Submit</button>
+                            <button class="bg-teal-300 dark:bg-teal-500 hover:bg-teal-200 dark:hover:bg-teal-400 text-teal-100 p-3 w-full rounded-md shadow font-medium" onClick={confirmSubmit}>Submit</button>
                           </Match>
                           <Match when={(summary.error > 0 && config().formMode < 3)}>
                             <button class="bg-red-500 hover:bg-red-400 text-teal-100 p-3 w-full rounded-md shadow font-medium" onClick={revalidateError}>List Error</button>
@@ -1375,7 +1373,7 @@ const Form: Component<{
               </Show> 
 
 
-              <div class="component-div flex-grow bg-white dark:bg-gray-900 overflow-y-auto  z-10" onScroll={checkScrollTopWeb}>
+              <div class="component-div min-h-screen flex-grow bg-white dark:bg-gray-900 overflow-y-auto  z-10" onScroll={checkScrollTopWeb}>
 
                 <div class="sm:px-7 sm:pt-7 px-4 pt-4 flex flex-col w-full border-b border-gray-200 bg-white dark:bg-gray-900 dark:text-white dark:border-gray-800 xl:sticky top-0 z-10">
                   <div class="flex w-full items-center">
@@ -1554,7 +1552,7 @@ const Form: Component<{
 
               </div>
 
-              <div class="grid grid-cols-6 sticky w-full justify-end bottom-6 mt-10"
+              <div class="grid grid-cols-6 sticky w-full justify-end items-end bottom-6 mt-10"
                 classList={{
                   'flex': onMobile() === true,
                   'hidden': onMobile() === false,
