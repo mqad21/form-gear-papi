@@ -1706,9 +1706,15 @@ export const findSumCombination = (number, listNumbers) => {
         }
     }
     return sumCombination
-
 }
 
 export const sum = (arr) => {
     return arr.reduce((sum, it) => Number(sum) + Number(it), 0)
+}
+
+export const transformCheckboxOptions = (options) => {
+    return options.map((option, index) => ({
+        ...option,
+        checkboxValue: Math.pow(2, index)
+    }))
 }

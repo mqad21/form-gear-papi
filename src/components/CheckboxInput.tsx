@@ -2,7 +2,7 @@ import { For, Switch, Match, createMemo, createSignal, Show } from "solid-js"
 import { ClientMode } from "../Constant"
 import { handleInputFocus, handleInputKeyDown } from "../Event"
 import { FormComponentBase, Option } from "../FormType"
-import { findSumCombination, sum } from "../GlobalFunction"
+import { findSumCombination, sum, transformCheckboxOptions } from "../GlobalFunction"
 import { reference, setReference } from '../stores/ReferenceStore'
 
 const CheckboxInput: FormComponentBase = props => {
@@ -11,11 +11,11 @@ const CheckboxInput: FormComponentBase = props => {
     let handleOnChange = (value: any, label: any = null, open: any = null) => {
         let updatedAnswer
         if (label == null && open == null) {
-            const optionValue = options().map(item => Number(item.value))
+            const checkboxOptions = transformCheckboxOptions(options())
+            const optionValue = checkboxOptions.map(item => Number(item.checkboxValue))
             const sumCombination = findSumCombination(Number(value), optionValue)
-            console.log(sumCombination, "sumCombination")
             if (sumCombination.length > 0) {
-                updatedAnswer = options().filter(option => sumCombination.includes(Number(option.value)))
+                updatedAnswer = checkboxOptions.filter(option => sumCombination.includes(Number(option.value)))
             }
         } else {
             updatedAnswer = JSON.parse(JSON.stringify(props.value))
@@ -126,10 +126,10 @@ const CheckboxInput: FormComponentBase = props => {
                                                             bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer
                                                             checked:disabled:bg-gray-500 checked:dark:disabled:bg-gray-300 
                                                             disabled:bg-gray-200 dark:disabled:bg-gray-700 dark:disabled:text-gray-400"
-                                                            type="checkbox"
-                                                            disabled
-                                                            onChange={e => handleOnChange(e.currentTarget.value, item.label, item.open)} value={item.value}
-                                                            checked={(item.value) ? tick(item.value) : false} id={"checkbox-" + props.component.dataKey + "-" + index()} />
+                                                                type="checkbox"
+                                                                disabled
+                                                                onChange={e => handleOnChange(e.currentTarget.value, item.label, item.open)} value={item.value}
+                                                                checked={(item.value) ? tick(item.value) : false} id={"checkbox-" + props.component.dataKey + "-" + index()} />
                                                         </label>
                                                     </div>
                                                     <div class="col-span-11">

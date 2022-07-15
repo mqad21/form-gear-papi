@@ -6,7 +6,7 @@ import "@thisbeyond/solid-select/style.css"
 import Toastify from 'toastify-js'
 import { locale, setLocale } from '../stores/LocaleStore'
 import { ClientMode } from "../Constant"
-import { sum } from "../GlobalFunction"
+import { findSumCombination, sum, transformCheckboxOptions } from "../GlobalFunction"
 import { handleInputFocus, handleInputKeyDown } from "../Event"
 
 const MultipleSelectInput: FormComponentBase = props => {
@@ -238,8 +238,16 @@ const MultipleSelectInput: FormComponentBase = props => {
 
 
     let handleOnChange = (value: any) => {
-        if (value != '' && value != undefined && (Array.isArray(value))) {
-            let updatedAnswer = JSON.parse(JSON.stringify(props.value))
+        let updatedAnswer
+        if (!Array.isArray(value)) {
+            const checkboxOptions = transformCheckboxOptions(options())
+            const optionValue = checkboxOptions.map(item => Number(item.checkboxValue))
+            const sumCombination = findSumCombination(Number(value), optionValue)
+            if (sumCombination.length > 0) {
+                updatedAnswer = checkboxOptions.filter(option => sumCombination.includes(Number(option.value)))
+            }
+        } else if (value != undefined) {
+            updatedAnswer = JSON.parse(JSON.stringify(props.value))
 
             if (props.value.length > value.length) {
                 updatedAnswer = value
@@ -252,14 +260,15 @@ const MultipleSelectInput: FormComponentBase = props => {
                     updatedAnswer.push({ value: data.value, label: data.label })
                 }
             }
-
-            props.onValueChange(updatedAnswer)
         } else {
-            let updatedAnswer = JSON.parse(JSON.stringify(props.value))
+            updatedAnswer = JSON.parse(JSON.stringify(props.value))
             updatedAnswer = [];
 
-            props.onValueChange(updatedAnswer)
         }
+
+        console.log(updatedAnswer)
+
+        props.onValueChange(updatedAnswer)
 
     }
 
