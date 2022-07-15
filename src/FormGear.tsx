@@ -202,13 +202,13 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
 
       const [components, setComponents] = createSignal([]);
 
-      const buildReference = (element, index) => {
+      const buildReference = (config, element, index) => {
         for (let j = 0; j < element.length; j++) {
           refList[j] = [];
           sideList[j] = [];
           flagArr[j] = 0;
           setTimeout(() => {
-            const loopTemplate = (element, index, parent, level, sideEnable) => {
+            const loopTemplate = (config, element, index, parent, level, sideEnable) => {
               let el_len = element.length
               for (let i = 0; i < el_len; i++) {
                 let answer = element[i].answer;
@@ -228,6 +228,7 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
                   components = (element[i].components) ? element[i].components : undefined;
                 }
 
+                // console.log(config.clientMode, 'clientMode')
                 if (el_type == 1 || (el_type == 2 && components.length > 1)) {
                   if (element[i].enableCondition !== undefined) {
                     tmpEnableComp.push(JSON.parse(JSON.stringify(element[i])));
@@ -235,6 +236,8 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
                   } else {
                     sideEnable = true;
                   }
+                  
+                  // if(form.formConfig.clientMode < ClientMode.PAPI) {
 
                   let sideListLen = sideList[j].length;
                   sideList[j][sideListLen] = {
@@ -245,9 +248,9 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
                     index: parent.concat(i),
                     components: components,
                     sourceQuestion: element[i].sourceQuestion !== undefined ? element[i].sourceQuestion : '',
-                    enable: sideEnable,
-                    enableCondition: element[i].enableCondition !== undefined ? element[i].enableCondition : '',
-                    componentEnable: element[i].componentEnable !== undefined ? element[i].componentEnable : []
+                    enable: config.clientMode == ClientMode.PAPI ? true : sideEnable,
+                    enableCondition: config.clientMode == ClientMode.PAPI ? '' : element[i].enableCondition !== undefined ? element[i].enableCondition : '',
+                    componentEnable: config.clientMode == ClientMode.PAPI ? [] : element[i].componentEnable !== undefined ? element[i].componentEnable : []
                   }
                 }
                 //old logic
@@ -323,9 +326,9 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
                   render: (element[i].render) ? element[i].render : undefined,
                   renderType: (element[i].renderType) ? element[i].renderType : undefined,
                   enable: true,
-                  enableCondition: element[i].enableCondition !== undefined ? element[i].enableCondition : '',
-                  componentEnable: element[i].componentEnable !== undefined ? element[i].componentEnable : [],
-                  enableRemark: element[i].enableRemark !== undefined ? element[i].enableRemark : true,
+                  enableCondition: config.clientMode == ClientMode.PAPI ? '' : element[i].enableCondition !== undefined ? element[i].enableCondition : '',
+                  componentEnable: config.clientMode == ClientMode.PAPI ? [] : element[i].componentEnable !== undefined ? element[i].componentEnable : [],
+                  enableRemark: config.clientMode == ClientMode.PAPI ? false : element[i].enableRemark !== undefined ? element[i].enableRemark : true,
                   client: element[i].client !== undefined ? element[i].client : undefined,
                   titleModalDelete: element[i].titleModalDelete !== undefined ? element[i].titleModalDelete : undefined,
                   sourceOption: element[i].sourceOption !== undefined ? element[i].sourceOption : undefined,
@@ -351,7 +354,7 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
                   disableInitial: element[i].disableInitial !== undefined ? element[i].disableInitial : undefined
                 }
 
-                element[i].components && element[i].components.forEach((element) => loopTemplate(element, refListLen, parent.concat(i, 0), level + 1, sideEnable))
+                element[i].components && element[i].components.forEach((element) => loopTemplate(config, element, refListLen, parent.concat(i, 0), level + 1, sideEnable))
               }
             }
 
@@ -369,9 +372,9 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
               index: [0, j],
               components: element[j].components,
               sourceQuestion: element[j].sourceQuestion !== undefined ? element[j].sourceQuestion : '',
-              enable: !hasSideEnable,
-              enableCondition: element[j].enableCondition !== undefined ? element[j].enableCondition : '',
-              componentEnable: element[j].componentEnable !== undefined ? element[j].componentEnable : []
+              enable: config.clientMode == ClientMode.PAPI ? true : !hasSideEnable,
+              enableCondition: config.clientMode == ClientMode.PAPI ? '' : element[j].enableCondition !== undefined ? element[j].enableCondition : '',
+              componentEnable: config.clientMode == ClientMode.PAPI ? [] : element[j].componentEnable !== undefined ? element[j].componentEnable : []
             }
 
             // insert section
@@ -400,9 +403,9 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
               render: (element[j].render) ? element[j].render : undefined,
               renderType: (element[j].renderType) ? element[j].renderType : undefined,
               enable: true,
-              enableCondition: element[j].enableCondition !== undefined ? element[j].enableCondition : '',
-              componentEnable: element[j].componentEnable !== undefined ? element[j].componentEnable : [],
-              enableRemark: element[j].enableRemark !== undefined ? element[j].enableRemark : true,
+              enableCondition: config.clientMode == ClientMode.PAPI ? '' : element[j].enableCondition !== undefined ? element[j].enableCondition : '',
+              componentEnable: config.clientMode == ClientMode.PAPI ? [] : element[j].componentEnable !== undefined ? element[j].componentEnable : [],
+              enableRemark: config.clientMode == ClientMode.PAPI ? false : element[j].enableRemark !== undefined ? element[j].enableRemark : true,
               client: element[j].client !== undefined ? element[j].client : undefined,
               titleModalDelete: element[j].titleModalDelete !== undefined ? element[j].titleModalDelete : undefined,
               contentModalDelete: element[j].contentModalDelete !== undefined ? element[j].contentModalDelete : undefined,
@@ -419,14 +422,14 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
               required: element[j].required !== undefined ? element[j].required : undefined,
             }
 
-            loopTemplate(element[j].components[0], 0, [0, j, 0], 1, hasSideEnable)
+            loopTemplate(config, element[j].components[0], 0, [0, j, 0], 1, hasSideEnable)
 
             flagArr[j] = 1;
           },
             500)
         }
       }
-      template.details.components.forEach((element, index) => buildReference(element, index))
+      template.details.components.forEach((element, index) => buildReference(config, element, index))
       runAll = 0;
 
       let sum = 0;
