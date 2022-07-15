@@ -1428,7 +1428,7 @@ const Form: Component<{
                       <ul class="flex text-sm leading-6 text-slate-400 overflow-x-auto ">
                         <For each={sidebar.details}>
                           {(item, index) => (
-                            <Show when={item.enable}>                          
+                            <Show when={true}>                          
                               <li class="flex-none">
                                 <a class="block py-2 px-4 rounded font-medium space-x-2 
                                           hover:bg-blue-700 hover:text-white"

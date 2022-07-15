@@ -1563,9 +1563,9 @@ export const scrollCenterInput = (elem: HTMLElement) => {
     let center = component.clientHeight / 2;
     let top = elem.offsetTop
 
-    if (top > center) {        
-        component.scrollTo({ behavior: "smooth" } );
-        component.scrollTo(0, top - center) 
+    if (top > center) {
+        component.scrollTo({ behavior: "smooth" });
+        component.scrollTo(0, top - center)
     }
 }
 
@@ -1581,10 +1581,10 @@ export const focusFirstInput = () => {
     const elem = document.querySelector("input:not(.hidden-input):not(:disabled),textarea:not(.hidden-input):not(:disabled)") as HTMLElement
     console.log("first elem", elem)
     elem?.focus()
-    if(elem?.name != null || elem?.name != undefined){
+    if (elem?.name != null || elem?.name != undefined) {
         var component = document.getElementById(elem?.name + "___scrollView");
-        console.log(component,'s')
-        if(component != null || component != undefined) component.scrollIntoView({ behavior: "smooth" });
+        console.log(component, 's')
+        if (component != null || component != undefined) component.scrollIntoView({ behavior: "smooth" });
     }
     return elem
 }
@@ -1689,19 +1689,26 @@ export const validateDateString = (date: String): Boolean => {
 }
 
 export const findSumCombination = (number, listNumbers) => {
-    const sumCombination = []
+    let sumCombination = []
     const sortedNumbers = listNumbers.sort().reverse()
     if (listNumbers.includes(number)) {
         sumCombination.push(number)
     } else {
         let remaining = number
         sortedNumbers.forEach(sortedNumber => {
-            if (sortedNumber < remaining) {
+            if (sortedNumber <= remaining) {
                 sumCombination.push(sortedNumber)
-                remaining -= sortedNumber
+                remaining = remaining - sortedNumber
             }
         })
+        if (remaining !== 0) {
+            sumCombination = []
+        }
     }
     return sumCombination
 
+}
+
+export const sum = (arr) => {
+    return arr.reduce((sum, it) => Number(sum) + Number(it), 0)
 }

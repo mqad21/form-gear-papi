@@ -167,15 +167,15 @@
                         },
                         {
                            "label": "Gold",
-                           "value": "3"
-                        },
-                        {
-                           "label": "Car",
                            "value": "4"
                         },
                         {
+                           "label": "Car",
+                           "value": "8"
+                        },
+                        {
                            "label": "Motorcycle",
-                           "value": "5"
+                           "value": "16"
                         }
                      ]
                   },

@@ -2,7 +2,7 @@ import { For, Switch, Match, createMemo, createSignal, Show } from "solid-js"
 import { ClientMode } from "../Constant"
 import { handleInputFocus, handleInputKeyDown } from "../Event"
 import { FormComponentBase, Option } from "../FormType"
-import { findPrimeSum } from "../GlobalFunction"
+import { findSumCombination, sum } from "../GlobalFunction"
 import { reference, setReference } from '../stores/ReferenceStore'
 
 const CheckboxInput: FormComponentBase = props => {
@@ -11,28 +11,30 @@ const CheckboxInput: FormComponentBase = props => {
     let handleOnChange = (value: any, label: any = null, open: any = null) => {
         let updatedAnswer
         if (label == null && open == null) {
-            const primeSum = findPrimeSum(props.value)
-            if (primeSum[0]) {
-                updatedAnswer = options().filter(option => primeSum[0].includes(option.value))
+            const optionValue = options().map(item => Number(item.value))
+            const sumCombination = findSumCombination(Number(value), optionValue)
+            console.log(sumCombination, "sumCombination")
+            if (sumCombination.length > 0) {
+                updatedAnswer = options().filter(option => sumCombination.includes(Number(option.value)))
             }
         } else {
             updatedAnswer = JSON.parse(JSON.stringify(props.value))
-        }
-        if (updatedAnswer) {
-            if (props.value.some(d => String(d.value) === String(value))) {
-                if (open) {
-                    let valueIndex = options().findIndex((item) => item.value == value);
-                    updatedAnswer = updatedAnswer.filter((item) => item.value != value)
-                    if (options()[valueIndex].label !== label) updatedAnswer.push({ value: value, label: label, open: true })
+            if (updatedAnswer) {
+                if (props.value.some(d => String(d.value) === String(value))) {
+                    if (open) {
+                        let valueIndex = options().findIndex((item) => item.value == value);
+                        updatedAnswer = updatedAnswer.filter((item) => item.value != value)
+                        if (options()[valueIndex].label !== label) updatedAnswer.push({ value: value, label: label, open: true })
+                    } else {
+                        updatedAnswer = updatedAnswer.filter((item) => item.value != value)
+                    }
                 } else {
-                    updatedAnswer = updatedAnswer.filter((item) => item.value != value)
+                    updatedAnswer.splice(updatedAnswer.length, 0, { value: value, label: label })
                 }
             } else {
-                updatedAnswer.splice(updatedAnswer.length, 0, { value: value, label: label })
+                updatedAnswer = [];
+                updatedAnswer.push({ value: value, label: label })
             }
-        } else {
-            updatedAnswer = [];
-            updatedAnswer.push({ value: value, label: label })
         }
         props.onValueChange(updatedAnswer);
     }
@@ -73,7 +75,7 @@ const CheckboxInput: FormComponentBase = props => {
     const [enableRemark] = createSignal((props.component.enableRemark !== undefined ? props.component.enableRemark : true) && config.clientMode != ClientMode.PAPI);
     const [disableClickRemark] = createSignal((config.formMode > 2 && props.comments == 0) ? true : false);
 
-    let settedValue = (props.value) ? props.value.length > 0 ? props.value[0].value : props.value : props.value
+    let settedValue = (props.value) ? props.value.length > 0 ? sum(props.value.map(it => it.value)) : props.value : props.value
 
     let classInput = 'w-full text-right rounded font-light px-4 py-2.5 text-sm text-gray-700 bg-white bg-clip-padding transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none disabled:bg-gray-200 dark:disabled:bg-gray-700 dark:disabled:text-gray-400';
 
@@ -121,10 +123,13 @@ const CheckboxInput: FormComponentBase = props => {
                                                             border-gray-300 rounded-sm bg-white 
                                                             checked:bg-blue-600 checked:border-blue-600 
                                                             focus:outline-none transition duration-200 align-top 
-                                                            bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                                                type="checkbox"
-                                                                onChange={e => handleOnChange(e.currentTarget.value, item.label, item.open)} value={item.value}
-                                                                checked={(item.value) ? tick(item.value) : false} id={"checkbox-" + props.component.dataKey + "-" + index()} />
+                                                            bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer
+                                                            checked:disabled:bg-gray-500 checked:dark:disabled:bg-gray-300 
+                                                            disabled:bg-gray-200 dark:disabled:bg-gray-700 dark:disabled:text-gray-400"
+                                                            type="checkbox"
+                                                            disabled
+                                                            onChange={e => handleOnChange(e.currentTarget.value, item.label, item.open)} value={item.value}
+                                                            checked={(item.value) ? tick(item.value) : false} id={"checkbox-" + props.component.dataKey + "-" + index()} />
                                                         </label>
                                                     </div>
                                                     <div class="col-span-11">
@@ -159,7 +164,7 @@ const CheckboxInput: FormComponentBase = props => {
                                                                 checked:disabled:bg-gray-500 checked:dark:disabled:bg-gray-300 
                                                                 disabled:bg-gray-200 dark:disabled:bg-gray-700 dark:disabled:text-gray-400"
                                                                 type="checkbox"
-                                                                disabled={disableInput()}
+                                                                disabled
                                                                 onChange={e => handleOnChange(e.currentTarget.value, item.label, item.open)} value={item.value}
                                                                 checked={(item.value) ? tick(item.value) : false} id={"checkbox-" + props.component.dataKey + "-" + index()} />
                                                         </label>
@@ -281,7 +286,6 @@ const CheckboxInput: FormComponentBase = props => {
                 </div>
             </Show>
             <Show when={config.clientMode != ClientMode.PAPI}>
-
                 <div class="grid md:grid-cols-3 border-b border-gray-300/[.50] dark:border-gray-200/[.10] p-2">
                     <div class="font-light text-sm space-y-2 py-2.5 px-2">
                         <div class="inline-flex space-x-2">
