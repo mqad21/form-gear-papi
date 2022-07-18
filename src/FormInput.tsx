@@ -147,7 +147,7 @@ const FormInput: FormComponentBase = props => {
   }
 
   const onValueChange = (value: any) => {
-
+    console.log(value, "Value")
     if (form.formConfig.clientMode == ClientMode.PAPI && hasEnable(props.component.dataKey)) {
       setLoader({});
     } else if (form.formConfig.clientMode != ClientMode.PAPI) {
@@ -349,7 +349,8 @@ const FormInput: FormComponentBase = props => {
                   MobileGpsHandler: props.MobileGpsHandler,
                   MobileOfflineSearch: props.MobileOfflineSearch,
                   MobileOnlineSearch: props.MobileOnlineSearch,
-                  MobileOpenMap: props.MobileOpenMap
+                  MobileOpenMap: props.MobileOpenMap,
+                  isNestedInput: props.isNestedInput
                 })
               }
             />

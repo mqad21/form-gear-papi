@@ -1,6 +1,6 @@
 export enum ClientMode {
-    CAPI = 1,
-    CAWI = 2,
+    CAWI = 1,
+    CAPI = 2,
     PAPI = 3
 }
 

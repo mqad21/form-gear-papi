@@ -131,7 +131,7 @@ export interface FormComponentBase extends Component<{
   onMobile: boolean
   component: ComponentType
   index: number
-  onValueChange?: (value: any) => void
+  onValueChange?: (value: any, dataKey?: string) => void
   onUserClick?: (dataKey: string) => void
   value?: any
   config : any
@@ -144,7 +144,8 @@ export interface FormComponentBase extends Component<{
   MobileOnlineSearch?: (value: any) => void
   MobileOpenMap?: (value: any) => void
   openRemark?: (dataKey: string) =>void
-  setResponseMobile?: any
+  setResponseMobile?: any,
+  isNestedInput?: boolean
 }> { }
 
 export const CONTROL_MAP = new Map<ControlType, FormComponentBase>([
