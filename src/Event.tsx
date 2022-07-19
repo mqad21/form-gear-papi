@@ -3,9 +3,10 @@ import { saveCurrentFocus, scrollCenterInput } from "./GlobalFunction";
 
 export const handleInputFocus = (e, props) => {
     if (props.config.clientMode == ClientMode.PAPI) {
-        const elem = e.target
+        const elem = props.isNestedInput ? e.target.offsetParent : e.target
+        const scrollContainer = props.isNestedInput ? document.querySelector(".nested-container") as HTMLElement : null
         saveCurrentFocus()
-        scrollCenterInput(elem)
+        scrollCenterInput(elem, scrollContainer)
     }
 }
 
@@ -16,7 +17,7 @@ export const handleInputKeyDown = (e, props) => {
 
 export const handleTabPress = (e, props) => {
     if (e.keyCode == 9) {
-        
+
     }
 }
 

@@ -146,8 +146,7 @@ const FormInput: FormComponentBase = props => {
     component.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  const onValueChange = (value: any) => {
-    console.log(value, "Value")
+  const onValueChange = (value: any, dataKey?: string) => {
     if (form.formConfig.clientMode == ClientMode.PAPI && hasEnable(props.component.dataKey)) {
       setLoader({});
     } else if (form.formConfig.clientMode != ClientMode.PAPI) {
@@ -157,9 +156,9 @@ const FormInput: FormComponentBase = props => {
       try {
         setReferenceHistory([])
         setSidebarHistory([])
-        saveAnswer(props.component.dataKey, 'answer', value, form.activeComponent.position, { 'clientMode': form.formConfig.clientMode, 'baseUrl': form.formConfig.baseUrl })
+        saveAnswer(dataKey ?? props.component.dataKey, 'answer', value, form.activeComponent.position, { 'clientMode': form.formConfig.clientMode, 'baseUrl': form.formConfig.baseUrl })
       } catch (e) {
-        console.log(e)
+        console.log("Error", e)
         reloadDataFromHistory()
       } finally {
         setReferenceHistory([])

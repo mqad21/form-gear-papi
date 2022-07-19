@@ -3,7 +3,7 @@ import { FormGear } from "./src/index"
 
 //variable z
 let config = {
-  clientMode: 3, // 1 => CAWI ; 2 => CAPI ;
+  clientMode: 3, // 1 => CAWI ; 2 => CAPI ; 3 => PAPI ;
   //both token and baseUrl are used for data lookup from the api (for selectInput, multiselect Input, and listSelectInput)
   token: ``, //for authentication such as bearer token 
   baseUrl: `https://jsonplaceholder.typicode.com/users/`, // endpoint to fetch

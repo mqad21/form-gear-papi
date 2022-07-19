@@ -1553,18 +1553,23 @@ export const getQuerySelector = (elem) => {
     return querySelector;
 }
 
-export const scrollCenterInput = (elem: HTMLElement) => {
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        var component = document.querySelector(".mobile-component-div");
-    } else {
-        var component = document.querySelector(".component-div");
+export const scrollCenterInput = (elem: HTMLElement, container?: HTMLElement) => {
+    if (container == null) {
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            container = document.querySelector(".mobile-component-div");
+        } else {
+            container = document.querySelector(".component-div");
+        }
     }
 
-    let center = component.clientHeight / 2;
+    let center = container.clientHeight / 2
     let top = elem.offsetTop
 
-    if (top > center) {
-        component.scrollTo({ top: top - center, left: 0, behavior: "smooth" });
+    let middle = container.clientWidth / 2
+    let left = elem.offsetLeft
+
+    if (left > middle || top > center) {
+        container.scrollTo({ top: top - center, left: left - middle, behavior: "smooth" });
     }
 }
 
@@ -1584,8 +1589,8 @@ export const focusFirstInput = () => {
 export const refocusLastSelector = () => {
     const lastSelector = localStorage.getItem(LocalStorageKey.LAST_SELECTOR)
     const lastElement = document.querySelector(lastSelector + ":not(:disabled)") as HTMLElement
-    if (lastElement) {
-        lastElement.focus()
+    if (lastSelector) {
+        lastElement?.focus()
     } else {
         focusFirstInput()
     }

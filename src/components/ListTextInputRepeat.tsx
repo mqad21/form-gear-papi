@@ -3,6 +3,7 @@ import { For, Switch, Match, Show, createMemo, createSignal } from 'solid-js'
 import Toastify from 'toastify-js'
 import { locale, setLocale } from '../stores/LocaleStore'
 import LogoImg from "../assets/loading.png"
+import { reference } from "../stores/ReferenceStore"
 
 
 const ListTextInputRepeat: FormComponentBase = props => {
@@ -13,6 +14,8 @@ const ListTextInputRepeat: FormComponentBase = props => {
 
 	const config = props.config
 	const [disableInput] = createSignal((config.formMode > 1) ? true : props.component.disableInput)
+
+	console.log("reference", reference)
 
 	let getLastId = createMemo(() => {
 		const lastId = props.value[0].label.split("#");
@@ -77,6 +80,7 @@ const ListTextInputRepeat: FormComponentBase = props => {
 			// 	}
 			// }
 			// if (duplicate === 0) {
+				console.log("localAnswer", localAnswer())
 				let updatedAnswer = JSON.parse(JSON.stringify(localAnswer()));
 				if (edited() === 0) {
 					updatedAnswer = [...updatedAnswer, { "value": id, "label": tmpInput() }];

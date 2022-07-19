@@ -88,7 +88,7 @@ const NumberInput: FormComponentBase = props => {
               min={props.component.rangeInput ? props.component.rangeInput[0].min !== undefined ? props.component.rangeInput[0].min : '' : ''}
             />
           </Show>
-          <Show when={props.validationMessage.length > 0}>
+          <Show when={props.validationMessage.length > 0 && !props.isNestedInput}>
             <For each={props.validationMessage}>
               {(item: any) => (
                 <div
