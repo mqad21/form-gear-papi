@@ -101,11 +101,11 @@ const NestedInput: FormComponentBase = props => {
 		}
 	}
 
-	let handleOnSave = (id: number, value, localAnswer) => {
+	let handleOnSave = (id: number, e, localAnswer) => {
+		const value = e.target.value.trim()
 		if (value !== "") {
 			setTmpInput(value)
 		}
-
 		setTimeout(() => {
 			if (tmpInput() !== "") {
 				let updatedAnswer = JSON.parse(JSON.stringify(localAnswer));
@@ -281,7 +281,7 @@ const NestedInput: FormComponentBase = props => {
 							<tr>
 								<th class="border-2 p-3 bg-white align-top sticky left-0 top-0 outline outline-1 outline-gray-200 outline-offset-0"></th>
 								<For each={props.component?.components[0]}>
-									{(item, index) => {
+									{(item: any, index) => {
 										return (
 											<th class="border-2 p-3 bg-white align-top">
 												<div class="mb-1">
@@ -327,7 +327,7 @@ const NestedInput: FormComponentBase = props => {
 														<input
 															value={item.label}
 															onKeyDown={e => handleInputKeyDown(e, props)}
-															onChange={e => handleOnSave(item.value, e.target.value.trim(), localAnswer())} ref={editInputRef} type="text" class="w-full rounded font-light px-4 py-2.5 text-sm text-gray-700 bg-white bg-clip-padding transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none disabled:bg-gray-200 dark:disabled:bg-gray-700 dark:disabled:text-gray-400" />
+															onChange={e => handleOnSave(item.value, e, localAnswer())} ref={editInputRef} type="text" class="w-full rounded font-light px-4 py-2.5 text-sm text-gray-700 bg-white bg-clip-padding transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none disabled:bg-gray-200 dark:disabled:bg-gray-700 dark:disabled:text-gray-400" />
 													</Show>
 													<Show when={flag() !== 1 || edited() !== item.value}>
 														{item.label}
@@ -397,7 +397,7 @@ const NestedInput: FormComponentBase = props => {
 										<div class="w-36">
 											<input
 												onKeyDown={e => handleInputKeyDown(e, props)}
-												onChange={e => handleOnSave((getLastId() + 1), e.target.value.trim(), localAnswer())} ref={newInputRef} type="text" class="w-full rounded font-light px-4 py-2.5 text-sm text-gray-700 bg-white bg-clip-padding transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none disabled:bg-gray-200 dark:disabled:bg-gray-700 dark:disabled:text-gray-400" />
+												onChange={e => handleOnSave((getLastId() + 1), e, localAnswer())} ref={newInputRef} type="text" class="w-full rounded font-light px-4 py-2.5 text-sm text-gray-700 bg-white bg-clip-padding transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none disabled:bg-gray-200 dark:disabled:bg-gray-700 dark:disabled:text-gray-400" />
 											<input class="hidden-input h-0 bg-transparent border-0 outline-0 focus:outline-0 focus:border-0 focus:ring-0 caret-transparent" onFocus={e => handleInputFocus(e, props)} />
 										</div>
 									</td>
