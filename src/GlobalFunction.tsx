@@ -23,7 +23,12 @@ import { template, setTemplate, Questionnaire, Detail as TemplateDetail, Compone
 import Toastify from 'toastify-js'
 import { ClientMode, LocalStorageKey } from './Constant';
 import { ControlType } from './FormType';
+<<<<<<< HEAD
 import { config } from 'process';
+=======
+import { FormConfig } from './FormProvider';
+import { dataKey } from './stores/DataKeyStore';
+>>>>>>> 52b0fb1752c95145ba595c663ec8e62ef93c1013
 
 export const default_eval_enable = true
 export const default_eval_validation = true
@@ -1563,26 +1568,19 @@ export const scrollCenterInput = (elem: HTMLElement, container?: HTMLElement) =>
     }
 }
 
-export const saveCurrentFocus = () => {
-    const lastFocusElem = document.querySelector(":focus")
-    if (lastFocusElem) {
-        const querySelector = getQuerySelector(lastFocusElem)
-        localStorage.setItem(LocalStorageKey.LAST_SELECTOR, querySelector)
-    }
-}
-
 export const focusFirstInput = () => {
     const elem = document.querySelector("input:not(.hidden-input):not(:disabled),textarea:not(.hidden-input):not(:disabled)") as HTMLElement
     elem?.focus()
 }
 
 export const refocusLastSelector = () => {
-    const lastSelector = localStorage.getItem(LocalStorageKey.LAST_SELECTOR)
-    const lastElement = document.querySelector(lastSelector + ":not(:disabled)") as HTMLElement
-    if (lastSelector) {
-        lastElement?.focus()
-    } else {
-        focusFirstInput()
+    if (dataKey !== "") {
+        const lastElement = document.querySelector(`[name=${dataKey}]`) as HTMLElement
+        if (lastElement) {
+            lastElement?.focus()
+        } else {
+            focusFirstInput()
+        }
     }
 }
 
