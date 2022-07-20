@@ -63,7 +63,7 @@ const NestedInput: FormComponentBase = props => {
 			const dataKey = props.component.dataKey + '#' + item.value
 			const position = sidebar.details.findIndex(obj => obj.dataKey === dataKey);
 			const components = sidebar.details[position]?.components[0]
-			components.forEach((component: any) => {
+			components?.forEach((component: any) => {
 				dataKeys.push(component.dataKey)
 			})
 		})
@@ -298,11 +298,11 @@ const NestedInput: FormComponentBase = props => {
 						</div>
 					</div>
 				</Show>
-				<div class="relative max-w-full overflow-auto nested-container">
+				<div class="relative max-w-full overflow-auto nested-container max-h-[24rem]">
 					<table class="table-fixed border-2 max-w-full">
-						<thead>
+						<thead class="sticky top-0 z-10 outline outline-1 outline-gray-200 outline-offset-0 white border-0">
 							<tr>
-								<th class="border-2 p-3 bg-white align-top sticky left-0 top-0 outline outline-1 outline-gray-200 outline-offset-0"></th>
+								<th class="sticky left-0 top-0 border-0 p-3 bg-white align-top outline outline-1 outline-gray-200 outline-offset-0 z-20"></th>
 								<For each={props.component?.components[0]}>
 									{(item: any, index) => {
 										return (
@@ -333,7 +333,7 @@ const NestedInput: FormComponentBase = props => {
 										)
 									}}
 								</For>
-								<th class="border-2 p-3 bg-white align-top sticky right-0 top-0 outline outline-1 outline-gray-200 outline-offset-0"></th>
+								<th class="sticky right-0 top-0 border-2 p-3 bg-white align-top outline outline-1 outline-gray-200 outline-offset-0"></th>
 							</tr>
 						</thead>
 						<tbody>
