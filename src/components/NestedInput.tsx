@@ -300,9 +300,9 @@ const NestedInput: FormComponentBase = props => {
 				</Show>
 				<div class="relative max-w-full overflow-auto nested-container max-h-[24rem]">
 					<table class="table-fixed border-2 max-w-full">
-						<thead class="sticky top-0 z-10 outline outline-1 outline-gray-200 outline-offset-0 white border-0">
+						<thead class="sticky top-0 z-[1] outline outline-1 outline-gray-200 outline-offset-0 white border-0">
 							<tr>
-								<th class="sticky left-0 top-0 border-0 p-3 bg-white align-top outline outline-1 outline-gray-200 outline-offset-0 z-20"></th>
+								<th class="sticky left-0 top-0 border-0 p-3 bg-white align-top outline outline-1 outline-gray-200 outline-offset-0 z-[2]"></th>
 								<For each={props.component?.components[0]}>
 									{(item: any, index) => {
 										return (
