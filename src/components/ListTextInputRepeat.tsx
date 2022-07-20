@@ -4,6 +4,7 @@ import Toastify from 'toastify-js'
 import { locale, setLocale } from '../stores/LocaleStore'
 import LogoImg from "../assets/loading.png"
 import { reference } from "../stores/ReferenceStore"
+import { ClientMode } from "../Constant"
 
 
 const ListTextInputRepeat: FormComponentBase = props => {
@@ -144,7 +145,8 @@ const ListTextInputRepeat: FormComponentBase = props => {
 	}
 
 	const isNestedSource = reference.details.findIndex(it => it.sourceQuestion === props.component.dataKey) !== -1
-
+		&& props.config.clientMode === ClientMode.PAPI
+		
 	return (
 		<Show when={!isNestedSource}>
 			<Show when={(flag() == 2)}>
