@@ -23,12 +23,7 @@ import { template, setTemplate, Questionnaire, Detail as TemplateDetail, Compone
 import Toastify from 'toastify-js'
 import { ClientMode, LocalStorageKey } from './Constant';
 import { ControlType } from './FormType';
-<<<<<<< HEAD
-import { config } from 'process';
-=======
-import { FormConfig } from './FormProvider';
 import { dataKey } from './stores/DataKeyStore';
->>>>>>> 52b0fb1752c95145ba595c663ec8e62ef93c1013
 
 export const default_eval_enable = true
 export const default_eval_validation = true
