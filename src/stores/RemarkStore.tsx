@@ -14,6 +14,7 @@ type Note = {
 type Detail = {
     dataKey: string
     templateDataKey: string
+    clientMode: number
     gearVersion: string
     templateVersion: string
     validationVersion: string
@@ -38,6 +39,7 @@ export const [remark, setRemark] = createStore<Remark>({
     details: {
         dataKey: '',
         templateDataKey: '',
+        clientMode: 0,
         gearVersion: '',
         templateVersion: '',
         validationVersion: '',

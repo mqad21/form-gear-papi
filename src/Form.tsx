@@ -387,6 +387,7 @@ const Form: Component<{
     //setResponse
     setResponse('details', 'answers', dataForm)
     setResponse('details', 'templateDataKey', template.details.dataKey)
+    setResponse('details', 'clientMode', form.formConfig.clientMode)
     setResponse('details', 'gearVersion', gearVersion)
     setResponse('details', 'templateVersion', templateVersion)
     setResponse('details', 'validationVersion', validationVersion)
@@ -446,8 +447,9 @@ const Form: Component<{
     //setRemark
     setRemark('details', 'notes', JSON.parse(JSON.stringify(note.details.notes)));
     setRemark('details', 'templateDataKey', template.details.dataKey)
-    setRemark('details', 'gearVersion', gearVersion);
-    setRemark('details', 'templateVersion', templateVersion);
+    setResponse('details', 'clientMode', form.formConfig.clientMode)
+    setRemark('details', 'gearVersion', gearVersion)
+    setRemark('details', 'templateVersion', templateVersion)
     setRemark('details', 'validationVersion', validationVersion);
     (remark.details.createdBy === undefined || (remark.details.createdBy !== undefined && remark.details.createdBy === '')) ?
       setRemark('details', 'createdBy', form.formConfig.username) :

@@ -7,14 +7,14 @@ import { reference, setReference } from './stores/ReferenceStore';
 import { sidebar, setSidebar } from './stores/SidebarStore';
 import { response, setResponse } from './stores/ResponseStore';
 import { summary } from './stores/SummaryStore';
-import { validation, setValidation, Validation } from './stores/ValidationStore';
+// import { validation, setValidation, Validation } from './stores/ValidationStore';
 import { remark, setRemark } from './stores/RemarkStore';
 import { note, setNote } from './stores/NoteStore';
 import { principal, setPrincipal } from './stores/PrincipalStore';
 import { template, setTemplate, Questionnaire } from './stores/TemplateStore';
 import { locale, setLocale } from './stores/LocaleStore';
 import { useLoaderDispatch } from "./loader/FormLoaderProvider";
-import { referenceEnableFalse, setReferenceEnableFalse } from './stores/ReferenceStore';
+// import { referenceEnableFalse, setReferenceEnableFalse } from './stores/ReferenceStore';
 
 import dayjs from 'dayjs';
 import Toastify from 'toastify-js'
@@ -89,6 +89,7 @@ const FormInput: FormComponentBase = props => {
     //setResponse
     setResponse('details', 'answers', dataForm)
     setResponse('details', 'templateDataKey', template.details.dataKey)
+    setResponse('details', 'clientMode', props.config.clientMode)
     setResponse('details', 'gearVersion', gearVersion)
     setResponse('details', 'templateVersion', templateVersion)
     setResponse('details', 'validationVersion', validationVersion)
@@ -119,6 +120,7 @@ const FormInput: FormComponentBase = props => {
     //setRemark
     setRemark('details', 'notes', JSON.parse(JSON.stringify(note.details.notes)));
     setRemark('details', 'templateDataKey', template.details.dataKey)
+    setRemark('details', 'clientMode', props.config.clientMode)
     setRemark('details', 'gearVersion', gearVersion);
     setRemark('details', 'templateVersion', templateVersion);
     setRemark('details', 'validationVersion', validationVersion);

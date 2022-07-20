@@ -10,6 +10,7 @@ type Detail = {
     description: string
     dataKey: string
     templateDataKey: string
+    clientMode: number
     gearVersion: string
     templateVersion: string
     validationVersion: string
@@ -37,6 +38,7 @@ export const [response, setResponse] = createStore<Response>({
         description: '',
         dataKey: '',
         templateDataKey: '',
+        clientMode: 0,
         gearVersion: '',
         templateVersion: '',
         validationVersion: '',
