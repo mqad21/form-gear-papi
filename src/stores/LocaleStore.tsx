@@ -2,6 +2,7 @@ import { createStore } from "solid-js/store";
 import { joinWords } from "../GlobalFunction";
 
 export type Language = {
+    addRow: string,
     componentAdded: string
     componentDeleted: string
     componentEdited: string
@@ -48,6 +49,7 @@ export const [locale, setLocale] = createStore<Questionnaire>({
     details: {
         language: [
             {
+                addRow: "Add row",
                 componentAdded: "The component was successfully added!",
                 componentDeleted: "The component was successfully deleted!",
                 componentEdited: "The component was successfully edited!",

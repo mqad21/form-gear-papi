@@ -1,11 +1,12 @@
 import { ClientMode } from "./Constant";
-import { saveCurrentFocus, scrollCenterInput } from "./GlobalFunction";
+import { scrollCenterInput } from "./GlobalFunction";
+import { setDataKey } from "./stores/DataKeyStore";
 
-export const handleInputFocus = (e, props) => {
+export const handleInputFocus = (e, props: any) => {
     if (props.config.clientMode == ClientMode.PAPI) {
         const elem = props.isNestedInput ? e.target.offsetParent : e.target
         const scrollContainer = props.isNestedInput ? document.querySelector(".nested-container") as HTMLElement : null
-        saveCurrentFocus()
+        setDataKey('currentDataKey', props.component.dataKey)
         scrollCenterInput(elem, scrollContainer)
     }
 }
