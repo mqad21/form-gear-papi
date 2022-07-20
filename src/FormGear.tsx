@@ -64,6 +64,11 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
 
     templateVersion = template.details.version !== undefined ? template.details.version : '0.0.1';
     validationVersion = validation.details.version !== undefined ? validation.details.version : '0.0.1';
+    
+    console.log('agus', config.clienMode);
+    let clMode = response.details.clientMode !== undefined ? response.details.clientMode : 0;
+    
+    const clientModeState = config.clientMode > clMode ? 1 : 0
 
     const gearVersionState = template.details.version == undefined ? 1 : semverCompare(
       gearVersion,
@@ -88,7 +93,7 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
     // If the semver string b is greater than a, return 0. 
     // If a equals b, return 0;
     let runAll = 0;
-    if (gearVersionState == 0 && templateVersionState == 0 && validationVersionState == 0 && referenceLen > 0 && sidebarLen > 0) {
+    if (clientModeState == 0 && gearVersionState == 0 && templateVersionState == 0 && validationVersionState == 0 && referenceLen > 0 && sidebarLen > 0) {
       console.log('Reuse reference ♻️')
       setReference(referenceFetch)
       initReferenceMap()
