@@ -189,49 +189,52 @@ const Form: Component<{
     })
 
     // console.time('tmpEnableComp ')
-    props.tmpEnableComp.forEach((element, index) => {
-      let sidePosition = sidebar.details.findIndex((obj, index) => {
-        const cekInsideIndex = obj.components[0].findIndex((objChild, index) => {
-          objChild.dataKey === element.dataKey;
-          return index;
+    if(config().clientMode != 3){
+      props.tmpEnableComp.forEach((element, index) => {
+        console.log('enableComp', config().clientMode, props.tmpEnableComp)
+        let sidePosition = sidebar.details.findIndex((obj, index) => {
+          const cekInsideIndex = obj.components[0].findIndex((objChild, index) => {
+            objChild.dataKey === element.dataKey;
+            return index;
+          });
+          return (cekInsideIndex == -1) ? 0 : index;
         });
-        return (cekInsideIndex == -1) ? 0 : index;
-      });
 
-      const getRowIndex = (positionOffset: number) => {
-        let editedDataKey = element.dataKey.split('@');
-        let splitDataKey = editedDataKey[0].split('#');
-        let splLength = splitDataKey.length;
-        let reducer = positionOffset + 1;
-        return ((splLength - reducer) < 1) ? Number(splitDataKey[1]) : Number(splitDataKey[splLength - reducer]);
-      }
-      const [rowIndex, setRowIndex] = createSignal(getRowIndex(0));
-      let evEnable = eval(element.enableCondition);
-      let enable = (evEnable === undefined) ? false : evEnable;
-      saveAnswer(element.dataKey, 'enable', enable, sidePosition, { 'clientMode': getProp('clientMode'), 'baseUrl': getProp('baseUrl') });
-    })
+        const getRowIndex = (positionOffset: number) => {
+          let editedDataKey = element.dataKey.split('@');
+          let splitDataKey = editedDataKey[0].split('#');
+          let splLength = splitDataKey.length;
+          let reducer = positionOffset + 1;
+          return ((splLength - reducer) < 1) ? Number(splitDataKey[1]) : Number(splitDataKey[splLength - reducer]);
+        }
+        const [rowIndex, setRowIndex] = createSignal(getRowIndex(0));
+        let evEnable = eval(element.enableCondition);
+        let enable = (evEnable === undefined) ? false : evEnable;
+        saveAnswer(element.dataKey, 'enable', enable, sidePosition, { 'clientMode': getProp('clientMode'), 'baseUrl': getProp('baseUrl') });
+      })
 
-    for (let index = 0; index < reference.details.length; index++) {
-      let obj = reference.details[index]
-      if (obj.index[obj.index.length - 2] === 0 && obj.level > 1) {
-        continue
-      }
-      if ((obj.enable) && obj.componentValidation !== undefined) {
-        runValidation(obj.dataKey, JSON.parse(JSON.stringify(obj)), null);
-      }
+      for (let index = 0; index < reference.details.length; index++) {
+        let obj = reference.details[index]
+        if (obj.index[obj.index.length - 2] === 0 && obj.level > 1) {
+          continue
+        }
+        if ((obj.enable) && obj.componentValidation !== undefined) {
+          runValidation(obj.dataKey, JSON.parse(JSON.stringify(obj)), null);
+        }
 
-      if ((obj.enable) && obj.sourceOption !== undefined) {
-        let sourceOptionObj = reference.details[referenceIndexLookup(obj.sourceOption)]
-        if (obj.answer) {
-          let x = [];
-          obj.answer.forEach(val => {
-            sourceOptionObj.answer.forEach(op => {
-              if (val.value == op.value) {
-                x.push(op);
-              }
+        if ((obj.enable) && obj.sourceOption !== undefined) {
+          let sourceOptionObj = reference.details[referenceIndexLookup(obj.sourceOption)]
+          if (obj.answer) {
+            let x = [];
+            obj.answer.forEach(val => {
+              sourceOptionObj.answer.forEach(op => {
+                if (val.value == op.value) {
+                  x.push(op);
+                }
+              })
             })
-          })
-          setReference('details', index, 'answer', x);
+            setReference('details', index, 'answer', x);
+          }
         }
       }
     }
@@ -250,7 +253,6 @@ const Form: Component<{
     setRenderGear('FormGear-' + gearVersion + ' ♻️:')
   }
 
-  // console.log(reference.details)
   // console.timeEnd('response ');
   // console.timeEnd('');
   // loadSidebarIndexMap()

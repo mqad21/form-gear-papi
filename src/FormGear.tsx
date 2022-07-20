@@ -229,15 +229,13 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
                 }
 
                 // console.log(config.clientMode, 'clientMode')
-                if (el_type == 1 || (el_type == 2 && components.length > 1)) {
+                if (config.ClientMode != 3 && (el_type == 1 || (el_type == 2 && components.length > 1))) {
                   if (element[i].enableCondition !== undefined) {
                     tmpEnableComp.push(JSON.parse(JSON.stringify(element[i])));
                     sideEnable = false;
                   } else {
                     sideEnable = true;
                   }
-                  
-                  // if(form.formConfig.clientMode < ClientMode.PAPI) {
 
                   let sideListLen = sideList[j].length;
                   sideList[j][sideListLen] = {
@@ -249,18 +247,12 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
                     components: components,
                     sourceQuestion: element[i].sourceQuestion !== undefined ? element[i].sourceQuestion : '',
                     enable: config.clientMode == ClientMode.PAPI ? true : sideEnable,
-                    enableCondition: config.clientMode == ClientMode.PAPI ? '' : element[i].enableCondition !== undefined ? element[i].enableCondition : '',
-                    componentEnable: config.clientMode == ClientMode.PAPI ? [] : element[i].componentEnable !== undefined ? element[i].componentEnable : []
+                    enableCondition: element[i].enableCondition !== undefined ? element[i].enableCondition : '',
+                    componentEnable: element[i].componentEnable !== undefined ? element[i].componentEnable : []
                   }
                 }
-                //old logic
-                // if((el_type == 21 || el_type == 22)){
-                //   answer = JSON.parse(JSON.stringify(answer));
-                // } else if(el_type == 4){
-                //   (answer == undefined ) && (!sideEnable) && tmpVarComp.push(JSON.parse(JSON.stringify(element[i]))) ;
-                // }
 
-                if (el_type > 2 && element[i].enableCondition !== undefined && !sideEnable) tmpEnableComp.push(JSON.parse(JSON.stringify(element[i])));
+                if (config.ClientMode != 3 && el_type > 2 && element[i].enableCondition !== undefined && !sideEnable) tmpEnableComp.push(JSON.parse(JSON.stringify(element[i])));
 
                 let vals;
                 let compVal;
@@ -307,8 +299,8 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
                   render: (element[i].render) ? element[i].render : undefined,
                   renderType: (element[i].renderType) ? element[i].renderType : undefined,
                   enable: true,
-                  enableCondition: config.clientMode == ClientMode.PAPI ? '' : element[i].enableCondition !== undefined ? element[i].enableCondition : '',
-                  componentEnable: config.clientMode == ClientMode.PAPI ? [] : element[i].componentEnable !== undefined ? element[i].componentEnable : [],
+                  enableCondition: element[i].enableCondition !== undefined ? element[i].enableCondition : '',
+                  componentEnable: element[i].componentEnable !== undefined ? element[i].componentEnable : [],
                   enableRemark: config.clientMode == ClientMode.PAPI ? false : element[i].enableRemark !== undefined ? element[i].enableRemark : true,
                   client: element[i].client !== undefined ? element[i].client : undefined,
                   titleModalDelete: element[i].titleModalDelete !== undefined ? element[i].titleModalDelete : undefined,
@@ -340,7 +332,7 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
             }
 
             let hasSideEnable = false;
-            if (element[j].enableCondition !== undefined) {
+            if (config.ClientMode != 3 && element[j].enableCondition !== undefined) {
               tmpEnableComp.push(JSON.parse(JSON.stringify(element[j])));
               hasSideEnable = true;
             }
@@ -354,8 +346,8 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
               components: element[j].components,
               sourceQuestion: element[j].sourceQuestion !== undefined ? element[j].sourceQuestion : '',
               enable: config.clientMode == ClientMode.PAPI ? true : !hasSideEnable,
-              enableCondition: config.clientMode == ClientMode.PAPI ? '' : element[j].enableCondition !== undefined ? element[j].enableCondition : '',
-              componentEnable: config.clientMode == ClientMode.PAPI ? [] : element[j].componentEnable !== undefined ? element[j].componentEnable : []
+              enableCondition: element[j].enableCondition !== undefined ? element[j].enableCondition : '',
+              componentEnable: element[j].componentEnable !== undefined ? element[j].componentEnable : []
             }
 
             // insert section
@@ -384,8 +376,8 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
               render: (element[j].render) ? element[j].render : undefined,
               renderType: (element[j].renderType) ? element[j].renderType : undefined,
               enable: true,
-              enableCondition: config.clientMode == ClientMode.PAPI ? '' : element[j].enableCondition !== undefined ? element[j].enableCondition : '',
-              componentEnable: config.clientMode == ClientMode.PAPI ? [] : element[j].componentEnable !== undefined ? element[j].componentEnable : [],
+              enableCondition: element[j].enableCondition !== undefined ? element[j].enableCondition : '',
+              componentEnable: element[j].componentEnable !== undefined ? element[j].componentEnable : [],
               enableRemark: config.clientMode == ClientMode.PAPI ? false : element[j].enableRemark !== undefined ? element[j].enableRemark : true,
               client: element[j].client !== undefined ? element[j].client : undefined,
               titleModalDelete: element[j].titleModalDelete !== undefined ? element[j].titleModalDelete : undefined,
@@ -422,14 +414,15 @@ export function FormGear(referenceFetch, templateFetch, presetFetch, responseFet
 
         if (sum === len) {
           clearInterval(t)
-          for (let x = 0; x < sideList.length; x++) {
-            for (let y = 0; y < sideList[x].length; y++) {
-              sidebarList.push(sideList[x][y])
-            }
-          }
           for (let j = 0; j < refList.length; j++) {
             for (let k = 0; k < refList[j].length; k++) {
               referenceList.push(refList[j][k])
+            }
+          }
+          
+          for (let x = 0; x < sideList.length; x++) {
+            for (let y = 0; y < sideList[x].length; y++) {
+              sidebarList.push(sideList[x][y])
             }
           }
 

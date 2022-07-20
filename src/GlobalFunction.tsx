@@ -17,13 +17,13 @@ import { remark, setRemark, Remark } from './stores/RemarkStore';
 import { note, setNote } from './stores/NoteStore';
 import { createSignal, batch } from 'solid-js';
 import { locale, setLocale } from './stores/LocaleStore';
-import { getConfig } from './Form';
+import Form, { getConfig } from './Form';
 import { template, setTemplate, Questionnaire, Detail as TemplateDetail, Component } from './stores/TemplateStore';
 
 import Toastify from 'toastify-js'
 import { ClientMode, LocalStorageKey } from './Constant';
 import { ControlType } from './FormType';
-import { FormConfig } from './FormProvider';
+import { config } from 'process';
 
 export const default_eval_enable = true
 export const default_eval_validation = true
@@ -154,7 +154,7 @@ export const createComponent = (dataKey: string, nestedPosition: number, compone
         newComp.disableInput = newComp.disableInput !== undefined ? newComp.disableInput : undefined;
     newComp.disableInitial = newComp.disableInitial !== undefined ? newComp.disableInitial : undefined;
     //enable
-    newComp.componentEnable = newComp.componentEnable !== undefined ? newComp.componentEnable : [];
+    newComp.componentEnable = (newComp.componentEnable) !== undefined ? newComp.componentEnable : [];
     let originCompEnable = newComp.componentEnable;
     if (newComp.componentEnable.length !== 0) {
         const editedComponentEnable = newComp.componentEnable.map(comp => {
@@ -179,7 +179,7 @@ export const createComponent = (dataKey: string, nestedPosition: number, compone
     } else {
         newComp.enableCondition = undefined
     }
-    newComp.enable = (newComp.enableCondition === undefined || newComp.enableCondition === '') ? true : eval_enable(newComp.enableCondition);
+    newComp.enable = (getConfig().clientMode == 3 || (getConfig().clientMode != 3 && newComp.enableCondition === undefined || newComp.enableCondition === '')) ? true : eval_enable(newComp.enableCondition);
     //
     newComp.enableRemark = newComp.enableRemark !== undefined ? newComp.enableRemark : true;
     newComp.client = newComp.client !== undefined ? newComp.client : true;
@@ -313,7 +313,7 @@ export const insertSidebarArray = (dataKey: string, answer: any, beforeAnswer: a
         index: [...defaultRef.index, Number(answer.value)],
         components: [components],
         sourceQuestion: defaultRef.sourceQuestion !== undefined ? defaultRef.sourceQuestion : '',
-        enable: defaultRef.enable !== undefined ? defaultRef.enable : true,
+        enable: (getConfig().clientMode != 3 && defaultRef.enable !== undefined) ? defaultRef.enable : true,
         enableCondition: (defaultRef.enableCondition === undefined) ? undefined : defaultRef.enableCondition,
         componentEnable: defaultRef.componentEnable !== undefined ? defaultRef.componentEnable : []
     }
@@ -827,108 +827,105 @@ export const saveAnswer = (dataKey: string, attributeParam: any, answer: any, ac
 
         //enabling ~ run when answer
         if (attributeParam === 'answer') {
-            const hasSideCompEnable = JSON.parse(JSON.stringify(sidebar.details.filter(obj => {
-                if (obj.componentEnable !== undefined) {
-                    const cekInsideIndex = obj.componentEnable.findIndex(objChild => {
-                        let newDataKey = '';
-                        let tmpDataKey = objChild.split('@');
-                        let splitDataKey = tmpDataKey[0].split('#');
-                        let splLength = splitDataKey.length;
-                        switch (tmpDataKey[1]) {
-                            case '$ROW$': {
-                                newDataKey = tmpDataKey[0];
-                                break;
-                            }
-                            case '$ROW1$': {
-                                if (splLength > 2) splitDataKey.length = splLength - 1;
-                                newDataKey = splitDataKey.join('#');
-                                break;
-                            }
-                            case '$ROW2$': {
-                                if (splLength > 3) splitDataKey.length = splLength - 2;
-                                newDataKey = splitDataKey.join('#');
-                                break;
-                            }
-                            default: {
-                                newDataKey = objChild;
-                                break;
-                            }
-                        }
-                        return (newDataKey === dataKey) ? true : false;
-                    });
-                    return (cekInsideIndex == -1) ? false : true;
-                }
-            })));
-            if (hasSideCompEnable.length > 0) {//at least there is minimal 1 enable in this datakey
-                hasSideCompEnable.forEach(sidebarEnable => {
-                    let sidePosition = sidebar.details.findIndex(objSide => objSide.dataKey === sidebarEnable.dataKey);
-                    let enableSideBefore = sidebar.details[sidePosition]['enable'];
-                    let enableSide = eval_enable(sidebarEnable.enableCondition);
-                    addHistory('update_sidebar', null, null, null, JSON.parse(JSON.stringify(sidebar.details)))
-                    setSidebar('details', sidePosition, 'enable', enableSide);
-                    let updatedRef = JSON.parse(JSON.stringify(reference.details));
-                    let tmpVarComp = [];
-                    let tmpIndex = [];
-                    if (enableSide !== enableSideBefore) {
-                        sidebarEnable.components[0].forEach((element, index) => {
-                            let refPos = updatedRef.findIndex(objRef => objRef.dataKey === element.dataKey);
-                            if (refPos !== -1) {
-                                // if(updatedRef[refPos].enableCondition === undefined || updatedRef[refPos].enableCondition === '') setReference('details',refPos,'enable',enableSide);
-                                // if(Number(updatedRef[refPos].type) === 4 && enableSide !== enableSideBefore){
-                                //     tmpVarComp.push(updatedRef[refPos])
-                                //     tmpIndex.push(index)
-                                // }
-                                if (!enableSide) {
-                                    setReference('details', refPos, 'enable', enableSide);
-                                } else {
-                                    if (Number(updatedRef[refPos].type) === 4) {
-                                        tmpVarComp.push(updatedRef[refPos])
-                                        tmpIndex.push(index)
-                                    }
-                                    let newEnab = true;
-                                    if (updatedRef[refPos].enableCondition === undefined || updatedRef[refPos].enableCondition === '') {
-                                        newEnab = true;
-                                    } else {
-                                        newEnab = eval_enable(updatedRef[refPos].enableCondition)
-                                    }
-                                    setReference('details', refPos, 'enable', newEnab);
+            if(getConfig().clientMode != 3){
+                const hasSideCompEnable = JSON.parse(JSON.stringify(sidebar.details.filter(obj => {
+                    if (obj.componentEnable !== undefined) {
+                        const cekInsideIndex = obj.componentEnable.findIndex(objChild => {
+                            let newDataKey = '';
+                            let tmpDataKey = objChild.split('@');
+                            let splitDataKey = tmpDataKey[0].split('#');
+                            let splLength = splitDataKey.length;
+                            switch (tmpDataKey[1]) {
+                                case '$ROW$': {
+                                    newDataKey = tmpDataKey[0];
+                                    break;
+                                }
+                                case '$ROW1$': {
+                                    if (splLength > 2) splitDataKey.length = splLength - 1;
+                                    newDataKey = splitDataKey.join('#');
+                                    break;
+                                }
+                                case '$ROW2$': {
+                                    if (splLength > 3) splitDataKey.length = splLength - 2;
+                                    newDataKey = splitDataKey.join('#');
+                                    break;
+                                }
+                                default: {
+                                    newDataKey = objChild;
+                                    break;
                                 }
                             }
+                            return (newDataKey === dataKey) ? true : false;
                         });
-                        if (tmpVarComp.length > 0) {
-                            const getRowIndex = (positionOffset: number) => {
-                                let editedDataKey = dataKey.split('@');
-                                let splitDataKey = editedDataKey[0].split('#');
-                                let splLength = splitDataKey.length;
-                                let reducer = positionOffset + 1;
-                                return ((splLength - reducer) < 1) ? Number(splitDataKey[1]) : Number(splitDataKey[splLength - reducer]);
-                            }
-                            const [rowIndex, setRowIndex] = createSignal(getRowIndex(0));
-                            tmpVarComp.forEach((e, i) => {
-                                // let evVal = eval(e.expression);
-                                // saveAnswer(e.dataKey, 'answer', evVal, tmpIndex[i], null);
-                                try {
-                                    let evVal = eval(e.expression);
-                                    saveAnswer(e.dataKey, 'answer', evVal, tmpIndex[i], null);
-                                } catch (e) {
-                                    saveAnswer(e.dataKey, 'answer', undefined, tmpIndex[i], null);
-                                    // console.log(e.dataKey)
-                                    // console.log(e)
+                        return (cekInsideIndex == -1) ? false : true;
+                    }
+                })));
+                if (hasSideCompEnable.length > 0) {//at least there is minimal 1 enable in this datakey
+                    hasSideCompEnable.forEach(sidebarEnable => {
+                        let sidePosition = sidebar.details.findIndex(objSide => objSide.dataKey === sidebarEnable.dataKey);
+                        let enableSideBefore = sidebar.details[sidePosition]['enable'];
+                        let enableSide = eval_enable(sidebarEnable.enableCondition);
+                        addHistory('update_sidebar', null, null, null, JSON.parse(JSON.stringify(sidebar.details)))
+                        setSidebar('details', sidePosition, 'enable', enableSide);
+                        let updatedRef = JSON.parse(JSON.stringify(reference.details));
+                        let tmpVarComp = [];
+                        let tmpIndex = [];
+                        if (enableSide !== enableSideBefore) {
+                            sidebarEnable.components[0].forEach((element, index) => {
+                                let refPos = updatedRef.findIndex(objRef => objRef.dataKey === element.dataKey);
+                                if (refPos !== -1) {
+                                    if (!enableSide) {
+                                        setReference('details', refPos, 'enable', enableSide);
+                                    } else {
+                                        if (Number(updatedRef[refPos].type) === 4) {
+                                            tmpVarComp.push(updatedRef[refPos])
+                                            tmpIndex.push(index)
+                                        }
+                                        let newEnab = true;
+                                        if (updatedRef[refPos].enableCondition === undefined || updatedRef[refPos].enableCondition === '') {
+                                            newEnab = true;
+                                        } else {
+                                            newEnab = eval_enable(updatedRef[refPos].enableCondition)
+                                        }
+                                        setReference('details', refPos, 'enable', newEnab);
+                                    }
                                 }
-                            })
+                            });
+                            if (tmpVarComp.length > 0) {
+                                const getRowIndex = (positionOffset: number) => {
+                                    let editedDataKey = dataKey.split('@');
+                                    let splitDataKey = editedDataKey[0].split('#');
+                                    let splLength = splitDataKey.length;
+                                    let reducer = positionOffset + 1;
+                                    return ((splLength - reducer) < 1) ? Number(splitDataKey[1]) : Number(splitDataKey[splLength - reducer]);
+                                }
+                                const [rowIndex, setRowIndex] = createSignal(getRowIndex(0));
+                                tmpVarComp.forEach((e, i) => {
+                                    // let evVal = eval(e.expression);
+                                    // saveAnswer(e.dataKey, 'answer', evVal, tmpIndex[i], null);
+                                    try {
+                                        let evVal = eval(e.expression);
+                                        saveAnswer(e.dataKey, 'answer', evVal, tmpIndex[i], null);
+                                    } catch (e) {
+                                        saveAnswer(e.dataKey, 'answer', undefined, tmpIndex[i], null);
+                                        // console.log(e.dataKey)
+                                        // console.log(e)
+                                    }
+                                })
+                            }
                         }
-                    }
-                })
-            }
-            const hasComponentEnable = get_CompEnable(dataKey)
-            if (hasComponentEnable.length > 0) {//this datakey at least appear in minimum 1 enable
-                hasComponentEnable.forEach(elementEnableDatakey => {
-                    let element_pos = referenceIndexLookup(elementEnableDatakey)
-                    if (element_pos !== -1) {
-                        let elementEnable = reference.details[element_pos]
-                        runEnabling(elementEnable.dataKey, activeComponentPosition, prop, elementEnable.enableCondition);
-                    }
-                })
+                    })
+                }
+                const hasComponentEnable = get_CompEnable(dataKey)
+                if (hasComponentEnable.length > 0) {//this datakey at least appear in minimum 1 enable
+                    hasComponentEnable.forEach(elementEnableDatakey => {
+                        let element_pos = referenceIndexLookup(elementEnableDatakey)
+                        if (element_pos !== -1) {
+                            let elementEnable = reference.details[element_pos]
+                            runEnabling(elementEnable.dataKey, activeComponentPosition, prop, elementEnable.enableCondition);
+                        }
+                    })
+                }
             }
         }
 
@@ -974,11 +971,6 @@ export const saveAnswer = (dataKey: string, attributeParam: any, answer: any, ac
                                 }
                             })
                         })
-                        // let sidebarPos = sidebar.details.findIndex((element,index) => {
-                        //     let tmpInd = element.components[0].findIndex((e,i) => (e.dataKey == elementSourceOption.dataKey))
-                        //     return (tmpInd !== -1) ? true : false
-                        // })
-
                         saveAnswer(elementSourceOption.dataKey, 'answer', x, activeComponentPosition, null);
                     }
                 });
@@ -1230,12 +1222,10 @@ export function loadReferenceMap(reference_local = null) {
 }
 
 export function get_CompEnable(dataKey) {
-    // console.log('get_CompEnable : '+dataKey)
     let itemKeyBased = dataKey.split('@')[0].split('#')[0];
     let returnDataKey = []
     if (itemKeyBased in compEnableMap()) {
         for (let key_comp in (compEnableMap()[itemKeyBased])) {
-            // console.log('Format : '+key_comp)
             compEnableMap()[itemKeyBased][key_comp].forEach(element_item => {
                 let list_key = referenceIndexLookup(element_item, 1)
                 if (list_key !== -1 && list_key) {
