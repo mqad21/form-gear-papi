@@ -8,6 +8,7 @@ import { cleanLabel } from "../GlobalFunction";
 import { locale } from "../stores/LocaleStore";
 import Toastify from 'toastify-js'
 import { handleInputFocus, handleInputKeyDown } from "../Event";
+import { dataKey } from "../stores/DataKeyStore";
 
 const NestedInput: FormComponentBase = props => {
 
@@ -60,11 +61,13 @@ const NestedInput: FormComponentBase = props => {
 		const messages = []
 		const dataKeys = []
 		sourceAnswer()?.forEach((item: any) => {
-			const dataKey = props.component.dataKey + '#' + item.value
-			const position = sidebar.details.findIndex(obj => obj.dataKey === dataKey);
+			const key = props.component.dataKey + '#' + item.value
+			const position = sidebar.details.findIndex(obj => obj.dataKey === key);
 			const components = sidebar.details[position]?.components[0]
 			components?.forEach((component: any) => {
-				dataKeys.push(component.dataKey)
+				if (component.dataKey === dataKey.currentDataKey) {
+					dataKeys.push(component.dataKey)
+				} 
 			})
 		})
 
@@ -441,51 +444,59 @@ const NestedInput: FormComponentBase = props => {
 						</tbody>
 					</table>
 				</div>
-				<div class="flex p-4 justify-center">
-					<button class="bg-pink-600 text-white p-2 rounded-full focus:outline-blue-700 focus:outline-3 h-8 w-8 hover:bg-pink-500  disabled:bg-gray-200 dark:disabled:bg-gray-700 dark:disabled:text-gray-400"
-						onKeyDown={e => handleInputKeyDown(e, props)}
-						onClick={e => handleOnPlus()}>
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-							<path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-						</svg>
-					</button>
-				</div>
-				<div>
-					<Show when={validationMessages().length > 0}>
-						<For each={validationMessages()}>
-							{(item: any) => (
-								<div
-									class="text-xs font-light mt-1">
-									<div class="grid grid-cols-12"
-										classList={{
-											' text-orange-500 dark:text-orange-200 ': item.state === 1,
-											' text-pink-600 dark:text-pink-200 ': item.state === 2,
-										}} >
-										<Switch>
-											<Match when={item.state === 1}>
-												<div class="col-span-1 flex justify-center items-start">
-													<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-														<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-													</svg>
-												</div>
-											</Match>
-											<Match when={item.state === 2}>
-												<div class="col-span-1 flex justify-center items-start">
-													<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-														<path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-													</svg>
-												</div>
-											</Match>
-										</Switch>
-										<div class="col-span-11 text-justify mr-1" innerHTML={item.message} />
+				<div class="flex p-4 justify-between mt-1">
+					<div>
+						<Show when={validationMessages().length > 0}>
+							<For each={validationMessages()}>
+								{(item: any) => (
+									<div
+										class="text-xs font-light">
+										<div class="grid grid-cols-12"
+											classList={{
+												' text-orange-500 dark:text-orange-200 ': item.state === 1,
+												' text-pink-600 dark:text-pink-200 ': item.state === 2,
+											}} >
+											<Switch>
+												<Match when={item.state === 1}>
+													<div class="col-span-1 flex justify-center items-start">
+														<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+															<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+														</svg>
+													</div>
+												</Match>
+												<Match when={item.state === 2}>
+													<div class="col-span-1 flex justify-center items-start">
+														<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+															<path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+														</svg>
+													</div>
+												</Match>
+											</Switch>
+											<div class="col-span-11 text-justify mr-1" innerHTML={item.message} />
+										</div>
 									</div>
-								</div>
-							)}
-						</For>
-					</Show>
+								)}
+							</For>
+						</Show>
+					</div>
+					<div>
+						<button class="bg-pink-600 text-white py-2 px-4 rounded focus:outline-blue-700 focus:outline-3 h-8 hover:bg-pink-500 disabled:bg-gray-200 dark:disabled:bg-gray-700 dark:disabled:text-gray-400 flex items-center"
+							onKeyDown={e => handleInputKeyDown(e, props)}
+							onClick={e => handleOnPlus()}>
+							<div>
+								<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+								</svg>
+							</div>
+							<div>
+								{locale.details.language[0].addRow}
+							</div>
+						</button>
+					</div>
 				</div>
+
 			</Match>
-		</Switch>
+		</Switch >
 	)
 }
 
